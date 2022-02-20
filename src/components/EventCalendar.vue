@@ -13,20 +13,30 @@ export default {
       calendarOptions: {
         plugins: [ dayGridPlugin, interactionPlugin ],
         initialView: 'dayGridMonth',
+        headerToolbar : {
+            start: "",
+            center: "prev title next",
+            end: "today"
+        },
+        locale: 'ko', // 한국어 설정
         dateClick : this.handleDateClick,
         events : [
             {
-                id: 'a',
                 title: 'my event',
                 start: '2022-02-20',
                 extendedProps: {
                     department: 'BioChemistry'
                 },
-                description: 'Lecture'
-            }
+                description: 'Lecture',
+                color: '#ff9f89'
+             }
         ],
         eventClick : this.handleEventClick,
-        eventColor: '#378006'
+        eventDidMount: function(info) {
+            console.log(info.event.extendedProps);
+            // {description: "Lecture", department: "BioChemistry"}
+            console.log(info);
+        }
       }
     }
   },
@@ -42,5 +52,13 @@ export default {
 </script>
 
 <template>
+    <h2>청약 캘린더</h2>
     <FullCalendar :options="calendarOptions"/>
 </template>
+
+<style >
+.fc-toolbar-chunk {
+  display: flex; 
+  align-items: center;
+}
+</style>
