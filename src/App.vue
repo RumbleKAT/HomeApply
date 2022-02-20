@@ -1,16 +1,21 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+<div>
+  <evenCalendar/>
+</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import evenCalendar from './components/EventCalendar.vue';
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    evenCalendar
+  },
+  data() {
+    return {
+      date: new Date(),
+    };
+  },
 }
 </script>
 
