@@ -8,6 +8,10 @@ export default {
   components: {
     FullCalendar // make the <FullCalendar> tag available
   },
+  mounted(){
+    console.log("mounted!");
+    this.addNewEvent("SSS"); 
+  },
   data() {
     return {
       calendarOptions: {
@@ -40,13 +44,21 @@ export default {
       }
     }
   },
+  
   methods : {
       handleDateClick : function(arg){
         console.log(arg.dateStr);
       },
       handleEventClick : function(){
         alert("clicked events")
-      }
+      },
+      addNewEvent : function(param){
+        console.log("!!" + param);
+      this.calendarOptions.events = [
+        ...this.calendarOptions.events,
+        { title: 'Another Event', date: '2022-02-13' }
+      ];
+    }
   }
 }
 </script>
