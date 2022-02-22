@@ -1,8 +1,10 @@
 import Vuex from 'vuex';
+import axios from 'axios';
 
 const store = new Vuex.Store({
     state : {
-        count : 0
+        count : 0,
+        response : false
     },
     getters: {
         increaseCount(state) {
@@ -13,6 +15,10 @@ const store = new Vuex.Store({
         addcounter : function(state, payload){
             console.log(state);
             return state.count += payload.amount;
+        },
+        updateState : function(state, payload){
+            console.log(payload);
+            return state.response = payload.status;
         }
     },
     actions : {
@@ -23,6 +29,15 @@ const store = new Vuex.Store({
                     commit({type : 'addcounter', amount:10})
                     resolve()
                 },1000)
+            })
+        },
+        getData({commit}){
+            return axios.get('http://localhost:8081/').then(res =>{
+                const { data } = res;
+                commit({
+                    type : 'updateState',
+                    status : data.response
+                });
             })
         }
     }
