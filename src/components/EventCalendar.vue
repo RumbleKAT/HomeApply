@@ -11,6 +11,7 @@ export default {
   mounted(){
     console.log("mounted!");
     this.addNewEvent("SSS"); 
+    this.increaseCnt();
   },
   data() {
     return {
@@ -38,7 +39,6 @@ export default {
         eventClick : this.handleEventClick,
         eventDidMount: function(info) {
             console.log(info.event.extendedProps);
-            // {description: "Lecture", department: "BioChemistry"}
             console.log(info);
         }
       }
@@ -58,13 +58,18 @@ export default {
         ...this.calendarOptions.events,
         { title: 'Another Event', date: '2022-02-13' }
       ];
-    }
+    },
+      increaseCnt(){
+        this.$store.commit({
+          type : 'addcounter',
+          amount : 10
+        });
+      }
   }
 }
 </script>
 
 <template>
-    <h2>청약 캘린더</h2>
     <FullCalendar :options="calendarOptions"/>
 </template>
 
