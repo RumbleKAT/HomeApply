@@ -21,8 +21,4 @@ export default {
 </script>
 
 <style>
-.wrapper{
-    margin-top: 1em;
-    padding : 1em;
-}
 </style>

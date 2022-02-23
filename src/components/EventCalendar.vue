@@ -21,9 +21,9 @@ export default {
         plugins: [ dayGridPlugin, interactionPlugin ],
         initialView: 'dayGridMonth',
         headerToolbar : {
-            start: "",
-            center: "prev title next",
-            end: "today"
+            start: "prev",
+            center: "title",
+            end: "next"
         },
         locale: 'ko', // 한국어 설정
         dateClick : this.handleDateClick,
@@ -89,7 +89,9 @@ export default {
 </script>
 
 <template>
-    <FullCalendar v-if="isCalendarViewed" :options="calendarOptions"/>
+    <div class="calendarWrapper">
+      <FullCalendar v-if="isCalendarViewed" :options="calendarOptions"/>
+    </div>
     <eventModal v-if="isModalViewed" @close-modal="closeModal" :selected="selectedDate"/>
 </template>
 
@@ -97,5 +99,8 @@ export default {
 .fc-toolbar-chunk {
   display: flex; 
   align-items: center;
+}
+.calendarWrapper{
+  padding : 1em;
 }
 </style>
