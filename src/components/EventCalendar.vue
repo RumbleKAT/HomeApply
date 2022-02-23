@@ -3,10 +3,12 @@ import '@fullcalendar/core/vdom'
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import eventModal from './EventModal.vue';
 
 export default {
   components: {
-    FullCalendar // make the <FullCalendar> tag available
+    eventModal,
+    FullCalendar
   },
   mounted(){
     console.log("mounted!");
@@ -33,7 +35,8 @@ export default {
                     department: 'BioChemistry'
                 },
                 description: 'Lecture',
-                color: '#ff9f89'
+                color: '#ff9f89',
+                custom : "!!"
              }
         ],
         eventClick : this.handleEventClick,
@@ -41,23 +44,39 @@ export default {
             console.log(info.event.extendedProps);
             console.log(info);
         }
-      }
+      },
+      selectedDate : null,
+      isModalViewed: false,
+      isCalendarViewed : true,
     }
   },
-  
   methods : {
       handleDateClick : function(arg){
         console.log(arg.dateStr);
       },
-      handleEventClick : function(){
-        alert("clicked events")
+      handleEventClick : function(arg){
+        alert("clicked events");
+        console.log(arg.event._def);
+        this.selectedDate = arg.event._def.extendedProps;
+        this.openModal();
       },
       addNewEvent : function(param){
         console.log("!!" + param);
       this.calendarOptions.events = [
         ...this.calendarOptions.events,
-        { title: 'Another Event', date: '2022-02-13' }
+        { title: 'Another Event', 
+          date: '2022-02-13',
+          custom : "!!"
+        }
       ];
+    },
+    openModal() {
+      this.isModalViewed = true
+      this.isCalendarViewed = false;
+    },
+    closeModal() {
+      this.isModalViewed = false
+      this.isCalendarViewed = true;
     },
       increaseCnt(){
         this.$store.commit({
@@ -70,7 +89,8 @@ export default {
 </script>
 
 <template>
-    <FullCalendar :options="calendarOptions"/>
+    <FullCalendar v-if="isCalendarViewed" :options="calendarOptions"/>
+    <eventModal v-if="isModalViewed" @close-modal="closeModal" :selected="selectedDate"/>
 </template>
 
 <style >
