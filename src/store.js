@@ -4,11 +4,14 @@ import axios from 'axios';
 const store = new Vuex.Store({
     state : {
         count : 0,
-        response : false
+        response : []
     },
     getters: {
         increaseCount(state) {
             return ++state.count;
+        },
+        getResponse(state){
+            return state.response;
         }
     },
     mutations : {
@@ -18,7 +21,7 @@ const store = new Vuex.Store({
         },
         updateState : function(state, payload){
             console.log(payload);
-            return state.response = payload.status;
+            return state.response = payload.response;
         }
     },
     actions : {
@@ -32,11 +35,11 @@ const store = new Vuex.Store({
             })
         },
         getData({commit}){
-            return axios.get('http://localhost:8081/').then(res =>{
+            return axios.get('http://localhost:8081/getInfo').then(res =>{
                 const { data } = res;
                 commit({
                     type : 'updateState',
-                    status : data.response
+                    response : data
                 });
             })
         }

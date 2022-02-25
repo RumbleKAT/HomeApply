@@ -4,16 +4,20 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import eventModal from './EventModal.vue';
+import { mapGetters } from 'vuex'
+import {getColor,toStringByFormatting} from '../utils/Color';
 
 export default {
   components: {
     eventModal,
     FullCalendar
   },
+  created(){
+    if(!this.$store.aptList)
+    this.$store.dispatch('getData')
+  },
   mounted(){
     console.log("mounted!");
-    this.addNewEvent("SSS"); 
-    this.increaseCnt();
   },
   data() {
     return {
@@ -27,23 +31,26 @@ export default {
         },
         locale: 'ko', // 한국어 설정
         dateClick : this.handleDateClick,
-        events : [
-            {
-                title: 'my event',
-                start: '2022-02-20',
-                extendedProps: {
-                    department: 'BioChemistry'
-                },
-                description: 'Lecture',
-                color: '#ff9f89',
-                custom : "!!"
-             }
-        ],
+        events : [],
         eventClick : this.handleEventClick,
-        eventDidMount: function(info) {
-            console.log(info.event.extendedProps);
-            console.log(info);
+        customButtons: { 
+        prev: { // this overrides the prev button
+          text: "PREV", 
+          click: () => {           
+            let calendarApi = this.$refs.fullCalendar.getApi();
+            calendarApi.prev();
+            //전월 첫날 기준
+          }
+        },
+        next: { // this overrides the next button
+          text: "PREV",
+          click: () => {
+             let calendarApi = this.$refs.fullCalendar.getApi();
+             calendarApi.next();
+             //차월 첫날 기준
+          }
         }
+      }
       },
       selectedDate : null,
       isModalViewed: false,
@@ -51,23 +58,21 @@ export default {
     }
   },
   methods : {
+    getInitalDate : function(){
+      console.log(toStringByFormatting(new Date()));
+       return toStringByFormatting(new Date())
+    },
       handleDateClick : function(arg){
         console.log(arg.dateStr);
       },
       handleEventClick : function(arg){
-        alert("clicked events");
-        console.log(arg.event._def);
         this.selectedDate = arg.event._def.extendedProps;
         this.openModal();
       },
       addNewEvent : function(param){
-        console.log("!!" + param);
       this.calendarOptions.events = [
         ...this.calendarOptions.events,
-        { title: 'Another Event', 
-          date: '2022-02-13',
-          custom : "!!"
-        }
+        ...param
       ];
     },
     openModal() {
@@ -77,20 +82,35 @@ export default {
     closeModal() {
       this.isModalViewed = false
       this.isCalendarViewed = true;
-    },
-      increaseCnt(){
-        this.$store.commit({
-          type : 'addcounter',
-          amount : 10
-        });
-      }
+    }
+  },
+  computed: mapGetters({
+    aptList : 'getResponse' // getCounter 는 Vuex 의 getters 에 선언된 속성 이름
+  }),
+  watch : {
+    aptList(){
+      const { data } = this.aptList;
+      const aList = [];
+      data.forEach(element => {
+        aList.push({
+          "title" : element.houseNm,
+          "start" : element.rceptBgnde,
+          "end" : element.rceptEndde,
+          extendedProps: {
+            ...element
+          },
+          color: getColor(element.sido)
+        })
+      });
+      this.addNewEvent(aList);
+    }
   }
 }
 </script>
 
 <template>
     <div class="calendarWrapper">
-      <FullCalendar v-if="isCalendarViewed" :options="calendarOptions"/>
+      <FullCalendar ref="fullCalendar" v-if="isCalendarViewed" :options="calendarOptions"/>
     </div>
     <eventModal v-if="isModalViewed" @close-modal="closeModal" :selected="selectedDate"/>
 </template>

@@ -1,5 +1,4 @@
 const axios = require("axios");
-const convert = require('xml-js');
 
 const host="http://openapi.reb.or.kr/OpenAPI_ToolInstallPackage/service/rest/ApplyhomeInfoSvc";
 const service = {
@@ -34,7 +33,7 @@ exports.getAptInfo = async function(param){
     return rList;
 };
 
-this.getAptInfo({startmonth : '202202', endmonth:'202202'});
+// this.getAptInfo({startmonth : '202202', endmonth:'202202'});
 
 // exports.getNonAptInfo = function(){
 //     //getLttotPblancList
