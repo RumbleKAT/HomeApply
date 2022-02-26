@@ -61,7 +61,7 @@ exports.getAptInfo = async function(param,serviceType){
     }
 
     const rList = AptList.sort((a,b)=> a.pblancNo - b.pblancNo);
-    console.log(rList);
+    // console.log(rList);
     return rList;
 };
 

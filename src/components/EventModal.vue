@@ -2,8 +2,29 @@
     <div class="modal">
     <div class="modal__background"></div>
     <div class="modal__content">
-        <h1>Modal</h1>
-        {{selected}}
+        <h1>{{selected.houseNm}}</h1>
+        <table>
+        <th colspan = "7">기본정보</th>
+
+        <tr class="item"><!-- 첫번째 줄 시작 -->
+            <td>주택구분</td>
+            <td>분양/임대</td>
+            <td>건설업체</td>
+            <td>청약접수시작일</td>
+            <td>청약접수종료일</td>
+            <td>당첨자발표일</td>
+            <td>공급지역</td>
+        </tr><!-- 첫번째 줄 끝 -->
+        <tr><!-- 두번째 줄 시작 -->
+            <td>{{selected.houseDtlSecdNm}}</td>
+            <td>{{selected.rentSecdNm}}</td>
+            <td>{{selected.bsnsMbyNm}}</td>
+            <td>{{selected.rceptBgnde}}</td>
+            <td>{{selected.rceptEndde}}</td>
+            <td>{{selected.przwnerPresnatnDe}}</td>
+            <td>{{selected.sido}}</td>  
+        </tr><!-- 두번째 줄 끝 -->
+          </table>
         <div>
           <button @click.self="$emit('close-modal')">Close</button>
         </div>
@@ -14,7 +35,17 @@
 <script>
 export default {
     name : 'eventModal',
-    props:["selected"]
+    props:["selected"],
+    data: function () {
+      return {
+        selectedItem: this.selected
+      }
+    },
+    mounted(){
+      console.log(this.selectedItem);
+      
+
+    }
 }
 </script>
 
@@ -38,7 +69,36 @@ export default {
   box-shadow: 1px 1px 2rem rgba(0, 0, 0, 0.3);
 }
 
-.button{
-
+button{
+  padding: 0.5rem 1rem;
+  margin-top : 2em;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: center;
+  text-decoration: none;
+  
+  border: none;
+  border-radius: 4px;
+  
+  display: inline-block;
+  width: auto;
+  
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  
+  cursor: pointer;
+  
+  transition: 0.5s;
 }
+
+table{
+    width: 100%;
+    border: 1px solid #444444;
+    /* border-collapse: collapse; */
+}
+ th {
+    border-bottom: 1px solid #444444;
+    font-weight : bold;
+  }
+
 </style>

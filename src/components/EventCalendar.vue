@@ -17,7 +17,7 @@ export default {
     this.$store.dispatch('getData')
   },
   mounted(){
-    console.log("mounted!");
+    // console.log("mounted!");
   },
   data() {
     return {
@@ -54,7 +54,7 @@ export default {
       },
       selectedDate : null,
       isModalViewed: false,
-      isCalendarViewed : true,
+      isCalendarViewed : true
     }
   },
   methods : {

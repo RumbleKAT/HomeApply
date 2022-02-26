@@ -4,7 +4,8 @@ import axios from 'axios';
 const store = new Vuex.Store({
     state : {
         count : 0,
-        response : []
+        response : [],
+        category : 'APT'
     },
     getters: {
         increaseCount(state) {
@@ -12,16 +13,22 @@ const store = new Vuex.Store({
         },
         getResponse(state){
             return state.response;
+        },
+        getCategory(state){
+            return state.category;
         }
     },
     mutations : {
         addcounter : function(state, payload){
-            console.log(state);
+            // console.log(state);
             return state.count += payload.amount;
         },
         updateState : function(state, payload){
-            console.log(payload);
+            // console.log(payload);
             return state.response = payload.response;
+        },
+        updateCategory : function(state,payload){
+            return state.category = payload.category;
         }
     },
     actions : {
@@ -35,7 +42,8 @@ const store = new Vuex.Store({
             })
         },
         getData({commit}){
-            return axios.get('http://localhost:8081/getInfo').then(res =>{
+            console.log(this.state.category);
+            return axios.get(`http://localhost:8081/getInfo?category=${this.state.category}`).then(res =>{
                 const { data } = res;
                 commit({
                     type : 'updateState',

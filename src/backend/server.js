@@ -17,11 +17,12 @@ app.get('/',(req,res)=>{
 app.get('/getInfo',async (req,res)=>{
     const currentDate = new Date();
     const month = `${currentDate.getFullYear()}${('0' + (currentDate.getMonth() + 1)).slice(-2)}`;
+    const category = req.query.category;
 
     const aptList = await getAptInfo({
         startmonth : month,
         endmonth : month
-    });
+    },category);
     res.json({
         data : aptList
     });
