@@ -2,11 +2,12 @@
     <div class="modal">
     <div class="modal__background"></div>
     <div class="modal__content">
+        
         <h1>{{selected.houseNm}}</h1>
         <table>
         <th colspan = "7">기본정보</th>
 
-        <tr class="item"><!-- 첫번째 줄 시작 -->
+        <tr class="item">
             <td>주택구분</td>
             <td>분양/임대</td>
             <td>건설업체</td>
@@ -14,8 +15,8 @@
             <td>청약접수종료일</td>
             <td>당첨자발표일</td>
             <td>공급지역</td>
-        </tr><!-- 첫번째 줄 끝 -->
-        <tr><!-- 두번째 줄 시작 -->
+        </tr>
+        <tr>
             <td>{{selected.houseDtlSecdNm}}</td>
             <td>{{selected.rentSecdNm}}</td>
             <td>{{selected.bsnsMbyNm}}</td>
@@ -23,9 +24,10 @@
             <td>{{selected.rceptEndde}}</td>
             <td>{{selected.przwnerPresnatnDe}}</td>
             <td>{{selected.sido}}</td>  
-        </tr><!-- 두번째 줄 끝 -->
+        </tr>
           </table>
-        <div>
+        <div class="modal-footer">
+          <button @click="addFavorite">Favorite</button>
           <button @click.self="$emit('close-modal')">Close</button>
         </div>
     </div>
@@ -33,6 +35,8 @@
 </template>
 
 <script>
+// import { dispatch } from 'vuex'
+
 export default {
     name : 'eventModal',
     props:["selected"],
@@ -43,8 +47,16 @@ export default {
     },
     mounted(){
       console.log(this.selectedItem);
-      
+    },
+    methods:{
+      addFavorite(){
+        console.log(this.selectedItem);
+          this.$store.dispatch('updateFavorite', {
+            data: this.selectedItem
+          });
 
+        console.log(this.$store.getFavorite())
+      }
     }
 }
 </script>
@@ -72,6 +84,7 @@ export default {
 button{
   padding: 0.5rem 1rem;
   margin-top : 2em;
+  margin-right : 2em;
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 1rem;
   font-weight: 400;
@@ -100,5 +113,7 @@ table{
     border-bottom: 1px solid #444444;
     font-weight : bold;
   }
-
+.modal-footer{
+	text-align: center;
+}
 </style>

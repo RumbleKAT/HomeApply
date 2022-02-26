@@ -5,7 +5,8 @@ const store = new Vuex.Store({
     state : {
         count : 0,
         response : [],
-        category : 'APT'
+        category : 'APT',
+        favorite: []
     },
     getters: {
         increaseCount(state) {
@@ -16,6 +17,9 @@ const store = new Vuex.Store({
         },
         getCategory(state){
             return state.category;
+        },
+        getFavorite(state){
+            return state.favorite;
         }
     },
     mutations : {
@@ -29,6 +33,9 @@ const store = new Vuex.Store({
         },
         updateCategory : function(state,payload){
             return state.category = payload.category;
+        },
+        updateFavorite : function(state, payload){
+            return state.favorite.push(payload.data);
         }
     },
     actions : {
@@ -50,6 +57,9 @@ const store = new Vuex.Store({
                     response : data
                 });
             })
+        },
+        updateFavorite({commit},data){
+            commit('updateFavorite',data);
         }
     }
 });
