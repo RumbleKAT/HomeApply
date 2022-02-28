@@ -21,6 +21,8 @@
     "core-js": "^3.8.3",
     "cors": "^2.8.5",
     "express": "^4.17.3",
+    "nodemailer": "^6.7.2",
+    "nodemailer-smtp-transport": "^2.7.4",
     "v-calendar": "^3.0.0-alpha.8",
     "vue": "^3.2.13",
     "vue-cli": "^2.9.6",
