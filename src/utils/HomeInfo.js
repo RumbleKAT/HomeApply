@@ -45,6 +45,9 @@ exports.getAptInfo = async function(param,serviceType){
         
         await axios.get(url).then(res=>{
             const data = res.data.response;
+            if(data.header.resultCode != 00){
+                return new Error(data.header.resultMsg);
+            }
             cnt += data.body.numOfRows;
             total = data.body.totalCount;
 
@@ -55,7 +58,7 @@ exports.getAptInfo = async function(param,serviceType){
             console.error(err);
             return new Error("Connection error" + err);
         });
-        0
+        
         if(cnt >= total && total != 0) break;
         pageNum++; 
     }

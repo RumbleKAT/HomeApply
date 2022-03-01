@@ -18,6 +18,7 @@ app.get('/getInfo',async (req,res)=>{
     const currentDate = new Date();
     const month = `${currentDate.getFullYear()}${('0' + (currentDate.getMonth() + 1)).slice(-2)}`;
     const category = req.query.category;
+    console.log(month);
 
     const aptList = await getAptInfo({
         startmonth : month,
