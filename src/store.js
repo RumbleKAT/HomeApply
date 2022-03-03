@@ -35,7 +35,14 @@ const store = new Vuex.Store({
             return state.category = payload.category;
         },
         updateFavorite : function(state, payload){
-            return state.favorite.push(payload.data);
+            const duplicated = state.favorite.some(param => param.houseManageNo === payload.data.houseManageNo);
+            if(!duplicated){
+                return state.favorite.push(payload.data);
+            }
+        },
+        removeFavorite : function(state, payload){
+            state.favorite = state.favorite.filter((param) =>  param.houseManageNo !== payload.data.houseManageNo);
+            return state.favorite;
         }
     },
     actions : {
@@ -56,12 +63,19 @@ const store = new Vuex.Store({
                     type : 'updateState',
                     response : data
                 });
+            }).catch((err)=>{
+                console.err('Front End Part' ,err);
             })
         },
         updateFavorite({commit},data){
             commit('updateFavorite',data);
+        },
+        removeFavorite({commit},data){
+            commit('removeFavorite',data);
         }
     }
 });
+
+//localStorage부분 추가...
 
 export default store;

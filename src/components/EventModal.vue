@@ -48,6 +48,9 @@ export default {
     mounted(){
       console.log(this.selectedItem);
     },
+    computed: {
+      favorites() { return this.$store.state.getFavorite }
+    },
     methods:{
       addFavorite(){
         console.log(this.selectedItem);
@@ -55,7 +58,7 @@ export default {
             data: this.selectedItem
           });
 
-        console.log(this.$store.getFavorite())
+        console.log(this.favorites);
       }
     }
 }
