@@ -2,7 +2,6 @@
 <div class="wrapper">
   <Calendar/>
 </div>
-{{count}}
 </template>
 
 <script>
@@ -13,9 +12,6 @@ export default {
         Calendar
     },
     computed: {
-        count(){
-            return this.$store.getters.increase;
-        }
     }
 }
 </script>

@@ -27,8 +27,8 @@
         </tr>
           </table>
         <div class="modal-footer">
-          <button @click="addFavorite">Favorite</button>
-          <button @click.self="$emit('close-modal')">Close</button>
+          <button @click="addFavorite">알람추가</button>
+          <button @click.self="$emit('close-modal')">닫기</button>
         </div>
     </div>
     </div>
@@ -53,12 +53,10 @@ export default {
     },
     methods:{
       addFavorite(){
-        console.log(this.selectedItem);
           this.$store.dispatch('updateFavorite', {
             data: this.selectedItem
           });
-
-        console.log(this.favorites);
+          alert(this.selectedItem.houseNm + "가 즐겨찾기에 저장되었습니다.");
       }
     }
 }

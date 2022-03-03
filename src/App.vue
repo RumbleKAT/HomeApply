@@ -5,7 +5,7 @@
         <router-link to="/">청약달력</router-link>
       </div>
       <div class="navbar">
-        <router-link to="/mail">메일구독신청</router-link>
+        <router-link to="/mail">메일알람신청</router-link>
       </div>
     </div>
     <router-view />

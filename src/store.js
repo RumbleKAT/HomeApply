@@ -1,12 +1,25 @@
 import Vuex from 'vuex';
 import axios from 'axios';
 
+const localStorage = window.localStorage;
+let storedData = [];
+
+(function (){
+    if(localStorage.getItem("Events")){
+        storedData = JSON.parse(localStorage.getItem("Events"));    
+    }
+})();
+
+let updateStorage = function(type,param){
+    localStorage.setItem(type,JSON.stringify(param));
+}
+
 const store = new Vuex.Store({
     state : {
         count : 0,
         response : [],
         category : 'APT',
-        favorite: []
+        favorite: storedData
     },
     getters: {
         increaseCount(state) {
@@ -37,11 +50,15 @@ const store = new Vuex.Store({
         updateFavorite : function(state, payload){
             const duplicated = state.favorite.some(param => param.houseManageNo === payload.data.houseManageNo);
             if(!duplicated){
-                return state.favorite.push(payload.data);
+                state.favorite.push(payload.data);
+                updateStorage('Events',state.favorite);
+                return state.favorite;
             }
         },
         removeFavorite : function(state, payload){
             state.favorite = state.favorite.filter((param) =>  param.houseManageNo !== payload.data.houseManageNo);
+            updateStorage('Events',state.favorite);
+
             return state.favorite;
         }
     },

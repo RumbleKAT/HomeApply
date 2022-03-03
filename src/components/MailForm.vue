@@ -1,11 +1,14 @@
 <template>
- <h1>청약 스케줄링 신청 리스트</h1>
+ <h1>청약 알람 리스트</h1>
  <!-- {{favorites}} -->
- <ul id="example-1">
- <li v-for="favorite in favorites" :key="favorite.houseManageNo">
-    <mailElement :favorite="favorite" />
-</li>
+ <ul>
+    <li v-for="favorite in favorites" :key="favorite.houseManageNo">
+        <mailElement :favorite="favorite" />
+    </li>
  </ul>
+
+
+
 </template>
 
 <script>
