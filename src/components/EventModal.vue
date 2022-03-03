@@ -5,7 +5,7 @@
         
         <h1>{{selected.houseNm}}</h1>
         <table>
-        <th colspan = "7">기본정보</th>
+        <th colspan = "7" style="background-color: #42b983; color:#fff">기본정보</th>
 
         <tr class="item">
             <td>주택구분</td>
@@ -27,7 +27,7 @@
         </tr>
           </table>
         <div class="modal-footer">
-          <button @click="addFavorite">알람추가</button>
+          <button @click="addFavorite" style="background-color: #42b983; color:#fff">알람추가</button>
           <button @click.self="$emit('close-modal')">닫기</button>
         </div>
     </div>
@@ -46,7 +46,7 @@ export default {
       }
     },
     mounted(){
-      console.log(this.selectedItem);
+      // console.log(this.selectedItem);
     },
     computed: {
       favorites() { return this.$store.state.getFavorite }
@@ -56,7 +56,8 @@ export default {
           this.$store.dispatch('updateFavorite', {
             data: this.selectedItem
           });
-          alert(this.selectedItem.houseNm + "가 즐겨찾기에 저장되었습니다.");
+          alert(this.selectedItem.houseNm + "가 알람 리스트에 저장되었습니다.");
+          this.$emit('close-modal');
       }
     }
 }
@@ -72,9 +73,9 @@ export default {
 
 .modal__content {
   position: absolute;
-  padding: 5em;
-  background: #42b983;
-  max-width: 400px;
+  padding: 1em 2em;
+  /* background: #42b983; */
+  max-width: 600px;
   border-radius: 10px;
   top: 50%;
   left: 50%;
@@ -107,11 +108,16 @@ button{
 
 table{
     width: 100%;
-    border: 1px solid #444444;
+    border: 2px solid #444444;
     /* border-collapse: collapse; */
 }
  th {
     border-bottom: 1px solid #444444;
+    font-weight : bold;
+  }
+
+  .item{
+        border-bottom: 1px solid #444444;
     font-weight : bold;
   }
 .modal-footer{

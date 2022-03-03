@@ -1,8 +1,31 @@
 <template>
 <div>
-    <h3>{{element.houseNm}}</h3>
-    {{element}}
-    <button @click="removeFavorite">제거</button>
+    <h3>{{element.houseNm}}</h3>    
+    <table>
+        <th colspan = "7" style="background-color: #42b983; color:#fff">기본정보</th>
+
+        <tr class="item" style="font-weight:bold"> 
+            <td>주택구분</td>
+            <td>분양/임대</td>
+            <td>건설업체</td>
+            <td>청약접수시작일</td>
+            <td>청약접수종료일</td>
+            <td>당첨자발표일</td>
+            <td>공급지역</td>
+        </tr>
+        <tr>
+            <td>{{element.houseDtlSecdNm}}</td>
+            <td>{{element.rentSecdNm}}</td>
+            <td>{{element.bsnsMbyNm}}</td>
+            <td>{{element.rceptBgnde}}</td>
+            <td>{{element.rceptEndde}}</td>
+            <td>{{element.przwnerPresnatnDe}}</td>
+            <td>{{element.sido}}</td>  
+        </tr>
+          </table>
+    <div class="footer">
+        <button @click="removeFavorite">제거</button>
+    </div>
 </div>
 </template>
 
@@ -26,5 +49,37 @@ export default {
 </script>
 
 <style>
+li{
+    border-radius: 1em;
+    margin: 1em;
+    padding : 0.5em;
+    box-shadow: 3px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.footer{
+    padding : 1em;
+}
+
+.footer button{
+    background-color: #f44336;; /* Green */
+    border: none;
+    color: white;
+    padding: 1em 1.5em;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 8px;
+}
+
+table{
+    width: 100%;
+    border: 2px solid #444444;
+    /* border-collapse: collapse; */
+}
+ th {
+    border-bottom: 1px solid #444444;
+    font-weight : bold;
+  }
 
 </style>

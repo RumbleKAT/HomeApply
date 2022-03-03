@@ -37,5 +37,9 @@ export default {
 </script>
 
 <style>
-
+ul{
+    list-style: none;
+    text-align: center;
+    padding-inline-start : 0px;
+}
 </style>
