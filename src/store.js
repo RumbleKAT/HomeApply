@@ -41,6 +41,9 @@ const store = new Vuex.Store({
         },
         getSubscribe(state){
             return state.subscribe;
+        },
+        getEmail(state){
+            return state.email;
         }
     },
     mutations : {

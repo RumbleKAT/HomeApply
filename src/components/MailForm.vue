@@ -7,7 +7,7 @@
  </ul>
   <div class="container" style="background-color:white">
     <h2>알람 신청하기</h2>
-    <input type="text" placeholder="Email address" name="mail" v-model="email" required>
+    <input type="text" placeholder="Email address" name="mail" v-model="subscribe" required>
   </div>
     <div class="container">
     <button @click="setSubscribe"> subscribe</button>
@@ -19,6 +19,13 @@
 <script>
 import mailElement from './MailElement.vue';
 
+const validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
 export default {
     data : function(){
         return{
@@ -37,15 +44,20 @@ export default {
         },
         favorites(){
             return this.$store.state.favorite;
+        },
+        subscribe(){
+            return this.$store.state.subscribe;
         }
-    },
-    mounted(){
-        this.$store.dispatch('getData');
     },
     methods:{
         setSubscribe(){
+            if(!validateEmail(this.subscribe)){
+                alert(`유효하지 않은 메일 주소입니다.`);                
+                return;
+            }
+            alert(`${this.subscribe}로 청약 알람 메일을 보내드립니다.`);
             this.$store.dispatch('setSubscribe',{
-                data: this.email
+                data: this.subscribe
             });
         }
     }
