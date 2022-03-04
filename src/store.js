@@ -3,10 +3,14 @@ import axios from 'axios';
 
 const localStorage = window.localStorage;
 let storedData = [];
+let subscribe = '';
 
 (function (){
     if(localStorage.getItem("Events")){
         storedData = JSON.parse(localStorage.getItem("Events"));    
+    }
+    if(localStorage.getItem("Email")){
+        subscribe = JSON.parse(localStorage.getItem("Email"));    
     }
 })();
 
@@ -19,7 +23,8 @@ const store = new Vuex.Store({
         count : 0,
         response : [],
         category : 'APT',
-        favorite: storedData
+        favorite: storedData,
+        subscribe: subscribe
     },
     getters: {
         increaseCount(state) {
@@ -33,6 +38,9 @@ const store = new Vuex.Store({
         },
         getFavorite(state){
             return state.favorite;
+        },
+        getSubscribe(state){
+            return state.subscribe;
         }
     },
     mutations : {
@@ -60,7 +68,12 @@ const store = new Vuex.Store({
             updateStorage('Events',state.favorite);
 
             return state.favorite;
-        }
+        },
+        setSubscribe : function(state,payload){
+            state.subscribe = payload.data;
+            updateStorage('Email',state.subscribe);
+            return state.subscribe;
+        } 
     },
     actions : {
         //비동기적 변이
@@ -89,6 +102,9 @@ const store = new Vuex.Store({
         },
         removeFavorite({commit},data){
             commit('removeFavorite',data);
+        },
+        setSubscribe({commit},data){
+            commit('setSubscribe',data);            
         }
     }
 });
