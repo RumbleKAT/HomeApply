@@ -16,7 +16,7 @@ const service_detail = {
     "Remain_type" : "getRemndrLttotPblancMdl"
 }
 
-const serviceKey = "mwqmHdyqQo5ani9pF4%2FD%2FCGPVS%2BmVuf0xxR6rEeDJhDH39HGTKCTRe%2FWANeu4WQMPNEDyPSlYEYWPaCtvC9trA%3D%3D";
+const serviceKey = "TTIBBEMWax1hMUgx0UkadwKxI2QosEOeeNVRSIjo4dFkM6I977BAgIOT7PylzVFjWtM%2F7pvRRTTgTh3OLdoZPg%3D%3D";
 
 //그달에 존재하는 청약정보를 모두 가져온다.
 
@@ -40,29 +40,52 @@ exports.getAptInfo = async function(param,serviceType){
             break;
     };
     
+    let message = 'Not Found';
+    let flag = false;
+
     while(cnt <= total){
         const url = `${host}/${serviceNM}?startmonth=${param.startmonth}&endmonth=${param.endmonth}&serviceKey=${serviceKey}&pageNo=${pageNum}`;
-        
-        await axios.get(url).then(res=>{
+        console.log(pageNum);   
+        if(flag){
+            break;
+        }
+
+        await axios.get(url)
+        .then(res=>{
             const data = res.data.response;
+            // console.log(data);
+            if(data.header.resultCode !== '00'){
+                message = data.header.resultMsg;
+                flag = true;
+                throw new Error(data.header.resultMsg);
+            }
             cnt += data.body.numOfRows;
             total = data.body.totalCount;
-
-            if(data.body.items.item.length > 0){
-                AptList.push(...data.body.items.item);
+            
+            if(total > 0){
+                if(data.body.items.item.length > 0){
+                    AptList.push(...data.body.items.item);
+                }
             }
-        },(err)=>{
+        })
+        .catch((err)=>{
             console.error(err);
-            return new Error("Connection error" + err);
-        });
-        0
+            flag = true;
+            message = err;
+        });    
+        
         if(cnt >= total && total != 0) break;
         pageNum++; 
     }
 
-    const rList = AptList.sort((a,b)=> a.pblancNo - b.pblancNo);
-    // console.log(rList);
-    return rList;
+    if(message !== 'Not Found'){ 
+        return {"msg" : message.toString()};
+    }else{
+        if(AptList.length != 0){
+            return AptList.sort((a,b)=> a.pblancNo - b.pblancNo);
+        }
+        return AptList;
+    }
 };
 
 exports.getDetailInfo = async function(param, serviceType){
@@ -97,16 +120,23 @@ exports.getDetailInfo = async function(param, serviceType){
     await axios.get(url).then(res=>{
         const data = res.data.response;
 
+        if(data.header.resultCode !== '00'){
+            message = data.header.resultMsg;
+            flag = true;
+            throw new Error(data.header.resultMsg);
+        }        
         if(data.body.totalCount > 0){
             detailInfo = data.body.items.item;
+            // console.log(detailInfo);
         }
+        
     },(err)=>{
         console.error(err);
         return new Error("Connection error" + err);
     });
+
     return detailInfo;
 }
 
-
-// this.getAptInfo({startmonth : '202202', endmonth:'202202'}, 'Remain');
-// this.getDetailInfo({houseManageNo: '2022910052', pblancNo: '2022910052'}, 'Remain');
+// this.getAptInfo({startmonth : '202201', endmonth:'202203'}, 'Remain');
+this.getDetailInfo({houseManageNo: '2022910052', pblancNo: '2022910052'}, 'Remain');
