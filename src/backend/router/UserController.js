@@ -1,12 +1,23 @@
 var express = require('express');
 var router = express.Router();
 const userService = require('../../service/userService');
+const { body,validationResult } = require('express-validator');
 
 router.use(function(req, res, next) {
   next();
 });
 
-router.post('/getUserById', async function(req, res) {
+const validParam = (param,next) =>{
+    const errors = validationResult(param);
+    if (!errors.isEmpty()) {
+        next(errors.array());
+    }
+}
+
+router.post('/getUserById', 
+    body('id').not().isEmpty().trim().escape()
+,async function(req, res, next) {
+    validParam(req,next);
     const { id } = req.body;
     const { rowCount, rows } =  await userService.selectById({"id" : id}); 
     res.json({"res" : rows, "rowCount" : rowCount });
@@ -15,7 +26,10 @@ router.post('/getUserById', async function(req, res) {
 // const testApp = {
 //     mail : 'ssj318@naver.com'
 // }
-router.post('/getUserByMail', async function(req, res) {
+router.post('/getUserByMail', 
+    body('mail').isEmail().normalizeEmail(),
+async function(req, res, next) {
+    validParam(req, next);
     const { mail } = req.body;
     const { rowCount, rows } =  await userService.selectByMail({"mail" : mail}); 
     res.json({"res" : rows, "rowCount" : rowCount });
@@ -26,7 +40,11 @@ router.post('/getUserByMail', async function(req, res) {
 //     mail : 'ssj318@naver.com'
 // }
 
-router.put('/user', async function(req, res) {
+router.put('/user', 
+    body('id').not().isEmpty().trim().escape(),
+    body('mail').isEmail().normalizeEmail(),
+async function(req, res) {
+    validParam(req,next);
     const { id, mail } = req.body;
     const { rowCount, rows } =  await userService.updateEmail({
         "id" : id,
@@ -35,7 +53,10 @@ router.put('/user', async function(req, res) {
     res.json({"res" : rows, "rowCount" : rowCount });
 });
 
-router.delete('/user', async function(req,res){
+router.delete('/user',
+    body('id').not().isEmpty().trim().escape(),
+async function(req,res){
+    validParam(req,next);
     const { id } = req.body;
     const { rowCount, rows } =  await userService.deleteEmail({
         "id" : id
@@ -43,6 +64,10 @@ router.delete('/user', async function(req,res){
     res.json({"res" : rows, "rowCount" : rowCount });
 });
 
+router.use((err,req,res,next)=>{
+    console.error(err.stack);
+    res.status(400).json({err : err});
+});
 
 
 
