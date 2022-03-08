@@ -1,6 +1,5 @@
 const express = require('express')
 const cors = require('cors');
-const axios = require('axios');
 const { getAptInfo } = require('../utils/HomeInfo');
 
 const app = express();
@@ -33,6 +32,21 @@ app.get('/getInfo',async (req,res)=>{
         data : aptList
     });
 })
+
+app.get('/getInfoDetail',async(req,res)=>{
+    const category = req.query.category;
+    const houseManageNo = req.query.houseManageNo;
+    const pblancNo = req.query.pblancNo; 
+
+    const aptList = await getDetailInfo({
+        houseManageNo : houseManageNo,
+        pblancNo : pblancNo
+    },category);
+
+    res.json({
+        data : aptList
+    });    
+});
 
 
 app.listen(port,()=>{

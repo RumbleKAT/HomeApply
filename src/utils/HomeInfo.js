@@ -40,55 +40,43 @@ exports.getAptInfo = async function(param,serviceType){
             break;
     };
     
-    // while(cnt <= total){
-    //     const url = `${host}/${serviceNM}?startmonth=${param.startmonth}&endmonth=${param.endmonth}&serviceKey=${serviceKey}&pageNo=${pageNum}`;
-        
-    //     await axios.get(url).then(res=>{
-    //         const data = res.data.response;
-    //         if(data.header.resultCode != 00){
-    //             return new Error(data.header.resultMsg);
-    //         }
-    //         cnt += data.body.numOfRows;
-    //         total = data.body.totalCount;
-
-    //         if(data.body.items.item.length > 0){
-    //             AptList.push(...data.body.items.item);
-    //         }
-    //     },(err)=>{
-    //         console.error(err);
-    //         return new Error("Connection error" + err);
-    //     });
-        
-    //     if(cnt >= total && total != 0) break;
-    //     pageNum++; 
-    // }
-
-
-    const url = `${host}/${serviceNM}?startmonth=${param.startmonth}&endmonth=${param.endmonth}&serviceKey=${serviceKey}&pageNo=${pageNum}`;
     let message = 'Not Found';
+    let flag = false;
 
-    await axios.get(url)
-    .then(res=>{
-        const data = res.data.response;
-        console.log(data.header.resultCode);
-        console.log(data);
-        if(data.header.resultCode !== '00'){
-            message = data.header.resultMsg;
-            throw new Error(data.header.resultMsg);
+    while(cnt <= total){
+        const url = `${host}/${serviceNM}?startmonth=${param.startmonth}&endmonth=${param.endmonth}&serviceKey=${serviceKey}&pageNo=${pageNum}`;
+        console.log(pageNum);   
+        if(flag){
+            break;
         }
-        cnt += data.body.numOfRows;
-        total = data.body.totalCount;
-        
-        if(total > 0){
-            if(data.body.items.item.length > 0){
-                AptList.push(...data.body.items.item);
+
+        await axios.get(url)
+        .then(res=>{
+            const data = res.data.response;
+            // console.log(data);
+            if(data.header.resultCode !== '00'){
+                message = data.header.resultMsg;
+                flag = true;
+                throw new Error(data.header.resultMsg);
             }
-        }
-    })
-    .catch((err)=>{
-        console.error(err);
-        message = err;
-    });
+            cnt += data.body.numOfRows;
+            total = data.body.totalCount;
+            
+            if(total > 0){
+                if(data.body.items.item.length > 0){
+                    AptList.push(...data.body.items.item);
+                }
+            }
+        })
+        .catch((err)=>{
+            console.error(err);
+            flag = true;
+            message = err;
+        });    
+        
+        if(cnt >= total && total != 0) break;
+        pageNum++; 
+    }
 
     if(message !== 'Not Found'){ 
         return {"msg" : message.toString()};
@@ -132,16 +120,22 @@ exports.getDetailInfo = async function(param, serviceType){
     await axios.get(url).then(res=>{
         const data = res.data.response;
 
+        if(data.header.resultCode !== '00'){
+            message = data.header.resultMsg;
+            flag = true;
+            throw new Error(data.header.resultMsg);
+        }        
         if(data.body.totalCount > 0){
             detailInfo = data.body.items.item;
         }
+        
     },(err)=>{
         console.error(err);
         return new Error("Connection error" + err);
     });
+
     return detailInfo;
 }
 
-
-// this.getAptInfo({startmonth : '202202', endmonth:'202202'}, 'Remain');
-// this.getDetailInfo({houseManageNo: '2022910052', pblancNo: '2022910052'}, 'Remain');
+// this.getAptInfo({startmonth : '202201', endmonth:'202203'}, 'Remain');
+// this.getDetailInfo({houseManageNo: '2022910052', pblancNo: '2022910052'}, 'Remain')
