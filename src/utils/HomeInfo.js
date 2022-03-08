@@ -127,7 +127,6 @@ exports.getDetailInfo = async function(param, serviceType){
         }        
         if(data.body.totalCount > 0){
             detailInfo = data.body.items.item;
-            // console.log(detailInfo);
         }
         
     },(err)=>{
@@ -139,4 +138,4 @@ exports.getDetailInfo = async function(param, serviceType){
 }
 
 // this.getAptInfo({startmonth : '202201', endmonth:'202203'}, 'Remain');
-this.getDetailInfo({houseManageNo: '2022910052', pblancNo: '2022910052'}, 'Remain');
+// this.getDetailInfo({houseManageNo: '2022910052', pblancNo: '2022910052'}, 'Remain')
