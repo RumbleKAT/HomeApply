@@ -3,17 +3,28 @@ const pq = require('pg');
 
 const pool = new pq.Pool(dbconfig);
 
-pool
+//insert mydata
+//select mydata by user-email
+//update mydata
+//delete mydata
+
+const sqlexecute = async function(query){
+  const res = await pool
   .connect()
   .then(client => {
     return client
-    .query('select * from mydata;')
+    .query(query)
         .then(res => {
-        client.release()
-        console.log(res)
+          client.release();
+          return res;
       })
       .catch(err => {
-        client.release()
-        console.log(err.stack)
+        client.release();
+        console.err(err.stack);
+        return err.stack;
       })
-  })
+  });
+  return res;
+}
+
+module.exports = sqlexecute;
