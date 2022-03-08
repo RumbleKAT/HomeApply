@@ -1,17 +1,25 @@
 const express = require('express')
 const cors = require('cors');
 const { getAptInfo } = require('../utils/HomeInfo');
+const scheController = require('./router/ScheController');
+const userController = require('./router/UserController');
+
 
 const app = express();
 const port = 8081;
 
+app.use(express.json());
 app.use(cors());
+app.use('/user', userController);
+app.use('/schedule', scheController);
 
 app.get('/',(req,res)=>{
     res.json({
         response: true
     })
 })
+
+//router
 
 app.get('/getInfo',async (req,res)=>{
     const currentDate = new Date();

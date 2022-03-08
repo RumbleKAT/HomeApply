@@ -8,19 +8,19 @@ const pool = new pq.Pool(dbconfig);
 //update mydata
 //delete mydata
 
-const sqlexecute = async function(query){
+const sqlexecute = async function(query, param){
   const res = await pool
   .connect()
   .then(client => {
     return client
-    .query(query)
+    .query(query, param)
         .then(res => {
           client.release();
           return res;
       })
       .catch(err => {
         client.release();
-        console.err(err.stack);
+        console.error(err.stack);
         return err.stack;
       })
   });
