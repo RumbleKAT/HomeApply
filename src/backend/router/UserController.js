@@ -35,6 +35,17 @@ async function(req, res, next) {
     res.json({"res" : rows, "rowCount" : rowCount });
 });
 
+
+router.post('/createUser', 
+    body('mail').isEmail().normalizeEmail(),
+async function(req, res, next) {
+    validParam(req, next);
+    const { mail } = req.body;
+    const { rowCount, rows } =  await userService.createId({"mail" : mail}); 
+    res.json({"res" : rows, "rowCount" : rowCount });
+});
+
+
 // const testApp2 = {
 //     id : 2,
 //     mail : 'ssj318@naver.com'

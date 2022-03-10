@@ -29,7 +29,8 @@ const validateEmail = (email) => {
 export default {
     data : function(){
         return{
-            email : ''
+            email : '',
+            subscribe : ''
         }
     },
     components: {
@@ -44,13 +45,14 @@ export default {
         },
         favorites(){
             return this.$store.state.favorite;
-        },
-        subscribe(){
-            return this.$store.state.subscribe;
         }
+    },
+    mounted(){
+      this.subscribe = this.$store.state.subscribe;
     },
     methods:{
         setSubscribe(){
+            console.log();
             if(!validateEmail(this.subscribe)){
                 alert(`유효하지 않은 메일 주소입니다.`);                
                 return;

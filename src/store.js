@@ -18,6 +18,33 @@ let updateStorage = function(type,param){
     localStorage.setItem(type,JSON.stringify(param));
 }
 
+const getUser = async function(param){
+    let user = await axios.post('http://localhost:8081/user/getUserByMail',{
+        mail : param.data
+    });
+    if(user.data.res.length > 0){
+        const res = user.data.res[0];
+        return res;        
+    }else{
+        user = await createUser(param);
+        console.log("create user!");
+        if(user.data.rowCount === 1){
+            user = await axios.post('http://localhost:8081/user/getUserByMail',{
+                mail : param.data
+            });
+            console.log("load user again");
+        }
+    }
+    return user;
+}
+
+const createUser = async function(param){
+    const user = await axios.post('http://localhost:8081/user/createUser',{
+        mail : param.data
+    });
+    return user;
+}
+
 const store = new Vuex.Store({
     state : {
         count : 0,
@@ -76,7 +103,10 @@ const store = new Vuex.Store({
             state.subscribe = payload.data;
             updateStorage('Email',state.subscribe);
             return state.subscribe;
-        } 
+        },
+        checkUser: function(data){
+            console.log(data);
+        }
     },
     actions : {
         //비동기적 변이
@@ -106,7 +136,10 @@ const store = new Vuex.Store({
         removeFavorite({commit},data){
             commit('removeFavorite',data);
         },
-        setSubscribe({commit},data){
+        async setSubscribe({commit},data){
+            console.log(data);
+            const ans = await getUser(data);
+            console.log(ans);            
             commit('setSubscribe',data);            
         }
     }

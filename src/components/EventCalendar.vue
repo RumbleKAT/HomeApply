@@ -91,18 +91,20 @@ export default {
     aptList(){
       const { data } = this.aptList;
       const aList = [];
-      data.forEach(element => {
-        aList.push({
-          "title" : element.houseNm,
-          "start" : element.rceptBgnde,
-          "end" : element.rceptEndde,
-          extendedProps: {
-            ...element
-          },
-          color: getColor(element.sido)
-        })
-      });
-      this.addNewEvent(aList);
+      if(data.length > 0){
+        data.forEach(element => {
+                aList.push({
+                  "title" : element.houseNm,
+                  "start" : element.rceptBgnde,
+                  "end" : element.rceptEndde,
+                  extendedProps: {
+                    ...element
+                  },
+                  color: getColor(element.sido)
+                })
+              });
+      this.addNewEvent(aList);  
+      }
     }
   }
 }
