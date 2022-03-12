@@ -96,9 +96,12 @@ const setHomeData = async function(userId,param){
     }else{
         //기존의 건을 모두 삭제한 후 추가한다.
         console.log("already saved one...");
-
-        const res = await axios.delete('http://localhost:8081/schedule/applyById',{
-            id : userId
+        console.log(userId);
+        const res = await axios.delete(`http://localhost:8081/schedule/applyById`,
+        { 
+            data: { 
+                id : userId 
+            } 
         });
 
         console.log(res);

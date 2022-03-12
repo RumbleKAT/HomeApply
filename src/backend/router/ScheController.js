@@ -137,7 +137,8 @@ router.delete('/apply', async function(req, res) {
 
 router.delete('/applyById', async function(req, res) {
     const { id } = req.body;
-    console.log(id);
+    // console.log(req.body);
+    // console.log(id);
     const { rowCount, rows } =  await scheService.deleteApplyByUserId({id:id});
     res.json({"res" : rows, "rowCount" : rowCount });
 });
