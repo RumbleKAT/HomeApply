@@ -22,6 +22,7 @@ const getUser = async function(param){
     let user = await axios.post('http://localhost:8081/user/getUserByMail',{
         mail : param.data
     });
+    console.log(user);
     if(user.data.res.length > 0){
         const res = user.data.res[0];
         return res;        
@@ -36,6 +37,82 @@ const getUser = async function(param){
         }
     }
     return user;
+}
+
+const rowMapper = (param,userId) =>{
+    let applyList = [];
+    param.map((p)=>{
+        const { 
+            houseManageNo,
+            pblancNo,
+            houseDetailSecdNm,
+            houseNm,
+            bsnsMbyNm,
+            rcritPblancDe,
+            rceptBgnde,
+            rceptEndde,
+            przwnerPresnatnDe,
+            // home_info_id
+        } = p[0];
+        applyList.push({
+            houseManageNo : houseManageNo,
+            pblancNo : pblancNo,
+            houseDetailSecdNm : houseDetailSecdNm,
+            houseNm : houseNm,
+            bsnsMbyNm : bsnsMbyNm,
+            rcritPblancDe : rcritPblancDe,
+            rceptBgnde : rceptBgnde,
+            rceptEndde : rceptEndde,
+            przwnerPresnatnDe : przwnerPresnatnDe,
+            home_info_id : userId
+        });
+    });
+    return applyList;
+}
+
+const setHomeData = async function(userId,param){
+    // console.log(userId);
+    //1. getUserById로 찾아서 있는 건들 로딩
+    const homeList = await axios.post('http://localhost:8081/schedule/getUserById',{
+        id : userId
+    });
+    const { res } = homeList.data;
+
+    // console.log(res);
+    console.log(param);
+    
+    let applyList = [];
+
+    if(res.length === 0){
+        //새로 추가한다.
+        applyList = rowMapper(param,userId);
+        // console.log(applyList);
+        const response = await axios.post('http://localhost:8081/schedule/applyArr',{
+            arr : applyList
+        });
+        // console.log(response);
+        const { data } = response;
+        alert(data.message);
+    }else{
+        //기존의 건을 모두 삭제한 후 추가한다.
+        console.log("already saved one...");
+
+        const res = await axios.delete('http://localhost:8081/schedule/applyById',{
+            id : userId
+        });
+
+        console.log(res);
+
+        applyList = rowMapper(param,userId);
+
+        const response = await axios.post('http://localhost:8081/schedule/applyArr',{
+            arr : applyList
+        });
+        const { data } = response;
+        alert(data.message);
+    }
+    // axios.post('http://localhost:8081/schedule/')
+
 }
 
 const createUser = async function(param){
@@ -139,7 +216,18 @@ const store = new Vuex.Store({
         async setSubscribe({commit},data){
             console.log(data);
             const ans = await getUser(data);
-            console.log(ans);            
+            console.log(ans);    
+            if(ans!== undefined){
+                const arr = [];
+                if(this.state.favorite.length === 1){
+                    arr.push(this.state.favorite);
+                }else if(this.state.favorite.length >= 1){
+                    this.state.favorite.forEach(element => {
+                        arr.push(element);
+                    });
+                }
+                setHomeData(ans.id, arr);
+            }      
             commit('setSubscribe',data);            
         }
     }

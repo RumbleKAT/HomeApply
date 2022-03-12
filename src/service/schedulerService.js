@@ -95,4 +95,12 @@ exports.deleteApply = async function(param){
     
     return res;
 }
+
+exports.deleteApplyByUserId = async function(param){
+    const res = await sqlexecute(`
+                delete from home_apply
+                    where home_info_id = $1
+                    `,Object.values(param))
     
+    return res;
+}

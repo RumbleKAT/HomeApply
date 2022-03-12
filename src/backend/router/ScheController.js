@@ -17,7 +17,7 @@ const validParam = (param,next) =>{
 
 router.post('/getUserById',
     body('id').not().isEmpty().trim().escape(),
-async function(req, res) {
+async function(req, res,next) {
     validParam(req,next);
     const { id } = req.body;
     const { rowCount, rows } =  await scheService.selectByUserId({"id" : id}); 
@@ -56,6 +56,47 @@ router.post('/apply', async function(req, res) {
 });
 
 
+router.post('/applyArr', async function(req, res) {
+    const { arr } = req.body;
+
+    for (const element of arr){
+        const { 
+            houseManageNo,
+            pblancNo,
+            houseDetailSecdNm,
+            houseNm,
+            bsnsMbyNm,
+            rcritPblancDe,
+            rceptBgnde,
+            rceptEndde,
+            przwnerPresnatnDe,
+            home_info_id
+        } = element;
+        console.log(element);
+        const { rowCount } =  await scheService.createApply(
+            {
+                houseManageNo : houseManageNo,
+                pblancNo : pblancNo,
+                houseDetailSecdNm : houseDetailSecdNm,
+                houseNm : houseNm,
+                bsnsMbyNm : bsnsMbyNm,
+                rcritPblancDe : rcritPblancDe,
+                rceptBgnde : rceptBgnde,
+                rceptEndde : rceptEndde,
+                przwnerPresnatnDe : przwnerPresnatnDe,
+                home_info_id : home_info_id
+            }
+        );
+
+        if(rowCount === 0){
+            res.json({"type" : "error", "message" : "save failed!..."});
+        }
+    }
+
+    res.json({"type" : "success", "message" : "save success..."});
+});
+
+
 router.put('/apply', async function(req, res) {
     const { 
         id,
@@ -91,6 +132,13 @@ router.put('/apply', async function(req, res) {
 router.delete('/apply', async function(req, res) {
     const { id } = req.body;
     const { rowCount, rows } =  await scheService.deleteApply({id:id});
+    res.json({"res" : rows, "rowCount" : rowCount });
+});
+
+router.delete('/applyById', async function(req, res) {
+    const { id } = req.body;
+    console.log(id);
+    const { rowCount, rows } =  await scheService.deleteApplyByUserId({id:id});
     res.json({"res" : rows, "rowCount" : rowCount });
 });
 
