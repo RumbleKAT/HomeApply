@@ -104,3 +104,14 @@ exports.deleteApplyByUserId = async function(param){
     
     return res;
 }
+
+exports.getSchedules = async function(param){
+    console.log(param);
+    const res = await sqlexecute(`
+                        select * from mydata as a 
+                            inner join home_apply as b 
+                        on a.id = b.home_info_id 
+                    where b.rceptbgnde = $1; 
+                `,Object.values(param))
+    return res;
+}

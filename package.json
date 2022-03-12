@@ -8,7 +8,8 @@
     "lint": "vue-cli-service lint",
     "service": "node ./src/backend/server.js",
     "dev": "concurrently \"npm run serve\" \"npm run service \"",
-    "dev_sub": "nodemon ./src/backend/server.js"
+    "dev_sub": "nodemon ./src/backend/server.js",
+    "batch" : "node ./src/utils/Cron.js"
   },
   "dependencies": {
     "@fullcalendar/core": "^5.10.1",
