@@ -17,11 +17,11 @@ exports.sendMail = async function (htmlContent,receiver){
 
     let info = await transporter.sendMail({
         // 보내는 곳의 이름과, 메일 주소를 입력
-        from: `"WDMA Team" <${process.env.MAIL_USER}@gmail.com>`,
+        from: `"청약 D-1일 알람입니다." <${process.env.MAIL_USER}@gmail.com>`,
         // 받는 곳의 메일 주소를 입력
         to: receiver,
         // 보내는 메일의 제목을 입력
-        subject: 'WDMA Auth Number',
+        subject: '청약 D-1일 알람입니다. 아래 내용을 확인해주세요!',
         // 보내는 메일의 내용을 입력
         // text: 일반 text로 작성된 내용
         // html: html로 작성된 내용
@@ -30,11 +30,5 @@ exports.sendMail = async function (htmlContent,receiver){
 
       console.log('Message sent: %s', info.messageId);
   //     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-    
-    //   res.status(200).json({
-    //     status: 'Success',
-    //     code: 200,
-    //     message: 'Sent Auth Email',
-    //   });
 }
 
