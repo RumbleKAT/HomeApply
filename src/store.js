@@ -19,7 +19,7 @@ let updateStorage = function(type,param){
 }
 
 const getUser = async function(param){
-    let user = await axios.post('http://localhost:8081/user/getUserByMail',{
+    let user = await axios.post(`http://${process.env.VUE_APP_URL}:8081/user/getUserByMail`,{
         mail : param.data
     });
     console.log(user);
@@ -30,7 +30,7 @@ const getUser = async function(param){
         user = await createUser(param);
         console.log("create user!");
         if(user.data.rowCount === 1){
-            user = await axios.post('http://localhost:8081/user/getUserByMail',{
+            user = await axios.post(`http://${process.env.VUE_APP_URL}:8081/user/getUserByMail`,{
                 mail : param.data
             });
             console.log("load user again");
@@ -73,7 +73,7 @@ const rowMapper = (param,userId) =>{
 const setHomeData = async function(userId,param){
     // console.log(userId);
     //1. getUserById로 찾아서 있는 건들 로딩
-    const homeList = await axios.post('http://localhost:8081/schedule/getUserById',{
+    const homeList = await axios.post(`http://${process.env.VUE_APP_URL}:8081/schedule/getUserById`,{
         id : userId
     });
     const { res } = homeList.data;
@@ -87,7 +87,7 @@ const setHomeData = async function(userId,param){
         //새로 추가한다.
         applyList = rowMapper(param,userId);
         // console.log(applyList);
-        const response = await axios.post('http://localhost:8081/schedule/applyArr',{
+        const response = await axios.post(`http://${process.env.VUE_APP_URL}:8081/schedule/applyArr`,{
             arr : applyList
         });
         // console.log(response);
@@ -97,7 +97,7 @@ const setHomeData = async function(userId,param){
         //기존의 건을 모두 삭제한 후 추가한다.
         console.log("already saved one...");
         console.log(userId);
-        const res = await axios.delete(`http://localhost:8081/schedule/applyById`,
+        const res = await axios.delete(`http://${process.env.VUE_APP_URL}:8081/schedule/applyById`,
         { 
             data: { 
                 id : userId 
@@ -108,18 +108,18 @@ const setHomeData = async function(userId,param){
 
         applyList = rowMapper(param,userId);
 
-        const response = await axios.post('http://localhost:8081/schedule/applyArr',{
+        const response = await axios.post(`http://${process.env.VUE_APP_URL}:8081/schedule/applyArr`,{
             arr : applyList
         });
         const { data } = response;
         alert(data.message);
     }
-    // axios.post('http://localhost:8081/schedule/')
+    // axios.post(`http://${process.env.VUE_APP_URL}:8081/schedule/`)
 
 }
 
 const createUser = async function(param){
-    const user = await axios.post('http://localhost:8081/user/createUser',{
+    const user = await axios.post(`http://${process.env.VUE_APP_URL}:8081/user/createUser`,{
         mail : param.data
     });
     return user;
@@ -189,18 +189,9 @@ const store = new Vuex.Store({
         }
     },
     actions : {
-        //비동기적 변이
-        increamentAsync({commit}){
-            return new Promise((resolve)=>{
-                setTimeout(()=>{
-                    commit({type : 'addcounter', amount:10})
-                    resolve()
-                },1000)
-            })
-        },
         getData({commit}){
             console.log(this.state.category);
-            return axios.get(`http://localhost:8081/getInfo?category=${this.state.category}`).then(res =>{
+            return axios.get(`http://${process.env.VUE_APP_URL}:8081/getInfo?category=${this.state.category}`).then(res =>{
                 const { data } = res;
                 commit({
                     type : 'updateState',
@@ -235,7 +226,5 @@ const store = new Vuex.Store({
         }
     }
 });
-
-//localStorage부분 추가...
 
 export default store;

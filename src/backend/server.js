@@ -4,7 +4,6 @@ const { getAptInfo } = require('../utils/HomeInfo');
 const scheController = require('./router/ScheController');
 const userController = require('./router/UserController');
 
-
 const app = express();
 const port = 8081;
 
