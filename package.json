@@ -9,7 +9,8 @@
     "service": "node ./src/backend/server.js",
     "dev": "concurrently \"npm run serve\" \"npm run service \"",
     "dev_sub": "nodemon ./src/backend/server.js",
-    "batch" : "node ./src/utils/Cron.js"
+    "batch": "node ./src/utils/Cron.js",
+    "mailserver": "node ./src/backend/mailserver.js"
   },
   "dependencies": {
     "@fullcalendar/core": "^5.10.1",
@@ -18,6 +19,7 @@
     "@fullcalendar/list": "^5.10.1",
     "@fullcalendar/timegrid": "^5.10.1",
     "@fullcalendar/vue3": "^5.10.1",
+    "amqplib": "^0.8.0",
     "axios": "^0.26.0",
     "concurrently": "^7.0.0",
     "core-js": "^3.8.3",

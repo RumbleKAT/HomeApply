@@ -1,6 +1,7 @@
 var cron = require('node-cron');
 const { getSchedules } = require('../service/schedulerService');
-const { sendMail } = require('./Email');
+// const { sendMail } = require('./Email');
+const { sendMQ } = require('./MessageQueue');
 
 const getCurrentDate = () => {
     const current = new Date();
@@ -20,7 +21,21 @@ cron.schedule('0 0 0 * * *', async () => {
     const { rows } = res;
 
     for(const element of rows){
-        sendMail(`<h1>${element.housenm}</h1>`,element.mail);
+        // sendMessageQueue -> queue에서 메시지를 보낸다.
+        sendMQ(element);
     }
 });
+
+// const currentDate = '2022-02-28';
+// const param = {
+//     date : currentDate
+// };
+
+//  getSchedules(param)
+// .then(res=>{
+//     const { rows } = res;
+//     rows.forEach(element => {
+//         sendMQ(element);
+//     });
+// });
 
