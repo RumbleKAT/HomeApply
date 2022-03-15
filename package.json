@@ -4,13 +4,16 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --mode dev",
-    "build": "vue-cli-service build --mode prod",
+    "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "service": "node ./src/backend/server.js",
     "dev": "concurrently \"npm run serve\" \"npm run service \"",
     "dev_sub": "nodemon ./src/backend/server.js",
     "batch": "node ./src/utils/Cron.js",
-    "mailserver": "node ./src/backend/mailserver.js"
+    "mailserver": "node ./src/backend/mailserver.js",
+    "predeploy": "vue-cli-service build --mode prod",
+    "deploy": "gh-pages -d dist",
+    "clean": "gh-pages-clean"
   },
   "dependencies": {
     "@fullcalendar/core": "^5.10.1",
@@ -46,6 +49,7 @@
     "@vue/cli-service": "~5.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
+    "gh-pages": "^3.2.3",
     "nodemon": "^2.0.15"
   },
   "eslintConfig": {

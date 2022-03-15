@@ -198,7 +198,7 @@ const store = new Vuex.Store({
                     response : data
                 });
             }).catch((err)=>{
-                console.err('Front End Part' ,err);
+                console.error('Front End Part' ,err);
             })
         },
         updateFavorite({commit},data){

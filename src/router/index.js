@@ -3,13 +3,13 @@ import Main from '../views/Main.vue';
 import Sub from '../views/Sub.vue';
 
 const routes = [{
-    path : '/',
-    redirect :'/home'
+    path : '/HomeApply',
+    redirect :'/HomeApply/home'
 },{
-    path : '/home',
+    path : '/HomeApply/home',
     component : Main
 },{
-    path : '/mail',
+    path : '/HomeApply/mail',
     component : Sub
 }];
 
