@@ -2,10 +2,10 @@
 <div>
     <div id="nav">
       <div class="navbar">
-        <router-link to="/HomeApply/">청약달력</router-link>
+        <router-link to="/">청약달력</router-link>
       </div>
       <div class="navbar">
-        <router-link to="/HomeApply/mail">메일알람신청</router-link>
+        <router-link to="/mail">메일알람신청</router-link>
       </div>
     </div>
     <router-view />
