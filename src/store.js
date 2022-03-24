@@ -19,10 +19,11 @@ let updateStorage = function(type,param){
 }
 
 const getUser = async function(param){
+    //loading bar
     let user = await axios.post(`${process.env.VUE_APP_URL}/user/getUserByMail`,{
         mail : param.data
     });
-    console.log(user);
+
     if(user.data.res.length > 0){
         const res = user.data.res[0];
         return res;        
@@ -77,9 +78,8 @@ const setHomeData = async function(userId,param){
         id : userId
     });
     const { res } = homeList.data;
-
     // console.log(res);
-    console.log(param);
+    // console.log(param);
     
     let applyList = [];
 
@@ -131,7 +131,8 @@ const store = new Vuex.Store({
         response : [],
         category : 'APT',
         favorite: storedData,
-        subscribe: subscribe
+        subscribe: subscribe,
+        loadingbar : false
     },
     getters: {
         increaseCount(state) {
@@ -151,6 +152,9 @@ const store = new Vuex.Store({
         },
         getEmail(state){
             return state.email;
+        },
+        getLoadingbar(state){
+            return state.loadingbar;
         }
     },
     mutations : {
@@ -186,13 +190,23 @@ const store = new Vuex.Store({
         },
         checkUser: function(data){
             console.log(data);
+        },
+        setLoadingbar : function(state){
+            if(state.loadingbar){
+                state.loadingbar = false;
+            }else{
+                state.loadingbar = true;
+            }
+
         }
     },
     actions : {
         getData({commit}){
             console.log(this.state.category);
+            commit('setLoadingbar');            
             return axios.get(`${process.env.VUE_APP_URL}/getInfo?category=${this.state.category}`).then(res =>{
                 const { data } = res;
+                commit('setLoadingbar');            
                 commit({
                     type : 'updateState',
                     response : data
@@ -207,10 +221,14 @@ const store = new Vuex.Store({
         removeFavorite({commit},data){
             commit('removeFavorite',data);
         },
+        toggleLoadingbar({commit}){
+            commit('setLoadingbar')
+        },
         async setSubscribe({commit},data){
-            console.log(data);
+            // console.log(data);
+            commit('setLoadingbar');            
             const ans = await getUser(data);
-            console.log(ans);    
+            // console.log(ans);    
             if(ans!== undefined){
                 const arr = [];
                 if(this.state.favorite.length === 1){
@@ -222,6 +240,7 @@ const store = new Vuex.Store({
                 }
                 setHomeData(ans.id, arr);
             }      
+            commit('setLoadingbar');            
             commit('setSubscribe',data);            
         }
     }
