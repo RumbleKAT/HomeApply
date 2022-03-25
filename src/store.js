@@ -128,7 +128,8 @@ const store = new Vuex.Store({
         category : 'APT',
         favorite: storedData,
         subscribe: subscribe,
-        loadingbar : false
+        loadingbar : false,
+        isError : false
     },
     getters: {
         increaseCount(state) {
@@ -151,6 +152,9 @@ const store = new Vuex.Store({
         },
         getLoadingbar(state){
             return state.loadingbar;
+        },
+        getError(state){
+            return state.isError;
         }
     },
     mutations : {
@@ -193,7 +197,9 @@ const store = new Vuex.Store({
             }else{
                 state.loadingbar = true;
             }
-
+        },
+        setIsError : function(state,payload){
+            state.isError = payload.isError;
         }
     },
     actions : {
@@ -202,7 +208,13 @@ const store = new Vuex.Store({
             commit('setLoadingbar');            
             return axios.get(`${process.env.VUE_APP_URL}/getInfo?category=${this.state.category}`).then(res =>{
                 const { data } = res;
-                commit('setLoadingbar');            
+                commit('setLoadingbar');
+            
+                if(Object.prototype.hasOwnProperty.call(data.data, 'msg')){
+                    console.error('error happend!');
+                    alert(data.data.msg);
+                    return;
+                }
                 commit({
                     type : 'updateState',
                     response : data
@@ -238,6 +250,10 @@ const store = new Vuex.Store({
             }      
             commit('setLoadingbar');            
             commit('setSubscribe',data);            
+        },
+        setIsError({commit},data){
+            console.log(data);
+            commit('setIsError',data);
         }
     }
 });

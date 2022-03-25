@@ -112,10 +112,12 @@ export default {
 </script>
 
 <template>
+  <div>
     <div class="calendarWrapper">
       <FullCalendar ref="fullCalendar" v-if="isCalendarViewed" :options="calendarOptions"/>
     </div>
     <eventModal v-if="isModalViewed" @close-modal="closeModal" :selected="selectedDate"/>
+  </div>
 </template>
 
 <style >
