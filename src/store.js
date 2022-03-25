@@ -95,16 +95,14 @@ const setHomeData = async function(userId,param){
         alert(data.message);
     }else{
         //기존의 건을 모두 삭제한 후 추가한다.
-        console.log("already saved one...");
-        console.log(userId);
-        const res = await axios.delete(`${process.env.VUE_APP_URL}/schedule/applyById`,
+        // console.log("already saved one...");
+        // console.log(userId);
+        await axios.delete(`${process.env.VUE_APP_URL}/schedule/applyById`,
         { 
             data: { 
                 id : userId 
             } 
         });
-
-        console.log(res);
 
         applyList = rowMapper(param,userId);
 
@@ -114,8 +112,6 @@ const setHomeData = async function(userId,param){
         const { data } = response;
         alert(data.message);
     }
-    // axios.post(`${process.env.VUE_APP_URL}/schedule/`)
-
 }
 
 const createUser = async function(param){

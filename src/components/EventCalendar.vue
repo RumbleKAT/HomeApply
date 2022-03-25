@@ -93,6 +93,7 @@ export default {
       const aList = [];
       if(data.length > 0){
         data.forEach(element => {
+                const today = this.getInitalDate();
                 aList.push({
                   "title" : element.houseNm,
                   "start" : element.rceptBgnde,
@@ -100,7 +101,7 @@ export default {
                   extendedProps: {
                     ...element
                   },
-                  color: getColor(element.sido)
+                  color: new Date(today) - new Date(element.rceptEndde) <= 0 ? getColor(element.sido) : '#484848'
                 })
               });
       this.addNewEvent(aList);  
