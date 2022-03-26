@@ -93,14 +93,15 @@ export default {
       const aList = [];
       if(data.length > 0){
         data.forEach(element => {
+                const today = this.getInitalDate();
                 aList.push({
-                  "title" : element.houseNm,
-                  "start" : element.rceptBgnde,
-                  "end" : element.rceptEndde,
+                  "title" : element.HOUSE_NM,
+                  "start" : element.RCEPT_BGNDE,
+                  "end" : element.RCEPT_ENDDE,
                   extendedProps: {
                     ...element
                   },
-                  color: getColor(element.sido)
+                  color: new Date(today) - new Date(element.RCEPT_ENDDE) <= 0 ? getColor(element.SUBSCRPT_AREA_CODE_NM) : '#484848'
                 })
               });
       this.addNewEvent(aList);  
@@ -111,10 +112,12 @@ export default {
 </script>
 
 <template>
+  <div>
     <div class="calendarWrapper">
       <FullCalendar ref="fullCalendar" v-if="isCalendarViewed" :options="calendarOptions"/>
     </div>
     <eventModal v-if="isModalViewed" @close-modal="closeModal" :selected="selectedDate"/>
+  </div>
 </template>
 
 <style >

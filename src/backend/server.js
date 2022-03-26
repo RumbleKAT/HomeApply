@@ -22,18 +22,22 @@ app.get('/',(req,res)=>{
 
 app.get('/getInfo',async (req,res)=>{
     const currentDate = new Date();
-    const start_month = `${currentDate.getFullYear()}${('01').slice(-2)}`;
-
-    const month = `${currentDate.getFullYear()}${('0' + (currentDate.getMonth() + 1)).slice(-2)}`;
+    let nextMonth = (new Date().getMonth()+1)%12 + 1;
+    if(nextMonth < 10){
+        nextMonth = `0${nextMonth}`
+    }
+    const start_month = `${currentDate.getFullYear()}-${('0' + (currentDate.getMonth() + 1)).slice(-2)}`; //1월 부터 조회
+    const end_month = `${currentDate.getFullYear()}-${nextMonth}}`;
+    // const nextMonth = 
     const category = req.query.category;
-    console.log(month);
+    // console.log(month);
 
     const aptList = await getAptInfo({
         startmonth : start_month,
-        endmonth : month
+        endmonth : end_month
     },category);
 
-    console.log("returned data",aptList);
+    // console.log("returned data",aptList);
 
     res.json({
         data : aptList
