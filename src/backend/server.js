@@ -28,7 +28,6 @@ app.get('/getInfo',async (req,res)=>{
     }
     const start_month = `${currentDate.getFullYear()}-${('0' + (currentDate.getMonth() + 1)).slice(-2)}`; //1월 부터 조회
     const end_month = `${currentDate.getFullYear()}-${nextMonth}}`;
-
     // const nextMonth = 
     const category = req.query.category;
     // console.log(month);
