@@ -3,30 +3,59 @@ const axios = require("axios");
 const host="https://api.odcloud.kr/api/ApplyhomeInfoDetailSvc/v1";
 const service = {
     "APT" : "getAPTLttotPblancDetail",
-    // "NonAPT" : "getNotAPTLttotPblancList",
-    // "Remain" : "getRemndrLttotPblancList"
+    "NonAPT" : "getUrbtyOfctlLttotPblancDetail",
+    "Remain" : "getRemndrLttotPblancDetail"
 };
 
 const service_detail = {
-    "APT" : "getAPTLttotPblancDetail",
-    // "NonAPT" : "getUrbtyOfctlLttotPblancDetail",
-    // "Remain" : "getRemndrLttotPblancDetail",
-    "APT_type" : "getAPTLttotPblancMdl",
-    // "NonAPT_type" : "getUrbtyOfctlLttotPblancMdl",
-    // "Remain_type" : "getRemndrLttotPblancMdl"
+    "APT" : "getAPTLttotPblancMdl",
+    "NonAPT" : "getUrbtyOfctlLttotPblancMdl",
+    "Remain" : "getRemndrLttotPblancMdl"
 }
 
-const serviceKey = "TTIBBEMWax1hMUgx0UkadwKxI2QosEOeeNVRSIjo4dFkM6I977BAgIOT7PylzVFjWtM/7pvRRTTgTh3OLdoZPg==";
+let flag = {
+    APT : false,
+    NonAPT : false,
+    Remain : false,
+    lastDate : new Date().toLocaleDateString()
+};
 
+let cacheDetailMap = new Map();
+
+function flagInitalize(){
+    this.flag.APT = false;
+    this.flag.NonAPT = false;
+    this.flag.Remain = false;
+    this.lastDate = new Date().toLocaleDateString();
+}
+
+let cacheList = {
+    APT : [],
+    NonAPT : [],
+    Remain : []
+};
+
+const serviceKey = "TTIBBEMWax1hMUgx0UkadwKxI2QosEOeeNVRSIjo4dFkM6I977BAgIOT7PylzVFjWtM/7pvRRTTgTh3OLdoZPg==";
 
 //그달에 존재하는 청약정보를 모두 가져온다.
 
 exports.getAptInfo = async function(param,serviceType){
     //getLttotPblancList APT분양조회
     if(!param || !serviceType) return new Error("Validation Error...");
+    if(flag.lastDate === new Date().toLocaleDateString()){
+        if(serviceType === 'APT' && flag.APT){
+            return cacheList.APT
+        }else if(serviceType === 'NonAPT' && flag.NonAPT){
+            return cacheList.NonAPT;
+        }else if(serviceType === 'Remain' && flag.Remain){
+            return cacheList.Remain;
+        }
+    }else{
+        flagInitalize();
+    }
+
     let pageNum = 1;
     let pageSize = 1;
-    const AptList = [];    
     let serviceNM = null;
     switch (serviceType){
         case 'APT':
@@ -44,7 +73,7 @@ exports.getAptInfo = async function(param,serviceType){
     param.endmonth = `${param.endmonth}-01`;
 
     let url = `${host}/${serviceNM}?page=${pageNum}&perPage=${pageSize}&cond[RCRIT_PBLANC_DE::LT]=${param.endmonth}&cond[RCRIT_PBLANC_DE::GTE]=${param.startmonth}&&serviceKey=${serviceKey}`;
-    console.log(url);
+    // console.log(url);
 
     const matchCount = await axios.get(url)
         .then(res=>{
@@ -53,7 +82,7 @@ exports.getAptInfo = async function(param,serviceType){
             return matchCount;
         }).catch(err=>{
             console.error(err);
-            throw new Error(err);
+            return {"msg" : err.toString()};
         });
     
     pageSize = matchCount;
@@ -69,6 +98,17 @@ exports.getAptInfo = async function(param,serviceType){
         return {"msg" : err.toString()};
     });
 
+    if(serviceType === 'APT'){
+        flag.APT = true;
+        cacheList.APT = resultArr;
+    }else if(serviceType === 'NonAPT'){
+        flag.NonAPT = true;
+        cacheList.NonAPT = resultArr;
+    }else if(serviceType === 'Remain'){
+        flag.Remain = true;
+        cacheList.Remain = resultArr;
+    }
+
     if(resultArr.hasOwnProperty("msg")){
         return resultArr.msg;
     }
@@ -77,6 +117,10 @@ exports.getAptInfo = async function(param,serviceType){
 
 exports.getDetailInfo = async function(param, serviceType){
     if(!param.houseManageNo || !param.pblancNo || !serviceType) throw new Error("Validation Error...");
+
+    if(cacheDetailMap.has(param.houseManageNo)){
+        return cacheDetailMap.get(param.houseManageNo);
+    }
 
     let serviceNM = null;
     switch (serviceType){
@@ -102,33 +146,25 @@ exports.getDetailInfo = async function(param, serviceType){
 
     if(!serviceNM) throw new Error("Not Found Service...");
 
-    let detailInfo = null;
-    const url = `${host}/${serviceNM}?houseManageNo=${param.houseManageNo}&pblancNo=${param.pblancNo}&serviceKey=${serviceKey}`;
-    await axios.get(url).then(res=>{
-        const data = res.data.response;
-
-        if(data.header.resultCode !== '00'){
-            message = data.header.resultMsg;
-            flag = true;
-            throw new Error(data.header.resultMsg);
-        }        
-        if(data.body.totalCount > 0){
-            detailInfo = data.body.items.item;
-        }
-        
+    const url = `${host}/${serviceNM}?cond[HOUSE_MANAGE_NO::EQ]=${param.houseManageNo}&cond[PBLANC_NO::EQ]=${param.pblancNo}&serviceKey=${serviceKey}`;
+    const detailInfo = await axios.get(url).then(res=>{
+        const {data} = res.data;
+        cacheDetailMap.set(param.houseManageNo,data);
+        return data;
     },(err)=>{
         console.error(err);
-        return new Error("Connection error" + err);
+        return {msg : err.toString()}
     });
 
     return detailInfo;
 }
 
-this.getAptInfo({startmonth : '2022-03', endmonth:'2022-04'}, 'APT')
-.then((res)=>{
-    console.log(res);
-})
+// this.getAptInfo({startmonth : '2022-03', endmonth:'2022-04'}, 'APT')
+// .then((res)=>{
+//     console.log(res);
+// })
 // this.getDetailInfo({houseManageNo: '2022910052', pblancNo: '2022910052'}, 'Remain')
+// .then((res)=>console.log(res));
 
 /*
 https://api.odcloud.kr/api/ApplyhomeInfoDetailSvc/v1/getAPTLttotPblancDetail?page=1&perPage=10&cond%5BRCRIT_PBLANC_DE%3A%3ALTE%5D=2022-03-31&cond%5BRCRIT_PBLANC_DE%3A%3AGT%5D=2022-03-01&serviceKey=TTIBBEMWax1hMUgx0UkadwKxI2QosEOeeNVRSIjo4dFkM6I977BAgIOT7PylzVFjWtM%2F7pvRRTTgTh3OLdoZPg%3D%3D
