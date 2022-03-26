@@ -17,13 +17,13 @@
             <td>공급지역</td>
         </tr>
         <tr>
-            <td>{{selected.houseDtlSecdNm}}</td>
-            <td>{{selected.rentSecdNm}}</td>
-            <td>{{selected.bsnsMbyNm}}</td>
-            <td>{{selected.rceptBgnde}}</td>
-            <td>{{selected.rceptEndde}}</td>
-            <td>{{selected.przwnerPresnatnDe}}</td>
-            <td>{{selected.sido}}</td>  
+            <td>{{selected.HOUSE_DTL_SECD_NM}}</td>
+            <td>{{selected.RENT_SECD_NM}}</td>
+            <td>{{selected.CNSTRCT_ENTRPS_NM}}</td>
+            <td>{{selected.RCEPT_BGNDE}}</td>
+            <td>{{selected.RCEPT_ENDDE}}</td>
+            <td>{{selected.PRZWNER_PRESNATN_DE}}</td>
+            <td>{{selected.SUBSCRPT_AREA_CODE_NM}}</td>  
         </tr>
           </table>
         <div class="modal-footer">
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-// import { dispatch } from 'vuex'
+// import axios from 'axios';
 
 export default {
     name : 'eventModal',
@@ -46,7 +46,7 @@ export default {
       }
     },
     mounted(){
-      // console.log(this.selectedItem);
+      console.log(this.selectedItem);
     },
     computed: {
       favorites() { return this.$store.state.getFavorite }
@@ -58,6 +58,9 @@ export default {
           });
           alert(this.selectedItem.houseNm + "가 알람 리스트에 저장되었습니다.");
           this.$emit('close-modal');
+      },
+      addDetail(){
+        
       }
     }
 }

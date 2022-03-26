@@ -95,13 +95,13 @@ export default {
         data.forEach(element => {
                 const today = this.getInitalDate();
                 aList.push({
-                  "title" : element.houseNm,
-                  "start" : element.rceptBgnde,
-                  "end" : element.rceptEndde,
+                  "title" : element.HOUSE_NM,
+                  "start" : element.RCEPT_BGNDE,
+                  "end" : element.RCEPT_ENDDE,
                   extendedProps: {
                     ...element
                   },
-                  color: new Date(today) - new Date(element.rceptEndde) <= 0 ? getColor(element.sido) : '#484848'
+                  color: new Date(today) - new Date(element.RCEPT_ENDDE) <= 0 ? getColor(element.SUBSCRPT_AREA_CODE_NM) : '#484848'
                 })
               });
       this.addNewEvent(aList);  
