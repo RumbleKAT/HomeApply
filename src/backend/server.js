@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require('cors');
-const { getAptInfo } = require('../utils/HomeInfo');
+const { getAptInfo, getDetailInfo } = require('../utils/HomeInfo');
 const scheController = require('./router/ScheController');
 const userController = require('./router/UserController');
 
@@ -37,11 +37,7 @@ app.get('/getInfo',async (req,res)=>{
         endmonth : end_month
     },category);
 
-    // console.log("returned data",aptList);
-
-    res.json({
-        data : aptList
-    });
+    res.json(aptList);
 })
 
 app.get('/getInfoDetail',async(req,res)=>{

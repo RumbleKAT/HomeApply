@@ -204,16 +204,18 @@ const store = new Vuex.Store({
     },
     actions : {
         getData({commit}){
-            console.log(this.state.category);
+            // console.log(this.state.category);
             commit('setLoadingbar');            
             return axios.get(`${process.env.VUE_APP_URL}/getInfo?category=${this.state.category}`).then(res =>{
                 const { data } = res;
                 commit('setLoadingbar');
-            
-                if(Object.prototype.hasOwnProperty.call(data.data, 'msg')){
-                    console.error('error happend!');
-                    alert(data.data.msg);
-                    return;
+                
+                if(!Array.isArray(data)){
+                    if(Object.prototype.hasOwnProperty.call(data.data, 'msg')){
+                        console.error('error happend!');
+                        alert(data.data.msg);
+                        return;
+                    }
                 }
                 commit({
                     type : 'updateState',
