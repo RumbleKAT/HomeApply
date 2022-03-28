@@ -89,7 +89,7 @@ export default {
   }),
   watch : {
     aptList(){
-      const { data } = this.aptList;
+      const data = this.aptList;
       const aList = [];
       if(data.length > 0){
         data.forEach(element => {
