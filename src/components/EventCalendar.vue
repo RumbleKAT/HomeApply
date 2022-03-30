@@ -12,12 +12,9 @@ export default {
     eventModal,
     FullCalendar
   },
-  created(){
-    if(!this.$store.aptList)
-    this.$store.dispatch('getData')
-  },
   mounted(){
     // console.log("mounted!");
+    this.$store.dispatch('getData')
   },
   data() {
     return {
@@ -69,6 +66,10 @@ export default {
         this.selectedDate = arg.event._def.extendedProps;
         this.openModal();
       },
+      initializeEvent : function(){
+        console.log(this.calendarOptions.events);
+        this.calendarOptions.events = [];
+      },
       addNewEvent : function(param){
       this.calendarOptions.events = [
         ...this.calendarOptions.events,
@@ -89,21 +90,48 @@ export default {
   }),
   watch : {
     aptList(){
-      const data = this.aptList;
+      console.log("!!!");
+      const data = this.$store.state.response;
+      console.log(data);
+      this.initializeEvent();
       const aList = [];
       if(data.length > 0){
         data.forEach(element => {
                 const today = this.getInitalDate();
-                aList.push({
-                  "title" : element.HOUSE_NM,
-                  "start" : element.RCEPT_BGNDE,
-                  "end" : element.RCEPT_ENDDE,
-                  extendedProps: {
-                    ...element
-                  },
-                  color: new Date(today) - new Date(element.RCEPT_ENDDE) <= 0 ? getColor(element.SUBSCRPT_AREA_CODE_NM) : '#484848'
-                })
+                if(this.$store.state.category === 'APT'){
+                  aList.push({
+                    "title" : element.HOUSE_NM,
+                    "start" : element.RCEPT_BGNDE,
+                    "end" : element.RCEPT_ENDDE,
+                    extendedProps: {
+                      ...element
+                    },
+                    color: new Date(today) - new Date(element.RCEPT_ENDDE) <= 0 ? getColor(element.SUBSCRPT_AREA_CODE_NM) : '#484848'
+                  })
+                }else if(this.$store.state.category === 'NonApt'){
+                  aList.push({
+                    "title" : element.HOUSE_NM,
+                    "start" : element.SUBSCRPT_RCEPT_BGNDE,
+                    "end" : element.SUBSCRPT_RCEPT_BGNDE,
+                    extendedProps: {
+                      ...element
+                    },
+                    color: new Date(today) - new Date(element.SUBSCRPT_RCEPT_BGNDE) <= 0 ? getColor(element.SUBSCRPT_AREA_CODE_NM) : '#484848'
+                  })
+                }else{
+                  aList.push({
+                    "title" : element.HOUSE_NM,
+                    "start" : element.SUBSCRPT_RCEPT_BGNDE,
+                    "end" : element.SUBSCRPT_RCEPT_BGNDE,
+                    extendedProps: {
+                      ...element
+                    },
+                    color: new Date(today) - new Date(element.SUBSCRPT_RCEPT_BGNDE) <= 0 ? getColor(element.SUBSCRPT_AREA_CODE_NM) : '#484848'
+                  })
+                }
+                
               });
+        console.log(aList);       
       this.addNewEvent(aList);  
       }
     }

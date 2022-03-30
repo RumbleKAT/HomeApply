@@ -1,11 +1,11 @@
 <template>
   <div class="filterBox">
-    <select name="category" id="category">
+    <select name="category" id="category" @change="onCategoryChange($event)">
         <option value="APT">아파트</option>
         <option value="NonApt">오피스텔/도시형/민간임대</option>
         <option value="Remain">APT 무순위/잔여세대</option>
     </select>
-    <select name="area" id="area">
+    <select name="area" id="area" @change="onAreaChange($event)">
         <option value="전체">전체</option>
         <option value="서울">서울</option>
         <option value="경기">경기</option>
@@ -34,6 +34,21 @@ export default {
     name : 'filterBar',
     data: function () {
 
+    },
+    methods : {
+      onCategoryChange(event){
+        console.log(event.target.value);
+        this.$store.dispatch('updateCategory', {
+            category: event.target.value
+        });
+
+        console.log(this.$store.state.response);
+        // //load 
+        // console.log(event.target.value);
+      },
+      onAreaChange(event){
+        console.log(event.target.value);
+      }
     }
 }
 </script>

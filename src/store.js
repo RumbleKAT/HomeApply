@@ -163,10 +163,14 @@ const store = new Vuex.Store({
             return state.count += payload.amount;
         },
         updateState : function(state, payload){
-            // console.log(payload);
             return state.response = payload.response;
         },
+        initialState : function(state){
+            return state.response = [];
+        },
         updateCategory : function(state,payload){
+            console.log(payload.category);
+            // state.response = [];
             return state.category = payload.category;
         },
         updateFavorite : function(state, payload){
@@ -204,12 +208,12 @@ const store = new Vuex.Store({
     },
     actions : {
         getData({commit}){
-            // console.log(this.state.category);
+            console.log(this.state.category);
             commit('setLoadingbar');            
             return axios.get(`${process.env.VUE_APP_URL}/getInfo?category=${this.state.category}`).then(res =>{
                 const { data } = res;
                 commit('setLoadingbar');
-                
+                console.log(data);
                 if(!Array.isArray(data)){
                     if(Object.prototype.hasOwnProperty.call(data.data, 'msg')){
                         console.error('error happend!');
@@ -224,6 +228,11 @@ const store = new Vuex.Store({
             }).catch((err)=>{
                 console.error('Front End Part' ,err);
             })
+        },
+        updateCategory({commit,dispatch},data){
+            commit('initialState');
+            commit('updateCategory',data);
+            dispatch('getData');
         },
         updateFavorite({commit},data){
             commit('updateFavorite',data);

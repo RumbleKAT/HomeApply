@@ -3,19 +3,19 @@ const axios = require("axios");
 const host="https://api.odcloud.kr/api/ApplyhomeInfoDetailSvc/v1";
 const service = {
     "APT" : "getAPTLttotPblancDetail",
-    "NonAPT" : "getUrbtyOfctlLttotPblancDetail",
+    "NonApt" : "getUrbtyOfctlLttotPblancDetail",
     "Remain" : "getRemndrLttotPblancDetail"
 };
 
 const service_detail = {
     "APT" : "getAPTLttotPblancMdl",
-    "NonAPT" : "getUrbtyOfctlLttotPblancMdl",
+    "NonApt" : "getUrbtyOfctlLttotPblancMdl",
     "Remain" : "getRemndrLttotPblancMdl"
 }
 
 let flag = {
     APT : false,
-    NonAPT : false,
+    NonApt : false,
     Remain : false,
     lastDate : new Date().toLocaleDateString()
 };
@@ -24,14 +24,14 @@ let cacheDetailMap = new Map();
 
 function flagInitalize(){
     this.flag.APT = false;
-    this.flag.NonAPT = false;
+    this.flag.NonApt = false;
     this.flag.Remain = false;
     this.lastDate = new Date().toLocaleDateString();
 }
 
 let cacheList = {
     APT : [],
-    NonAPT : [],
+    NonApt : [],
     Remain : []
 };
 
@@ -45,8 +45,8 @@ exports.getAptInfo = async function(param,serviceType){
     if(flag.lastDate === new Date().toLocaleDateString()){
         if(serviceType === 'APT' && flag.APT){
             return cacheList.APT
-        }else if(serviceType === 'NonAPT' && flag.NonAPT){
-            return cacheList.NonAPT;
+        }else if(serviceType === 'NonApt' && flag.NonApt){
+            return cacheList.NonApt;
         }else if(serviceType === 'Remain' && flag.Remain){
             return cacheList.Remain;
         }
@@ -61,19 +61,20 @@ exports.getAptInfo = async function(param,serviceType){
         case 'APT':
             serviceNM = service.APT;
             break;
-        case 'NonAPT':  
-            serviceNM = service.NonAPT;
+        case 'NonApt':  
+            serviceNM = service.NonApt;
             break;
         case 'Remain':
             serviceNM = service.Remain;
             break;
     };
+    console.log(serviceNM);
     //해당월 시작일부터 다음월 시작일 이전까지 공고를 조회한다.  
     param.startmonth = `${param.startmonth}-01`;
     param.endmonth = `${param.endmonth}-01`;
 
     let url = `${host}/${serviceNM}?page=${pageNum}&perPage=${pageSize}&cond[RCRIT_PBLANC_DE::LT]=${param.endmonth}&cond[RCRIT_PBLANC_DE::GTE]=${param.startmonth}&&serviceKey=${serviceKey}`;
-    // console.log(url);
+    console.log(url);
 
     const matchCount = await axios.get(url)
         .then(res=>{
@@ -101,9 +102,9 @@ exports.getAptInfo = async function(param,serviceType){
     if(serviceType === 'APT'){
         flag.APT = true;
         cacheList.APT = resultArr;
-    }else if(serviceType === 'NonAPT'){
-        flag.NonAPT = true;
-        cacheList.NonAPT = resultArr;
+    }else if(serviceType === 'NonApt'){
+        flag.NonApt = true;
+        cacheList.NonApt = resultArr;
     }else if(serviceType === 'Remain'){
         flag.Remain = true;
         cacheList.Remain = resultArr;
@@ -127,8 +128,8 @@ exports.getDetailInfo = async function(param, serviceType){
         case 'APT':
             serviceNM = service_detail.APT;
             break;
-        case 'NonAPT':  
-            serviceNM = service_detail.NonAPT;
+        case 'NonApt':  
+            serviceNM = service_detail.NonApt;
             break;
         case 'Remain':
             serviceNM = service_detail.Remain;
@@ -136,8 +137,8 @@ exports.getDetailInfo = async function(param, serviceType){
         case 'APT_type':
             serviceNM = service_detail.APT_type;
             break;
-        case 'NonAPT_type':  
-            serviceNM = service_detail.NonAPT_type;
+        case 'NonApt_type':  
+            serviceNM = service_detail.NonApt_type;
             break;
         case 'Remain_type':
             serviceNM = service_detail.Remain_type;
