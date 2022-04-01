@@ -37,17 +37,16 @@ export default {
     },
     methods : {
       onCategoryChange(event){
-        console.log(event.target.value);
         this.$store.dispatch('updateCategory', {
             category: event.target.value
         });
-
-        console.log(this.$store.state.response);
-        // //load 
-        // console.log(event.target.value);
       },
       onAreaChange(event){
-        console.log(event.target.value);
+        // console.log(event.target.value);
+        this.$store.dispatch('updateArea',{
+          area : event.target.value
+        });
+        // console.log(this.$store.state.area);
       }
     }
 }

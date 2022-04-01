@@ -129,7 +129,8 @@ const store = new Vuex.Store({
         favorite: storedData,
         subscribe: subscribe,
         loadingbar : false,
-        isError : false
+        isError : false,
+        area : '전체'
     },
     getters: {
         increaseCount(state) {
@@ -155,6 +156,9 @@ const store = new Vuex.Store({
         },
         getError(state){
             return state.isError;
+        },
+        getArea(state){
+            return state.area;
         }
     },
     mutations : {
@@ -167,6 +171,9 @@ const store = new Vuex.Store({
         },
         initialState : function(state){
             return state.response = [];
+        },
+        updateArea : function(state, payload){
+            return state.area = payload.area;
         },
         updateCategory : function(state,payload){
             console.log(payload.category);
@@ -242,6 +249,9 @@ const store = new Vuex.Store({
         },
         toggleLoadingbar({commit}){
             commit('setLoadingbar')
+        },
+        updateArea({commit},data){
+            commit('updateArea',data);
         },
         async setSubscribe({commit},data){
             // console.log(data);

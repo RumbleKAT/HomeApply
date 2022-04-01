@@ -68,12 +68,12 @@ exports.getAptInfo = async function(param,serviceType){
             serviceNM = service.Remain;
             break;
     };
-    console.log(serviceNM);
+    // console.log(serviceNM);
     //해당월 시작일부터 다음월 시작일 이전까지 공고를 조회한다.  
-    param.startmonth = `${param.startmonth}-01`;
+    param.startmonth = `${param.startmonth}-15`;
     param.endmonth = `${param.endmonth}-01`;
 
-    let url = `${host}/${serviceNM}?page=${pageNum}&perPage=${pageSize}&cond[RCRIT_PBLANC_DE::LT]=${param.endmonth}&cond[RCRIT_PBLANC_DE::GTE]=${param.startmonth}&&serviceKey=${serviceKey}`;
+    let url = `${host}/${serviceNM}?page=${pageNum}&perPage=${pageSize}&cond[RCRIT_PBLANC_DE::GTE]=${param.startmonth}&&serviceKey=${serviceKey}`;
     console.log(url);
 
     const matchCount = await axios.get(url)
@@ -87,7 +87,7 @@ exports.getAptInfo = async function(param,serviceType){
         });
     
     pageSize = matchCount;
-    url = `${host}/${serviceNM}?page=${pageNum}&perPage=${pageSize}&cond[RCRIT_PBLANC_DE::LT]=${param.endmonth}&cond[RCRIT_PBLANC_DE::GTE]=${param.startmonth}&&serviceKey=${serviceKey}`;
+    url = `${host}/${serviceNM}?page=${pageNum}&perPage=${pageSize}&cond[RCRIT_PBLANC_DE::GTE]=${param.startmonth}&&serviceKey=${serviceKey}`;
     
     const resultArr = await axios.get(url)
     .then(res=>{

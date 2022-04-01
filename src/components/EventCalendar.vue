@@ -56,7 +56,7 @@ export default {
   },
   methods : {
     getInitalDate : function(){
-      console.log(toStringByFormatting(new Date()));
+      // console.log(toStringByFormatting(new Date()));
        return toStringByFormatting(new Date())
     },
       handleDateClick : function(arg){
@@ -67,7 +67,7 @@ export default {
         this.openModal();
       },
       initializeEvent : function(){
-        console.log(this.calendarOptions.events);
+        // console.log(this.calendarOptions.events);
         this.calendarOptions.events = [];
       },
       addNewEvent : function(param){
@@ -83,18 +83,10 @@ export default {
     closeModal() {
       this.isModalViewed = false
       this.isCalendarViewed = true;
-    }
-  },
-  computed: mapGetters({
-    aptList : 'getResponse' // getCounter 는 Vuex 의 getters 에 선언된 속성 이름
-  }),
-  watch : {
-    aptList(){
-      console.log("!!!");
-      const data = this.$store.state.response;
-      console.log(data);
-      this.initializeEvent();
+    },
+    insertEvent(data){
       const aList = [];
+      this.initializeEvent();
       if(data.length > 0){
         data.forEach(element => {
                 const today = this.getInitalDate();
@@ -131,9 +123,33 @@ export default {
                 }
                 
               });
-        console.log(aList);       
-      this.addNewEvent(aList);  
+        // console.log(aList);       
+        this.addNewEvent(aList);  
       }
+    }
+  },
+  computed: mapGetters({
+    aptList : 'getResponse', // getCounter 는 Vuex 의 getters 에 선언된 속성 이름
+    area : 'getArea'
+  }),
+  watch : {
+    area(){
+      // console.log(this.$store.state.area);
+      let data = this.$store.state.response;
+
+      if(this.$store.state.area !== '전체'){
+        data = this.$store.state.response.filter(param=>{
+          return param.SUBSCRPT_AREA_CODE_NM === this.$store.state.area;
+        });
+      }
+
+      this.insertEvent(data);
+    },
+    aptList(){
+      const data = this.$store.state.response;
+      // console.log("!");
+      // console.log(this.$store.state.response);
+      this.insertEvent(data);
     }
   }
 }

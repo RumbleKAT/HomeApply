@@ -26,7 +26,11 @@ app.get('/getInfo',async (req,res)=>{
     if(nextMonth < 10){
         nextMonth = `0${nextMonth}`
     }
-    const start_month = `${currentDate.getFullYear()}-${('0' + (currentDate.getMonth() + 1)).slice(-2)}`; //1월 부터 조회
+    let lastMonth = (new Date().getMonth()+1)%12 - 1;
+    if(lastMonth < 10){
+        lastMonth = `0${lastMonth}`
+    }
+    const start_month = `${currentDate.getFullYear()}-${lastMonth}`; //1월 부터 조회
     const end_month = `${currentDate.getFullYear()}-${nextMonth}}`;
     // const nextMonth = 
     const category = req.query.category;
