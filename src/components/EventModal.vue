@@ -131,7 +131,7 @@ export default {
 .modal__content {
   position: absolute;
   padding: 1em 2em;
-  /* background: #42b983; */
+  background: #fff;
   max-width: 600px;
   border-radius: 10px;
   top: 50%;
