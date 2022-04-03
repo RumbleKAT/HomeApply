@@ -1,5 +1,6 @@
 import Vuex from 'vuex';
 import axios from 'axios';
+const { rowMapper } = require('./utils/model/rowMapper');
 
 const localStorage = window.localStorage;
 let storedData = [];
@@ -38,37 +39,6 @@ const getUser = async function(param){
         }
     }
     return user;
-}
-
-const rowMapper = (param,userId) =>{
-    let applyList = [];
-    param.map((p)=>{
-        const { 
-            houseManageNo,
-            pblancNo,
-            houseDetailSecdNm,
-            houseNm,
-            bsnsMbyNm,
-            rcritPblancDe,
-            rceptBgnde,
-            rceptEndde,
-            przwnerPresnatnDe,
-            // home_info_id
-        } = p[0];
-        applyList.push({
-            houseManageNo : houseManageNo,
-            pblancNo : pblancNo,
-            houseDetailSecdNm : houseDetailSecdNm,
-            houseNm : houseNm,
-            bsnsMbyNm : bsnsMbyNm,
-            rcritPblancDe : rcritPblancDe,
-            rceptBgnde : rceptBgnde,
-            rceptEndde : rceptEndde,
-            przwnerPresnatnDe : przwnerPresnatnDe,
-            home_info_id : userId
-        });
-    });
-    return applyList;
 }
 
 const setHomeData = async function(userId,param){
@@ -181,7 +151,8 @@ const store = new Vuex.Store({
             return state.category = payload.category;
         },
         updateFavorite : function(state, payload){
-            const duplicated = state.favorite.some(param => param.houseManageNo === payload.data.houseManageNo);
+            console.log(payload);
+            const duplicated = state.favorite.some(param => param.HOUSE_MANAGE_NO === payload.data.HOUSE_MANAGE_NO);
             if(!duplicated){
                 state.favorite.push(payload.data);
                 updateStorage('Events',state.favorite);
@@ -189,7 +160,7 @@ const store = new Vuex.Store({
             }
         },
         removeFavorite : function(state, payload){
-            state.favorite = state.favorite.filter((param) =>  param.houseManageNo !== payload.data.houseManageNo);
+            state.favorite = state.favorite.filter((param) =>  param.HOUSE_MANAGE_NO !== payload.data.HOUSE_MANAGE_NO);
             updateStorage('Events',state.favorite);
 
             return state.favorite;

@@ -1,6 +1,6 @@
 <template>
 <div>
-    <h3>{{element.houseNm}}</h3>    
+    <h3>{{element.HOUSE_NM}}</h3>    
     <table>
         <th colspan = "7" style="background-color: #42b983; color:#fff">기본정보</th>
 
@@ -14,13 +14,13 @@
             <td>공급지역</td>
         </tr>
         <tr>
-            <td>{{element.houseDtlSecdNm}}</td>
-            <td>{{element.rentSecdNm}}</td>
-            <td>{{element.bsnsMbyNm}}</td>
-            <td>{{element.rceptBgnde}}</td>
-            <td>{{element.rceptEndde}}</td>
-            <td>{{element.przwnerPresnatnDe}}</td>
-            <td>{{element.sido}}</td>  
+            <td>{{element.HOUSE_DTL_SECD_NM}}</td>
+            <td>{{element.RENT_SECD_NM}}</td>
+            <td>{{element.CNSTRCT_ENTRPS_NM}}</td>
+            <td>{{element.RCEPT_BGNDE}}</td>
+            <td>{{element.RCEPT_ENDDE}}</td>
+            <td>{{element.PRZWNER_PRESNATN_DE}}</td>
+            <td>{{element.SUBSCRPT_AREA_CODE_NM}}</td>  
         </tr>
           </table>
     <div class="footer">

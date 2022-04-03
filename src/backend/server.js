@@ -30,8 +30,13 @@ app.get('/getInfo',async (req,res)=>{
     if(lastMonth < 10){
         lastMonth = `0${lastMonth}`
     }
-    const start_month = `${currentDate.getFullYear()}-${lastMonth}`; //1월 부터 조회
-    const end_month = `${currentDate.getFullYear()}-${nextMonth}}`;
+    let currentYear = currentDate.getFullYear();
+    if(lastMonth == '12'){
+        currentYear -= 1;
+    }
+       
+    const start_month = `${currentYear}-${lastMonth}`; //1월 부터 조회
+    const end_month = `${currentYear}-${nextMonth}}`;
     // const nextMonth = 
     const category = req.query.category;
     // console.log(month);

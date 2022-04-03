@@ -3,7 +3,7 @@
     <div class="modal__background"></div>
     <div class="modal__content">
         
-        <h1>{{selected.houseNm}}</h1>
+        <h1>{{selected.HOUSE_NM}}</h1>
         <table style="margin-bottom: 1em">
         <th colspan = "7" style="background-color: #42b983; color:#fff">기본정보</th>
 
@@ -100,7 +100,8 @@ export default {
           this.$store.dispatch('updateFavorite', {
             data: this.selectedItem
           });
-          alert(this.selectedItem.houseNm + "가 알람 리스트에 저장되었습니다.");
+          console.log(this.selectedItem);
+          alert(this.selectedItem.HOUSE_NM + "가 알람 리스트에 저장되었습니다.");
           this.$emit('close-modal');
       },
       async addDetail(){
