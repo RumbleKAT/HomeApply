@@ -5,7 +5,7 @@
         <h1>{{selected.HOUSE_NM}}</h1>
         <table style="margin-bottom: 1em">
         <th colspan = "7" style="background-color: #42b983; color:#fff">기본정보</th>
-        <template v-if="selected.HOUSE_DTL_SECD === '01'">
+        <template v-if="selected.HOUSE_SECD === '01'">
         <tr class="item">
             <td>주택구분</td>
             <td>분양/임대</td>
@@ -25,10 +25,30 @@
             <td>{{selected.SUBSCRPT_AREA_CODE_NM}}</td>  
         </tr>
         </template>
+        <template v-if="selected.HOUSE_SECD === '02' || selected.HOUSE_SECD === '03'">
+        <tr class="item">
+            <td>주택구분</td>
+            <td>우편번호</td>
+            <td>공급규모</td>
+            <td>청약접수시작일</td>
+            <td>청약접수종료일</td>
+            <td>당첨자발표일</td>
+            <td>홈페이지 주소</td>
+        </tr>
+        <tr>
+            <td>{{selected.HOUSE_DTL_SECD_NM}}</td>
+            <td>{{selected.HSSPLY_ZIP}}</td>
+            <td>{{selected.HSSPLY_ADRES}}</td>
+            <td>{{selected.SUBSCRPT_RCEPT_BGNDE}}</td>
+            <td>{{selected.SUBSCRPT_RCEPT_ENDDE}}</td>
+            <td>{{selected.PRZWNER_PRESNATN_DE}}</td>
+            <td>{{selected.HMPG_ADRES}}</td>  
+        </tr>
+        </template>
           </table>
         <table>
           <th colspan = "13" style="background-color: #42b983; color:#fff">세부정보</th>
-          <template v-if="selected.HOUSE_DTL_SECD === '01'">
+          <template v-if="selected.HOUSE_SECD === '01'">
           <tr class="item" style="background-color: #efefef;">
             <td colspan="4">분양정보</td>
             <td>일반공급</td>
@@ -62,6 +82,29 @@
             <td> {{ item.INSTT_RECOMEND_HSHLDCO }} </td>
             <td> {{ item.ETC_HSHLDCO }} </td>
             <td> {{ item.TRANSR_INSTT_ENFSN_HSHLDCO }} </td>
+          </tr>
+          </template>
+
+          <template v-if="selected.HOUSE_SECD === '02' || selected.HOUSE_SECD === '03'">
+          <tr class="item">
+            <td>주택관리번호</td>
+            <td>공고번호</td>
+            <td>모델번호</td>
+            <td>모델타입</td>
+            <td>전용면적</td>
+            <td>일반공급세대수</td>
+            <td>청약신청금</td>
+            <td>공급금액(분양최고금액) (단위:만원)</td>
+          </tr>
+          <tr v-for="item in selectedItemDetail" :key="item.MODEL_NO">
+            <td> {{ item.HOUSE_MANAGE_NO }} </td>
+            <td> {{ item.PBLANC_NO }} </td>
+            <td> {{ item.MODEL_NO }} </td>
+            <td> {{ item.TP }} </td>
+            <td> {{ item.SUPLY_AR }} </td>
+            <td> {{ item.SUPLY_HSHLDCO }} </td>
+            <td> {{ item.SUBSCRPT_REQST_AMOUNT }} </td>
+            <td> {{ item.SUPLY_AMOUNT }} </td>
           </tr>
           </template>
         </table>
