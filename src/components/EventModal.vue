@@ -2,11 +2,10 @@
     <div class="modal">
     <div class="modal__background"></div>
     <div class="modal__content">
-        
         <h1>{{selected.HOUSE_NM}}</h1>
         <table style="margin-bottom: 1em">
         <th colspan = "7" style="background-color: #42b983; color:#fff">기본정보</th>
-
+        <template v-if="selected.HOUSE_DTL_SECD === '01'">
         <tr class="item">
             <td>주택구분</td>
             <td>분양/임대</td>
@@ -25,9 +24,11 @@
             <td>{{selected.PRZWNER_PRESNATN_DE}}</td>
             <td>{{selected.SUBSCRPT_AREA_CODE_NM}}</td>  
         </tr>
+        </template>
           </table>
         <table>
           <th colspan = "13" style="background-color: #42b983; color:#fff">세부정보</th>
+          <template v-if="selected.HOUSE_DTL_SECD === '01'">
           <tr class="item" style="background-color: #efefef;">
             <td colspan="4">분양정보</td>
             <td>일반공급</td>
@@ -62,6 +63,7 @@
             <td> {{ item.ETC_HSHLDCO }} </td>
             <td> {{ item.TRANSR_INSTT_ENFSN_HSHLDCO }} </td>
           </tr>
+          </template>
         </table>
         
         <div class="modal-footer">
