@@ -191,7 +191,7 @@ const store = new Vuex.Store({
             return axios.get(`${process.env.VUE_APP_URL}/getInfo?category=${this.state.category}`).then(res =>{
                 const { data } = res;
                 commit('setLoadingbar');
-                console.log(data);
+                // console.log(data);
                 if(!Array.isArray(data)){
                     if(Object.prototype.hasOwnProperty.call(data.data, 'msg')){
                         console.error('error happend!');

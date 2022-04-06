@@ -45,6 +45,26 @@
             <td>{{selected.HMPG_ADRES}}</td>  
         </tr>
         </template>
+        <template v-if="selected.HOUSE_SECD === '04' || selected.HOUSE_SECD === '05' || selected.HOUSE_SECD === '06'">
+        <tr class="item">
+            <td>주택구분</td>
+            <td>홈페이지</td>
+            <td>건설업체</td>
+            <td>청약접수시작일</td>
+            <td>청약접수종료일</td>
+            <td>당첨자발표일</td>
+            <td>공급지역</td>
+        </tr>
+        <tr>
+            <td>{{selected.HOUSE_SECD_NM}}</td>
+            <td>{{selected.HMPG_ADRES}}</td>
+            <td>{{selected.BSNS_MBY_NM}}</td>
+            <td>{{selected.SUBSCRPT_RCEPT_BGNDE}}</td>
+            <td>{{selected.SUBSCRPT_RCEPT_BGNDE}}</td>
+            <td>{{selected.PRZWNER_PRESNATN_DE}}</td>
+            <td>{{selected.HSSPLY_ADRES}}</td>  
+        </tr>
+        </template>
           </table>
         <table>
           <th colspan = "13" style="background-color: #42b983; color:#fff">세부정보</th>
@@ -105,6 +125,25 @@
             <td> {{ item.SUPLY_HSHLDCO }} </td>
             <td> {{ item.SUBSCRPT_REQST_AMOUNT }} </td>
             <td> {{ item.SUPLY_AMOUNT }} </td>
+          </tr>
+          </template>
+
+          <template v-if="selected.HOUSE_SECD === '04' || selected.HOUSE_SECD === '05' || selected.HOUSE_SECD === '06'">
+          <tr class="item">
+            <td>주택관리번호</td>
+            <td>공고번호</td>
+            <td>모델번호</td>
+            <td>모델타입</td>
+            <td>일반공급세대수</td>
+            <td>공급금액(분양최고금액) (단위:만원)</td>
+          </tr>
+          <tr v-for="item in selectedItemDetail" :key="item.MODEL_NO">
+            <td> {{ item.HOUSE_MANAGE_NO }} </td>
+            <td> {{ item.PBLANC_NO }} </td>
+            <td> {{ item.MODEL_NO }} </td>
+            <td> {{ item.HOUSE_TY }} </td>
+            <td> {{ item.SUPLY_HSHLDCO }} </td>
+            <td> {{ item.LTTOT_TOP_AMOUNT }} </td>
           </tr>
           </template>
         </table>

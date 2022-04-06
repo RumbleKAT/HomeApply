@@ -5,6 +5,7 @@
         <option value="NonApt">오피스텔/도시형/민간임대</option>
         <option value="Remain">APT 무순위/잔여세대</option>
     </select>
+    <template v-if="isOk">
     <select name="area" id="area" @change="onAreaChange($event)">
         <option value="전체">전체</option>
         <option value="서울">서울</option>
@@ -26,20 +27,30 @@
         <option value="기타">기타</option>
         <option value="제주">제주</option>
     </select>  
+    </template>
   </div>
 </template>
 
 <script>
 export default {
     name : 'filterBar',
+    props:["selected"],
     data: function () {
-
+      return {
+        categoryType : 'APT'
+      }
     },
+    computed : {
+      isOk() {
+        return this.categoryType === 'APT'
+      }
+    }, 
     methods : {
       onCategoryChange(event){
         this.$store.dispatch('updateCategory', {
             category: event.target.value
         });
+        this.categoryType = event.target.value;
       },
       onAreaChange(event){
         // console.log(event.target.value);

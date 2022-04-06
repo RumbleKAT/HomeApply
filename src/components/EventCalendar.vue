@@ -5,7 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import eventModal from './EventModal.vue';
 import { mapGetters } from 'vuex'
-import {getColor,toStringByFormatting} from '../utils/Color';
+import {getColor,toStringByFormatting,toStringByFormattingTomorrow} from '../utils/Color';
 
 export default {
   components: {
@@ -55,10 +55,9 @@ export default {
     }
   },
   methods : {
-    getInitalDate : function(){
-      console.log(toStringByFormatting(new Date()));
-       return toStringByFormatting(new Date())
-    },
+      getInitalDate : function(){
+        return toStringByFormatting(new Date())
+      },
       handleDateClick : function(arg){
         console.log(arg.dateStr);
       },
@@ -83,33 +82,24 @@ export default {
     closeModal() {
       this.isModalViewed = false
       this.isCalendarViewed = true;
-    }
-  },
-  computed: mapGetters({
-    aptList : 'getResponse' // getCounter 는 Vuex 의 getters 에 선언된 속성 이름
-  }),
-  watch : {
-    aptList(){
-      console.log("!!!");
-      const data = this.$store.state.response;
-      console.log(data);
+    },
+    createEvents(data){
       this.initializeEvent();
       const aList = [];
       if(data.length > 0){
         data.forEach(element => {
-                const today = this.getInitalDate();
+                const today = this.getInitalDate();                
                 if(this.$store.state.category === 'APT'){
                   aList.push({
                     "title" : element.HOUSE_NM,
                     "start" : element.RCEPT_BGNDE,
-                    "end" : element.RCEPT_ENDDE,
+                    "end" : toStringByFormattingTomorrow(new Date(element.RCEPT_ENDDE)),
                     extendedProps: {
                       ...element
                     },
                     color: new Date(today) - new Date(element.RCEPT_ENDDE) <= 0 ? getColor(element.SUBSCRPT_AREA_CODE_NM) : '#484848'
                   })
                 }else if(this.$store.state.category === 'NonApt'){
-                  console.log(element);
                   aList.push({
                     "title" : element.HOUSE_NM,
                     "start" : element.SUBSCRPT_RCEPT_BGNDE,
@@ -132,9 +122,26 @@ export default {
                 }
                 
               });
-        console.log(aList);       
+        // console.log(aList);       
       this.addNewEvent(aList);  
       }
+    }
+  },
+  computed: mapGetters(
+    {
+      aptList : 'getResponse', // getCounter 는 Vuex 의 getters 에 선언된 속성 이름,
+      areaList : 'getArea'
+    }
+  ),
+  watch : {
+    aptList(){
+      const data = this.$store.state.response;
+      this.createEvents(data);
+    },
+    areaList(){
+      const area = this.$store.state.area;
+      const aptLists = this.$store.state.response.filter((param)=>param.SUBSCRPT_AREA_CODE_NM === area);
+      this.createEvents(aptLists);
     }
   }
 }
