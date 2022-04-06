@@ -5,7 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import eventModal from './EventModal.vue';
 import { mapGetters } from 'vuex'
-import {getColor,toStringByFormatting} from '../utils/Color';
+import {getColor,toStringByFormatting,toStringByFormattingTomorrow} from '../utils/Color';
 
 export default {
   components: {
@@ -55,10 +55,9 @@ export default {
     }
   },
   methods : {
-    getInitalDate : function(){
-      // console.log(toStringByFormatting(new Date()));
-       return toStringByFormatting(new Date())
-    },
+      getInitalDate : function(){
+        return toStringByFormatting(new Date())
+      },
       handleDateClick : function(arg){
         console.log(arg.dateStr);
       },
@@ -67,7 +66,7 @@ export default {
         this.openModal();
       },
       initializeEvent : function(){
-        // console.log(this.calendarOptions.events);
+        console.log(this.calendarOptions.events);
         this.calendarOptions.events = [];
       },
       addNewEvent : function(param){
@@ -84,17 +83,17 @@ export default {
       this.isModalViewed = false
       this.isCalendarViewed = true;
     },
-    insertEvent(data){
-      const aList = [];
+    createEvents(data){
       this.initializeEvent();
+      const aList = [];
       if(data.length > 0){
         data.forEach(element => {
-                const today = this.getInitalDate();
+                const today = this.getInitalDate();                
                 if(this.$store.state.category === 'APT'){
                   aList.push({
                     "title" : element.HOUSE_NM,
                     "start" : element.RCEPT_BGNDE,
-                    "end" : element.RCEPT_ENDDE,
+                    "end" : toStringByFormattingTomorrow(new Date(element.RCEPT_ENDDE)),
                     extendedProps: {
                       ...element
                     },
@@ -104,7 +103,7 @@ export default {
                   aList.push({
                     "title" : element.HOUSE_NM,
                     "start" : element.SUBSCRPT_RCEPT_BGNDE,
-                    "end" : element.SUBSCRPT_RCEPT_BGNDE,
+                    "end" : element.SUBSCRPT_RCEPT_ENDDE,
                     extendedProps: {
                       ...element
                     },
@@ -124,32 +123,25 @@ export default {
                 
               });
         // console.log(aList);       
-        this.addNewEvent(aList);  
+      this.addNewEvent(aList);  
       }
     }
   },
-  computed: mapGetters({
-    aptList : 'getResponse', // getCounter 는 Vuex 의 getters 에 선언된 속성 이름
-    area : 'getArea'
-  }),
+  computed: mapGetters(
+    {
+      aptList : 'getResponse', // getCounter 는 Vuex 의 getters 에 선언된 속성 이름,
+      areaList : 'getArea'
+    }
+  ),
   watch : {
-    area(){
-      // console.log(this.$store.state.area);
-      let data = this.$store.state.response;
-
-      if(this.$store.state.area !== '전체'){
-        data = this.$store.state.response.filter(param=>{
-          return param.SUBSCRPT_AREA_CODE_NM === this.$store.state.area;
-        });
-      }
-
-      this.insertEvent(data);
-    },
     aptList(){
       const data = this.$store.state.response;
-      // console.log("!");
-      // console.log(this.$store.state.response);
-      this.insertEvent(data);
+      this.createEvents(data);
+    },
+    areaList(){
+      const area = this.$store.state.area;
+      const aptLists = this.$store.state.response.filter((param)=>param.SUBSCRPT_AREA_CODE_NM === area);
+      this.createEvents(aptLists);
     }
   }
 }

@@ -185,13 +185,13 @@ const store = new Vuex.Store({
         }
     },
     actions : {
-        getData({commit}){
+        async getData({commit}){
             console.log(this.state.category);
             commit('setLoadingbar');            
             return axios.get(`${process.env.VUE_APP_URL}/getInfo?category=${this.state.category}`).then(res =>{
                 const { data } = res;
                 commit('setLoadingbar');
-                console.log(data);
+                // console.log(data);
                 if(!Array.isArray(data)){
                     if(Object.prototype.hasOwnProperty.call(data.data, 'msg')){
                         console.error('error happend!');
@@ -244,7 +244,7 @@ const store = new Vuex.Store({
             commit('setSubscribe',data);            
         },
         setIsError({commit},data){
-            console.log(data);
+            console.log(data);//error 건은 MQ로 보낸다.
             commit('setIsError',data);
         }
     }
