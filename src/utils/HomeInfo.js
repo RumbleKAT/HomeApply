@@ -74,7 +74,7 @@ exports.getAptInfo = async function(param,serviceType){
     param.endmonth = `${param.endmonth}-01`;
 
     let url = `${host}/${serviceNM}?page=${pageNum}&perPage=${pageSize}&cond[RCRIT_PBLANC_DE::GTE]=${param.startmonth}&&serviceKey=${serviceKey}`;
-    console.log(url);
+    // console.log(url);
 
     const matchCount = await axios.get(url)
         .then(res=>{
