@@ -1,7 +1,9 @@
 name : testService 
 on : 
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
+  push:
+    branches : [ test ]
 
 jobs:
   testService:
