@@ -18,5 +18,4 @@ describe('기본 API 사용 테스트',()=>{
       expect(result.length >= 1).toBe(true);
     });
 
-//To Fix -> Jest has detected the following 1 open handle potentially keeping Jest from exiting:
-})
+});
