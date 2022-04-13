@@ -7,17 +7,17 @@
  </ul>
   <div class="container" style="background-color:white">
     <h2>알람 신청하기</h2>
-    <input type="text" placeholder="Email address" name="mail" v-model="subscribe" required>
+    <!-- <input type="text" placeholder="Email address" name="mail" v-model="subscribe" required> -->
+    <GoogleAuth />
   </div>
     <div class="container">
     <button @click="setSubscribe"> subscribe</button>
   </div>
-
-
 </template>
 
 <script>
 import mailElement from './MailElement.vue';
+import GoogleAuth from './GoogleLogin.vue';
 
 const validateEmail = (email) => {
   return String(email)
@@ -34,7 +34,8 @@ export default {
         }
     },
     components: {
-        mailElement
+        mailElement,
+        GoogleAuth
     },
     computed : {
         count(){
@@ -52,7 +53,6 @@ export default {
     },
     methods:{
         setSubscribe(){
-            console.log();
             if(!validateEmail(this.subscribe)){
                 alert(`유효하지 않은 메일 주소입니다.`);                
                 return;
