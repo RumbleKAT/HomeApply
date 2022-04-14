@@ -1,51 +1,65 @@
 <template>
     <div>
-        GOOGLE User INFO : {{googleUser}}<p/>
-        <div id="my-signin2"></div><p/>
-        <button @click="signout" align="left">signout</button>
+        <!-- Email : {{googleUser}}<p/> -->
+        <template v-if="isLogin == false">
+        <button id="my-signin2" align="left">signin</button>
+
+        </template>
+        <template v-else>
+          <button @click="signout" align="left">signout</button>
+        </template>
     </div>    
 </template>
 
 <script>
 export default {
-    name: "GoogleAuth",
+  name: "GoogleAuth",
    data() {
     return {
       googleUser: null,
+      isLogin : false,
     };
   },
   mounted() {
-    window.gapi.signin2.render('my-signin2', {
-      scope: 'profile email',
-      width: 240,
-      height: 50,
-      longtitle: true,
-      theme: 'dark',
-      onsuccess: this.onSuccess,
-      onfailure: this.onFailure,
-    });
+    this.setUpGoogleLogin();
   },
   methods: {
     onSuccess(googleUser) {
-      // eslint-disable-next-line
-      console.log(googleUser);
-      this.googleUser = googleUser.getBasicProfile();
+      const { zv } = googleUser.Ju;
+      this.googleUser = zv;
+      this.$emit('updateEmail', this.googleUser);
+      this.isLogin = true;
     },
     onFailure(error) {
-      // eslint-disable-next-line
-      console.log(error);
+      alert('login failure!');
+      console.error(error);
     },
     signout() {
       const authInst = window.gapi.auth2.getAuthInstance();
+      this.isLogin = false;
+      this.$emit('updateEmail', '');
       authInst.signOut().then(() => {
-        // eslint-disable-next-line
+        this.setUpGoogleLogin();
         console.log('User Signed Out!!!');
       });
     },
+    setUpGoogleLogin(){
+      window.gapi.signin2.render('my-signin2', {
+        scope: 'profile email',
+        width: 240,
+        height: 50,
+        longtitle: true,
+        theme: 'dark',
+        onsuccess: this.onSuccess,
+        onfailure: this.onFailure,
+      });
+    }
   },
 }
 </script>
 
 <style>
-
+#my-signin2{
+  background-color : #f1f1f1;
+}
 </style>

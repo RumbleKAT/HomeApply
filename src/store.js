@@ -10,9 +10,9 @@ let subscribe = '';
     if(localStorage.getItem("Events")){
         storedData = JSON.parse(localStorage.getItem("Events"));    
     }
-    if(localStorage.getItem("Email")){
-        subscribe = JSON.parse(localStorage.getItem("Email"));    
-    }
+    // if(localStorage.getItem("Email")){
+    //     subscribe = JSON.parse(localStorage.getItem("Email"));    
+    // }
 })();
 
 let updateStorage = function(type,param){
