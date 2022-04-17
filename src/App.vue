@@ -2,7 +2,7 @@
 <div>
     <div id="nav">
       <div class="navbar">
-        <router-link to="/">청약달력</router-link>
+        <router-link to="/home">청약달력</router-link>
       </div>
       <div class="navbar">
         <router-link to="/mail">메일알람신청</router-link>

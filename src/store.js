@@ -12,9 +12,19 @@ let subscribe = '';
         // console.log(storedData);
         
         storedData = storedData.filter((param)=>{
-            if(new Date(param.RCEPT_ENDDE) >= new Date(getCurrentDate())){
-                return param;
+            // console.log(param);
+            if(param.HOUSE_SECD === '01'){
+                if(new Date(param.RCEPT_ENDDE) >= new Date(getCurrentDate())){
+                    return param;
+                }    
             }
+            else{
+                // console.log(param);
+                if(new Date(param.SUBSCRPT_RCEPT_ENDDE) >= new Date(getCurrentDate())){
+                    return param;
+                }    
+            }
+            
         });
         // console.log(storedData);
         //데이터 로드시 이미 지난 이벤트는 제거한다.
@@ -152,12 +162,12 @@ const store = new Vuex.Store({
             return state.area = payload.area;
         },
         updateCategory : function(state,payload){
-            console.log(payload.category);
+            // console.log(payload.category);
             // state.response = [];
             return state.category = payload.category;
         },
         updateFavorite : function(state, payload){
-            console.log(payload);
+            // console.log(payload);
             const duplicated = state.favorite.some(param => param.HOUSE_MANAGE_NO === payload.data.HOUSE_MANAGE_NO);
             if(!duplicated){
                 state.favorite.push(payload.data);
@@ -192,7 +202,7 @@ const store = new Vuex.Store({
     },
     actions : {
         async getData({commit}){
-            console.log(this.state.category);
+            // console.log(this.state.category);
             commit('setLoadingbar');            
             return axios.get(`${process.env.VUE_APP_URL}/getInfo?category=${this.state.category}`).then(res =>{
                 const { data } = res;

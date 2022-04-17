@@ -69,7 +69,7 @@ export default {
         this.openModal();
       },
       initializeEvent : function(){
-        console.log(this.calendarOptions.events);
+        // console.log(this.calendarOptions.events);
         this.calendarOptions.events = [];
       },
       addNewEvent : function(param){
