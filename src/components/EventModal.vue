@@ -149,7 +149,9 @@
         </table>
         
         <div class="modal-footer">
-          <button @click="addFavorite" style="background-color: #42b983; color:#fff">알람추가</button>
+          <template v-if="isPassed === false">
+            <button @click="addFavorite" style="background-color: #42b983; color:#fff">알람추가</button>
+          </template>
           <button @click.self="$emit('close-modal')">닫기</button>
         </div>
     </div>
@@ -161,10 +163,11 @@ import axios from 'axios';
 
 export default {
     name : 'eventModal',
-    props:["selected"],
+    props:["selected","passed"],
     data: function () {
       return {
         selectedItem: this.selected,
+        isPassed : this.passed,
         selectedDetail : ''
       }
     },
@@ -184,7 +187,7 @@ export default {
           this.$store.dispatch('updateFavorite', {
             data: this.selectedItem
           });
-          console.log(this.selectedItem);
+          // console.log(this.selectedItem);
           alert(this.selectedItem.HOUSE_NM + "가 알람 리스트에 저장되었습니다.");
           this.$emit('close-modal');
       },
@@ -199,7 +202,7 @@ export default {
             alert(err);
           });
         this.selectedDetail = res.data;
-        console.log(this.selectedDetail);
+        // console.log(this.selectedDetail);
       }
     }
 }

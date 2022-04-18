@@ -51,7 +51,8 @@ export default {
       },
       selectedDate : null,
       isModalViewed: false,
-      isCalendarViewed : true
+      isCalendarViewed : true,
+      isPassedEvent : false,
     }
   },
   methods : {
@@ -63,6 +64,8 @@ export default {
       },
       handleEventClick : function(arg){
         this.selectedDate = arg.event._def.extendedProps;
+        this.isPassedEvent = arg.event._def.ui.backgroundColor === '#484848';
+        // console.log(arg.event._def.ui.backgroundColor);
         this.openModal();
       },
       initializeEvent : function(){
@@ -152,7 +155,7 @@ export default {
     <div class="calendarWrapper">
       <FullCalendar ref="fullCalendar" v-if="isCalendarViewed" :options="calendarOptions"/>
     </div>
-    <eventModal v-if="isModalViewed" @close-modal="closeModal" :selected="selectedDate"/>
+    <eventModal v-if="isModalViewed" @close-modal="closeModal" :selected="selectedDate" :passed="isPassedEvent" />
   </div>
 </template>
 
