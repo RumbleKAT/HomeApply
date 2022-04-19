@@ -3,26 +3,67 @@
     <h3>{{element.HOUSE_NM}}</h3>    
     <table>
         <th colspan = "7" style="background-color: #42b983; color:#fff">기본정보</th>
-
-        <tr class="item" style="font-weight:bold"> 
-            <td>주택구분</td>
-            <td>분양/임대</td>
-            <td>건설업체</td>
-            <td>청약접수시작일</td>
-            <td>청약접수종료일</td>
-            <td>당첨자발표일</td>
-            <td>공급지역</td>
-        </tr>
-        <tr>
-            <td>{{element.HOUSE_DTL_SECD_NM}}</td>
-            <td>{{element.RENT_SECD_NM}}</td>
-            <td>{{element.CNSTRCT_ENTRPS_NM}}</td>
-            <td>{{element.RCEPT_BGNDE}}</td>
-            <td>{{element.RCEPT_ENDDE}}</td>
-            <td>{{element.PRZWNER_PRESNATN_DE}}</td>
-            <td>{{element.SUBSCRPT_AREA_CODE_NM}}</td>  
-        </tr>
-          </table>
+        <template v-if="element.HOUSE_SECD === '01'">
+            <tr class="item" style="font-weight:bold"> 
+                <td>주택구분</td>
+                <td>분양/임대</td>
+                <td>건설업체</td>
+                <td>청약접수시작일</td>
+                <td>청약접수종료일</td>
+                <td>당첨자발표일</td>
+                <td>공급지역</td>
+            </tr>
+            <tr>
+                <td>{{element.HOUSE_DTL_SECD_NM}}</td>
+                <td>{{element.RENT_SECD_NM}}</td>
+                <td>{{element.CNSTRCT_ENTRPS_NM}}</td>
+                <td>{{element.RCEPT_BGNDE}}</td>
+                <td>{{element.RCEPT_ENDDE}}</td>
+                <td>{{element.PRZWNER_PRESNATN_DE}}</td>
+                <td>{{element.SUBSCRPT_AREA_CODE_NM}}</td>  
+            </tr>
+        </template>
+        <template v-if="element.HOUSE_SECD === '02'">
+            <tr class="item" style="font-weight:bold"> 
+                <td>주택구분</td>
+                <td>홈페이지</td>
+                <td>건설업체</td>
+                <td>청약접수시작일</td>
+                <td>청약접수종료일</td>
+                <td>당첨자발표일</td>
+                <td>공급주소</td>
+            </tr>
+            <tr>
+                <td>{{element.HOUSE_DTL_SECD_NM}}</td>
+                <td>{{element.HMPG_ADRES}}</td>
+                <td>{{element.BSNS_MBY_NM}}</td>
+                <td>{{element.SUBSCRPT_RCEPT_BGNDE}}</td>
+                <td>{{element.SUBSCRPT_RCEPT_ENDDE}}</td>
+                <td>{{element.PRZWNER_PRESNATN_DE}}</td>
+                <td>{{element.HSSPLY_ADRES}}</td>  
+            </tr>
+        </template>
+        <template v-if="element.HOUSE_SECD === '04'">
+            <tr class="item" style="font-weight:bold"> 
+                <td>주택구분</td>
+                <td>홈페이지</td>
+                <td>건설업체</td>
+                <td>청약접수시작일</td>
+                <td>청약접수종료일</td>
+                <td>당첨자발표일</td>
+                <td>공급주소</td>
+            </tr>
+            <tr>
+                <td>{{element.HOUSE_SECD_NM}}</td>
+                <td>{{element.HMPG_ADRES}}</td>
+                <td>{{element.BSNS_MBY_NM}}</td>
+                <td>{{element.SUBSCRPT_RCEPT_BGNDE}}</td>
+                <td>{{element.SUBSCRPT_RCEPT_ENDDE}}</td>
+                <td>{{element.PRZWNER_PRESNATN_DE}}</td>
+                <td>{{element.HSSPLY_ADRES}}</td>  
+            </tr>
+        </template>
+    </table>
     <div class="footer">
         <button @click="removeFavorite">제거</button>
     </div>
@@ -37,6 +78,9 @@ export default {
         return{
             element : this.favorite
         }
+    },
+    mounted(){
+        console.log(this.element);
     },
     methods:{
         removeFavorite(){
