@@ -88,6 +88,7 @@ export default {
     },
     createEvents(data){
       this.initializeEvent();
+      // console.log(data);
       const aList = [];
       if(data.length > 0){
         data.forEach(element => {
@@ -139,6 +140,7 @@ export default {
   watch : {
     aptList(){
       const data = this.$store.state.response;
+      // console.log(data);
       this.createEvents(data);
     },
     areaList(){

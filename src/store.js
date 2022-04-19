@@ -1,6 +1,6 @@
 import Vuex from 'vuex';
 import axios from 'axios';
-const { rowMapper } = require('./utils/model/rowMapper');
+const { rowMapper, getCurrentDate } = require('./utils/model/rowMapper');
 
 const localStorage = window.localStorage;
 let storedData = [];
@@ -9,10 +9,16 @@ let subscribe = '';
 (function (){
     if(localStorage.getItem("Events")){
         storedData = JSON.parse(localStorage.getItem("Events"));    
+        // console.log(storedData);
+        
+        storedData = storedData.filter((param)=>{
+            if(new Date(param.RCEPT_ENDDE) >= new Date(getCurrentDate())){
+                return param;
+            }
+        });
+        // console.log(storedData);
+        //데이터 로드시 이미 지난 이벤트는 제거한다.
     }
-    // if(localStorage.getItem("Email")){
-    //     subscribe = JSON.parse(localStorage.getItem("Email"));    
-    // }
 })();
 
 let updateStorage = function(type,param){

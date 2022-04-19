@@ -1,6 +1,6 @@
 <template>
   <div class="filterBox">
-    <select name="category" id="category" @change="onCategoryChange($event)">
+    <select name="category" id="category" v-model="categoryType" @change="onCategoryChange($event)">
         <option value="APT">아파트</option>
         <option value="NonApt">오피스텔/도시형/민간임대</option>
         <option value="Remain">APT 무순위/잔여세대</option>
@@ -39,6 +39,11 @@ export default {
       return {
         categoryType : 'APT'
       }
+    },
+    mounted(){
+      // console.log(this.$store.state.category);
+      this.categoryType = this.$store.state.category;
+
     },
     computed : {
       isOk() {
