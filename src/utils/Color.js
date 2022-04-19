@@ -35,3 +35,11 @@ exports.toStringByFormatting = function(source, delimiter = '-') {
     return [year, month, day].join(delimiter); 
 }
 
+exports.toStringByFormattingTomorrow = function(source, delimiter = '-') { 
+    source.setDate(source.getDate() + 1);
+    const year = source.getFullYear(); 
+    const month = leftPad(source.getMonth() + 1); 
+    const day = leftPad(source.getDate()); 
+    return [year, month, day].join(delimiter); 
+}
+

@@ -1,4 +1,4 @@
-const { dbconfig } = require('./dbconfig'); 
+const { dbconfig } = require('./dbConfig'); 
 const pq = require('pg');
 
 const pool = new pq.Pool(dbconfig);

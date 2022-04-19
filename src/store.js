@@ -1,5 +1,6 @@
 import Vuex from 'vuex';
 import axios from 'axios';
+const { rowMapper, getCurrentDate } = require('./utils/model/rowMapper');
 
 const localStorage = window.localStorage;
 let storedData = [];
@@ -8,9 +9,25 @@ let subscribe = '';
 (function (){
     if(localStorage.getItem("Events")){
         storedData = JSON.parse(localStorage.getItem("Events"));    
-    }
-    if(localStorage.getItem("Email")){
-        subscribe = JSON.parse(localStorage.getItem("Email"));    
+        // console.log(storedData);
+        
+        storedData = storedData.filter((param)=>{
+            // console.log(param);
+            if(param.HOUSE_SECD === '01'){
+                if(new Date(param.RCEPT_ENDDE) >= new Date(getCurrentDate())){
+                    return param;
+                }    
+            }
+            else{
+                // console.log(param);
+                if(new Date(param.SUBSCRPT_RCEPT_ENDDE) >= new Date(getCurrentDate())){
+                    return param;
+                }    
+            }
+            
+        });
+        // console.log(storedData);
+        //데이터 로드시 이미 지난 이벤트는 제거한다.
     }
 })();
 
@@ -40,37 +57,6 @@ const getUser = async function(param){
     return user;
 }
 
-const rowMapper = (param,userId) =>{
-    let applyList = [];
-    param.map((p)=>{
-        const { 
-            houseManageNo,
-            pblancNo,
-            houseDetailSecdNm,
-            houseNm,
-            bsnsMbyNm,
-            rcritPblancDe,
-            rceptBgnde,
-            rceptEndde,
-            przwnerPresnatnDe,
-            // home_info_id
-        } = p[0];
-        applyList.push({
-            houseManageNo : houseManageNo,
-            pblancNo : pblancNo,
-            houseDetailSecdNm : houseDetailSecdNm,
-            houseNm : houseNm,
-            bsnsMbyNm : bsnsMbyNm,
-            rcritPblancDe : rcritPblancDe,
-            rceptBgnde : rceptBgnde,
-            rceptEndde : rceptEndde,
-            przwnerPresnatnDe : przwnerPresnatnDe,
-            home_info_id : userId
-        });
-    });
-    return applyList;
-}
-
 const setHomeData = async function(userId,param){
     // console.log(userId);
     //1. getUserById로 찾아서 있는 건들 로딩
@@ -95,16 +81,14 @@ const setHomeData = async function(userId,param){
         alert(data.message);
     }else{
         //기존의 건을 모두 삭제한 후 추가한다.
-        console.log("already saved one...");
-        console.log(userId);
-        const res = await axios.delete(`${process.env.VUE_APP_URL}/schedule/applyById`,
+        // console.log("already saved one...");
+        // console.log(userId);
+        await axios.delete(`${process.env.VUE_APP_URL}/schedule/applyById`,
         { 
             data: { 
                 id : userId 
             } 
         });
-
-        console.log(res);
 
         applyList = rowMapper(param,userId);
 
@@ -114,8 +98,6 @@ const setHomeData = async function(userId,param){
         const { data } = response;
         alert(data.message);
     }
-    // axios.post(`${process.env.VUE_APP_URL}/schedule/`)
-
 }
 
 const createUser = async function(param){
@@ -132,7 +114,9 @@ const store = new Vuex.Store({
         category : 'APT',
         favorite: storedData,
         subscribe: subscribe,
-        loadingbar : false
+        loadingbar : false,
+        isError : false,
+        area : '전체'
     },
     getters: {
         increaseCount(state) {
@@ -155,6 +139,12 @@ const store = new Vuex.Store({
         },
         getLoadingbar(state){
             return state.loadingbar;
+        },
+        getError(state){
+            return state.isError;
+        },
+        getArea(state){
+            return state.area;
         }
     },
     mutations : {
@@ -163,14 +153,22 @@ const store = new Vuex.Store({
             return state.count += payload.amount;
         },
         updateState : function(state, payload){
-            // console.log(payload);
             return state.response = payload.response;
         },
+        initialState : function(state){
+            return state.response = [];
+        },
+        updateArea : function(state, payload){
+            return state.area = payload.area;
+        },
         updateCategory : function(state,payload){
+            // console.log(payload.category);
+            // state.response = [];
             return state.category = payload.category;
         },
         updateFavorite : function(state, payload){
-            const duplicated = state.favorite.some(param => param.houseManageNo === payload.data.houseManageNo);
+            // console.log(payload);
+            const duplicated = state.favorite.some(param => param.HOUSE_MANAGE_NO === payload.data.HOUSE_MANAGE_NO);
             if(!duplicated){
                 state.favorite.push(payload.data);
                 updateStorage('Events',state.favorite);
@@ -178,7 +176,7 @@ const store = new Vuex.Store({
             }
         },
         removeFavorite : function(state, payload){
-            state.favorite = state.favorite.filter((param) =>  param.houseManageNo !== payload.data.houseManageNo);
+            state.favorite = state.favorite.filter((param) =>  param.HOUSE_MANAGE_NO !== payload.data.HOUSE_MANAGE_NO);
             updateStorage('Events',state.favorite);
 
             return state.favorite;
@@ -197,16 +195,26 @@ const store = new Vuex.Store({
             }else{
                 state.loadingbar = true;
             }
-
+        },
+        setIsError : function(state,payload){
+            state.isError = payload.isError;
         }
     },
     actions : {
-        getData({commit}){
-            console.log(this.state.category);
+        async getData({commit}){
+            // console.log(this.state.category);
             commit('setLoadingbar');            
             return axios.get(`${process.env.VUE_APP_URL}/getInfo?category=${this.state.category}`).then(res =>{
                 const { data } = res;
-                commit('setLoadingbar');            
+                commit('setLoadingbar');
+                // console.log(data);
+                if(!Array.isArray(data)){
+                    if(Object.prototype.hasOwnProperty.call(data.data, 'msg')){
+                        console.error('error happend!');
+                        alert(data.data.msg);
+                        return;
+                    }
+                }
                 commit({
                     type : 'updateState',
                     response : data
@@ -214,6 +222,11 @@ const store = new Vuex.Store({
             }).catch((err)=>{
                 console.error('Front End Part' ,err);
             })
+        },
+        updateCategory({commit,dispatch},data){
+            commit('initialState');
+            commit('updateCategory',data);
+            dispatch('getData');
         },
         updateFavorite({commit},data){
             commit('updateFavorite',data);
@@ -223,6 +236,9 @@ const store = new Vuex.Store({
         },
         toggleLoadingbar({commit}){
             commit('setLoadingbar')
+        },
+        updateArea({commit},data){
+            commit('updateArea',data);
         },
         async setSubscribe({commit},data){
             // console.log(data);
@@ -242,6 +258,10 @@ const store = new Vuex.Store({
             }      
             commit('setLoadingbar');            
             commit('setSubscribe',data);            
+        },
+        setIsError({commit},data){
+            console.log(data);//error 건은 MQ로 보낸다.
+            commit('setIsError',data);
         }
     }
 });

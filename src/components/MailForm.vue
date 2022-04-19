@@ -7,17 +7,20 @@
  </ul>
   <div class="container" style="background-color:white">
     <h2>알람 신청하기</h2>
-    <input type="text" placeholder="Email address" name="mail" v-model="subscribe" required>
+    <!-- <input type="text" placeholder="Email address" name="mail" v-model="subscribe" required> -->
   </div>
     <div class="container">
-    <button @click="setSubscribe"> subscribe</button>
-  </div>
-
-
+      {{this.subscribe}}
+      <GoogleAuth @updateEmail="updateEmail" />
+      <template v-if="this.subscribe != ''">
+        <button @click="setSubscribe">subscribe</button>
+      </template>
+    </div>
 </template>
 
 <script>
 import mailElement from './MailElement.vue';
+import GoogleAuth from './GoogleLogin.vue';
 
 const validateEmail = (email) => {
   return String(email)
@@ -34,7 +37,8 @@ export default {
         }
     },
     components: {
-        mailElement
+        mailElement,
+        GoogleAuth
     },
     computed : {
         count(){
@@ -51,16 +55,19 @@ export default {
       this.subscribe = this.$store.state.subscribe;
     },
     methods:{
+        updateEmail(param){
+          console.log(param);
+          this.subscribe = param;
+        },
         setSubscribe(){
-            console.log();
             if(!validateEmail(this.subscribe)){
                 alert(`유효하지 않은 메일 주소입니다.`);                
                 return;
             }
             alert(`${this.subscribe}로 청약 알람 메일을 보내드립니다.`);
-            this.$store.dispatch('setSubscribe',{
-                data: this.subscribe
-            });
+            // this.$store.dispatch('setSubscribe',{
+            //     data: this.subscribe
+            // });
         }
     }
 }
@@ -95,6 +102,7 @@ input[type=text]{
   padding: 1em 1.5em;
   font-size: 16px; 
   border-radius: 8px;
+  margin-top : 1em;
 }
 
 .container button:hover {
