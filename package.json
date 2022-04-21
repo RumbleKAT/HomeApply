@@ -14,7 +14,7 @@
     "predeploy": "vue-cli-service build --mode prod",
     "deploy": "gh-pages -d dist",
     "clean": "gh-pages-clean",
-    "test": "jest --detectOpenHandles --silent=false --forceExit --watchAll=false"
+    "test": "jest --silent=false --forceExit --watchAll=false"
   },
   "dependencies": {
     "@fullcalendar/core": "^5.10.1",
