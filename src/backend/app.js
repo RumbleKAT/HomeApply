@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require('cors');
-const { getAptInfo, getDetailInfo } = require('../utils/HomeInfo');
+const { getAptInfo, getDetailInfo, getRateInfo } = require('../utils/HomeInfo');
 const scheController = require('./router/ScheController');
 const userController = require('./router/UserController');
 
@@ -62,6 +62,17 @@ app.get('/getInfoDetail',async(req,res)=>{
     res.json({
         data : aptList
     });    
+});
+
+app.get('/getRateInfo',async(req, res)=>{
+    const houseManageNo = req.query.houseManageNo;
+    const houseSeCd = req.query.houseSeCd;
+        
+    const rateList = await getRateInfo({houseManageNo: houseManageNo, houseSeCd : houseSeCd});
+    
+    res.json({
+        data : rateList
+    });
 });
 
 module.exports = app;

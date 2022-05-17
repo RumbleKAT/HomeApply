@@ -1,4 +1,5 @@
 const axios = require("axios");
+require('dotenv').config();
 
 const host="https://api.odcloud.kr/api/ApplyhomeInfoDetailSvc/v1";
 const service = {
@@ -13,6 +14,17 @@ const service_detail = {
     "Remain" : "getRemndrLttotPblancMdl"
 }
 
+const rate_host = "https://api.odcloud.kr/api/ApplyhomeInfoCmpetRtSvc/v1";
+const rate_service = {
+    "01" : "getAPTLttotPblancCmpet",
+    "02" : "getUrbtyOfctlLttotPblancCmpet",
+    "03" : "getPblPvtRentLttotPblancCmpet",
+    "06" : "getCancResplLttotPblancCmpet",
+    "04" : "getRemndrLttotPblancCmpet"
+};
+
+
+
 let flag = {
     APT : false,
     NonApt : false,
@@ -21,6 +33,7 @@ let flag = {
 };
 
 let cacheDetailMap = new Map();
+let cacheRateMap = new Map();
 
 function flagInitalize(){
     this.flag.APT = false;
@@ -35,7 +48,7 @@ let cacheList = {
     Remain : []
 };
 
-const serviceKey = "TTIBBEMWax1hMUgx0UkadwKxI2QosEOeeNVRSIjo4dFkM6I977BAgIOT7PylzVFjWtM/7pvRRTTgTh3OLdoZPg==";
+const serviceKey = process.env.SERVICE_KEY;
 
 //그달에 존재하는 청약정보를 모두 가져온다.
 
@@ -159,6 +172,46 @@ exports.getDetailInfo = async function(param, serviceType){
 
     return detailInfo;
 }
+
+exports.getRateInfo = async function(param){
+    if(!param.houseManageNo || !param.houseSeCd) throw new Error("Validation Error...");
+    
+    // if(cacheRateMap.has(param.houseManageNo)){
+    //     return cacheRateMap.get(param.houseManageNo);
+    // }
+
+    let serviceNM = rate_service[param.houseSeCd];
+    let url = `${rate_host}/${serviceNM}?cond[HOUSE_MANAGE_NO::EQ]=${param.houseManageNo}&serviceKey=${serviceKey}`;
+    const pageNum = 1;
+
+    const matchCount = await axios.get(url)
+    .then(res=>{
+        const { matchCount } = res.data;
+        // console.log(matchCount);
+        return matchCount;
+    }).catch(err=>{
+        console.error(err);
+        return {"msg" : err.toString()};
+    });
+
+    let pageSize = matchCount;
+    url = `${rate_host}/${serviceNM}?page=${pageNum}&perPage=${pageSize}&cond[HOUSE_MANAGE_NO::EQ]=${param.houseManageNo}&serviceKey=${serviceKey}`;
+    
+    const detailInfo = await axios.get(url).then(res=>{
+        const {data} = res.data;
+
+        if(data.length > 0){
+            cacheRateMap.set(param.houseManageNo,data);
+        }
+        return data;
+    },(err)=>{
+        console.error(err);
+        return {msg : err.toString()}
+    });
+
+    return detailInfo;
+}
+
 
 // this.getAptInfo({startmonth : '2022-03', endmonth:'2022-04'}, 'APT')
 // .then((res)=>{
