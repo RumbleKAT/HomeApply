@@ -157,7 +157,9 @@
                 <!-- <td>모델번호</td> -->
                 <td>주택형</td>
                 <td>공급세대수</td>
-                <td>거주지역</td>
+                <template v-if="selected.HOUSE_SECD === '01'">
+                  <td>거주지역</td>
+                </template>
                 <td>접수건수</td>
                 <td>경쟁률</td>
                 <!-- <td>최저당첨가점</td>
@@ -169,7 +171,9 @@
               <!-- <td> {{ item.MODEL_NO }} </td> -->
               <td> {{ item.HOUSE_TY }} </td>
               <td> {{ item.SUPLY_HSHLDCO }} </td>
-              <td> {{ item.RESIDE_SENM }} </td>
+              <template v-if="selected.HOUSE_SECD === '01'">
+                <td> {{ item.RESIDE_SENM }} </td>
+              </template>
               <td> {{ item.REQ_CNT }} </td>
               <td> {{ item.CMPET_RATE === '-' ? (item.REQ_CNT / item.SUPLY_HSHLDCO).toFixed(2) : item.CMPET_RATE }} </td>
               <!-- <td> {{ item.LWET_SCORE }} </td>
@@ -235,7 +239,7 @@ export default {
         this.fetchData(url).then(data => {
           return this.selectedRate = data
         });
-        console.log(this.selectedRate);
+        // console.log(this.selectedRate);
       },
       async fetchData(url){
           const res = await axios.get(url)
@@ -323,6 +327,10 @@ table{
   margin-top: 1em; 
   overflow:auto;
   border-bottom: 1px solid #444444;
+}
+
+.modal-scroll table{
+  min-height : 20em;
 }
 
 </style>
