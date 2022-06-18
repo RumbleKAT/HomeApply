@@ -231,11 +231,11 @@ export default {
           this.$emit('close-modal');
       },
       addDetail(){
-        const url = `${process.env.VUE_APP_URL}/getInfoDetail?category=${this.$store.state.category}&houseManageNo=${this.selected.HOUSE_MANAGE_NO}&pblancNo=${this.selected.PBLANC_NO}`;     
+        const url = `${process.env.VUE_APP_URL}/api/home/getInfoDetail?category=${this.$store.state.category}&houseManageNo=${this.selected.HOUSE_MANAGE_NO}&pblancNo=${this.selected.PBLANC_NO}`;     
         this.fetchData(url).then(data => this.selectedDetail = data);
       },
       getRate(){
-        const url = `${process.env.VUE_APP_URL}/getRateInfo?houseManageNo=${this.selected.HOUSE_MANAGE_NO}&houseSeCd=${this.selected.HOUSE_SECD}`; 
+        const url = `${process.env.VUE_APP_URL}/api/home/getRateInfo?houseManageNo=${this.selected.HOUSE_MANAGE_NO}&houseSeCd=${this.selected.HOUSE_SECD}`; 
         this.fetchData(url).then(data => {
           return this.selectedRate = data
         });
@@ -270,6 +270,7 @@ export default {
   padding: 1em 2em;
   background: #fff;
   max-width: 600px;
+  max-height: 40em;
   border-radius: 10px;
   top: 50%;
   left: 50%;
@@ -323,7 +324,7 @@ table{
 
 .modal-scroll{
   width:100%; 
-  height:15em; 
+  height:11em; 
   margin-top: 1em; 
   overflow:auto;
   border-bottom: 1px solid #444444;

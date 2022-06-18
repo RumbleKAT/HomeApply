@@ -204,8 +204,8 @@ const store = new Vuex.Store({
         async getData({commit}){
             // console.log(this.state.category);
             commit('setLoadingbar');            
-            return axios.get(`${process.env.VUE_APP_URL}/getInfo?category=${this.state.category}`).then(res =>{
-                const { data } = res;
+            return axios.get(`${process.env.VUE_APP_URL}/api/home/getInfo?category=${this.state.category}`).then(res =>{
+                const { data } = res.data;
                 commit('setLoadingbar');
                 // console.log(data);
                 if(!Array.isArray(data)){
