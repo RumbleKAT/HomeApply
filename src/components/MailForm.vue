@@ -9,12 +9,14 @@
     <h2>알람 신청하기</h2>
     <!-- <input type="text" placeholder="Email address" name="mail" v-model="subscribe" required> -->
   </div>
-    <div class="container">
-      {{this.subscribe}}
-      <GoogleAuth @updateEmail="updateEmail" />
-      <template v-if="this.subscribe != ''">
-        <button @click="setSubscribe">subscribe</button>
-      </template>
+    <div class="footer">
+      <div class="container">
+        {{this.subscribe}}
+        <GoogleAuth @updateEmail="updateEmail" />
+        <template v-if="this.subscribe != ''">
+          <button @click="setSubscribe">subscribe</button>
+        </template>
+      </div>
     </div>
 </template>
 
@@ -81,9 +83,13 @@ ul{
 }
 .container {
   padding: 20px;
+}
+.footer{
+  width:100%;
+  bottom:0;
+  position: absolute;
   background-color: #f1f1f1;
 }
-
 /* Style the input elements and the submit button */
 input[type=text]{
   width: 100%;

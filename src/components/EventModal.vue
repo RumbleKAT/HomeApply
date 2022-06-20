@@ -274,6 +274,7 @@ export default {
   border-radius: 10px;
   top: 50%;
   left: 50%;
+  overflow:auto;
   transform: translate(-50%, -50%);
   box-shadow: 1px 1px 2rem rgba(0, 0, 0, 0.3);
 }
