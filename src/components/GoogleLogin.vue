@@ -1,65 +1,39 @@
-<template>
-    <div>
-        <!-- Email : {{googleUser}}<p/> -->
-        <template v-if="isLogin == false">
-        <button id="my-signin2" align="left">signin</button>
-
-        </template>
-        <template v-else>
-          <button @click="signout" align="left">signout</button>
-        </template>
-    </div>    
-</template>
-
 <script>
+import { googleTokenLogin,googleLogout } from "vue3-google-login"
+import axios from 'axios';
+
 export default {
-  name: "GoogleAuth",
-   data() {
+  data() {
     return {
       googleUser: null,
       isLogin : false,
     };
   },
-  mounted() {
-    this.setUpGoogleLogin();
-  },
-  methods: {
-    onSuccess(googleUser) {
-      const { zv } = googleUser.Ju;
-      this.googleUser = zv;
-      this.$emit('updateEmail', this.googleUser);
+  methods :{
+    async login(){
+      const response = await googleTokenLogin();
+      const res = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${response.access_token}`)
+      const { email } = res.data;
+      this.$emit('updateEmail', email);
       this.isLogin = true;
+      this.googleUser = email;
     },
-    onFailure(error) {
-      alert('login failure!');
-      console.error(error);
-    },
-    signout() {
-      const authInst = window.gapi.auth2.getAuthInstance();
+    async logout(){
       this.isLogin = false;
-      this.$emit('updateEmail', '');
-      authInst.signOut().then(() => {
-        this.setUpGoogleLogin();
-        console.log('User Signed Out!!!');
-      });
-    },
-    setUpGoogleLogin(){
-      window.gapi.signin2.render('my-signin2', {
-        scope: 'profile email',
-        width: 240,
-        height: 50,
-        longtitle: true,
-        theme: 'dark',
-        onsuccess: this.onSuccess,
-        onfailure: this.onFailure,
-      });
+      this.googleUser = null;
+      await this.$emit('updateEmail', '');
+
+      googleLogout();
     }
-  },
+  }
 }
 </script>
 
-<style>
-#my-signin2{
-  background-color : #f1f1f1;
-}
-</style>
+<template>
+  <template v-if="isLogin == false">
+    <button @click="login">Google 로그인</button>
+  </template>
+  <template v-else>
+    <button @click="logout">Google 로그아웃</button>
+  </template>
+</template>
