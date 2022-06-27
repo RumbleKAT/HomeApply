@@ -66,7 +66,7 @@
         </tr>
         </template>
           </table>
-        <div class="modal-scroll">
+        <!-- <div class="modal-scroll"> -->
         <table>
           <th colspan = "13" style="background-color: #42b983; color:#fff">세부정보</th>
           <template v-if="selected.HOUSE_SECD === '01'">
@@ -147,11 +147,11 @@
           </tr>
           </template>
         </table>
-        </div>
+        <!-- </div> -->
       
         <template v-if="isPassed">
-          <div class="modal-scroll">
-          <table>
+          <!-- <div class="modal-scroll"> -->
+          <table style="margin-top: 1em;">
             <th colspan = "5" style="background-color: #42b983; color:#fff">경쟁률 정보</th>
               <tr class="item">
                 <!-- <td>모델번호</td> -->
@@ -182,7 +182,7 @@
              </template>
              </tr>
           </table>  
-          </div>
+          <!-- </div> -->
         </template>
 
         <div class="modal-footer">
@@ -250,7 +250,7 @@ export default {
             console.error(err);
             alert(err);
           });
-          console.log(res);
+          // console.log(res);
           return res.data;
       }
     },
