@@ -31,9 +31,13 @@ export default {
 
 <template>
   <template v-if="isLogin == false">
+  <div class="sub_container">
     <button @click="login">Google 로그인</button>
+  </div>
   </template>
   <template v-else>
-    <button @click="logout">Google 로그아웃</button>
+  <div class="sub_container">
+    <button @click="logout" style="background-color:#F9A40E">Google 로그아웃</button>
+  </div>
   </template>
 </template>
