@@ -18,6 +18,9 @@
             <button @click="setSubscribe">Subscribe</button>          
           </div>
         </template>
+        <div class="sub_container">
+          <p>ⓒ 2022. Rumblekat all rights reserved.</p>
+        </div>
       </div>
     </div>
 </template>
