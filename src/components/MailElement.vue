@@ -64,7 +64,7 @@
             </tr>
         </template>
     </table>
-    <div class="footer">
+    <div class="item_footer">
         <button @click="removeFavorite">제거</button>
     </div>
 </div>
@@ -100,11 +100,11 @@ li{
     box-shadow: 3px 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.footer{
+.item_footer {
     padding : 1em;
 }
 
-.footer button{
+.item_footer button{
     background-color: #f44336;; /* Green */
     border: none;
     color: white;

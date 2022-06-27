@@ -14,7 +14,9 @@
         {{this.subscribe}}
         <GoogleAuth @updateEmail="updateEmail" />
         <template v-if="this.subscribe != ''">
-          <button @click="setSubscribe">subscribe</button>
+          <div class="sub_container">
+            <button @click="setSubscribe">Subscribe</button>          
+          </div>
         </template>
       </div>
     </div>
@@ -89,6 +91,7 @@ ul{
   bottom:0;
   position: absolute;
   background-color: #f1f1f1;
+  overflow: hidden;
 }
 /* Style the input elements and the submit button */
 input[type=text]{
@@ -114,5 +117,13 @@ input[type=text]{
 .container button:hover {
   opacity: 0.8;
 }
+
+  .sub_container{
+    width : 100%;
+
+  }
+  .sub_container button{
+    height : 3em;
+  }
 
 </style>
