@@ -1,15 +1,17 @@
 <template>
  <h1>청약 알람 리스트</h1>
+ <div class="mail_list">
  <ul>
     <li v-for="favorite in favorites" :key="favorite.houseManageNo">
         <mailElement :favorite="favorite" />
     </li>
  </ul>
+ </div>
   <div class="container" style="background-color:white">
-    <h2>알람 신청하기</h2>
     <!-- <input type="text" placeholder="Email address" name="mail" v-model="subscribe" required> -->
   </div>
     <div class="footer">
+    <h2>알람 신청하기</h2>
       <div class="container">
         {{this.subscribe}}
         <GoogleAuth @updateEmail="updateEmail" />
@@ -72,9 +74,9 @@ export default {
                 return;
             }
             alert(`${this.subscribe}로 청약 알람 메일을 보내드립니다.`);
-            // this.$store.dispatch('setSubscribe',{
-            //     data: this.subscribe
-            // });
+            this.$store.dispatch('setSubscribe',{
+                data: this.subscribe
+            });
         }
     }
 }
@@ -86,6 +88,10 @@ ul{
     text-align: center;
     padding-inline-start : 0px;
 }
+.mail_list{
+  overflow:auto;
+  height:30em; 
+}
 .container {
   padding: 20px;
 }
@@ -96,6 +102,11 @@ ul{
   background-color: #f1f1f1;
   overflow: hidden;
 }
+.footer h2{
+  margin :0;
+  padding: 0.5em;
+}
+
 /* Style the input elements and the submit button */
 input[type=text]{
   width: 100%;

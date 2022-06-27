@@ -11,7 +11,7 @@ exports.rowMapper = function(param,userId){
             RCEPT_ENDDE,
             PRZWNER_PRESNATN_DE,
             // home_info_id
-        } = p[0];
+        } = p;
         applyList.push({
             houseManageNo : HOUSE_MANAGE_NO,
             pblancNo : PBLANC_NO,

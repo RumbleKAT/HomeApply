@@ -80,7 +80,7 @@ export default {
         }
     },
     mounted(){
-        console.log(this.element);
+        // console.log(this.element);
     },
     methods:{
         removeFavorite(){
