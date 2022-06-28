@@ -176,7 +176,9 @@ const store = new Vuex.Store({
             }
         },
         removeFavorite : function(state, payload){
+            // console.log(payload.data.HOUSE_MANAGE_NO);
             state.favorite = state.favorite.filter((param) =>  param.HOUSE_MANAGE_NO !== payload.data.HOUSE_MANAGE_NO);
+            // console.log("favorite",state.favorite);
             updateStorage('Events',state.favorite);
 
             return state.favorite;

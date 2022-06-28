@@ -4,9 +4,6 @@ import Sub from '../views/Sub.vue';
 
 const routes = [{
     path : '/',
-    redirect :'/home'
-},{
-    path : '/home',
     component : Main
 },{
     path : '/mail',

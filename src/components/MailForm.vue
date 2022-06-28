@@ -2,7 +2,7 @@
  <h1>청약 알람 리스트</h1>
  <div class="mail_list">
  <ul>
-    <li v-for="favorite in favorites" :key="favorite.houseManageNo">
+    <li v-for="favorite in favorites" :key="favorite.HOUSE_MANAGE_NO">
         <mailElement :favorite="favorite" />
     </li>
  </ul>
@@ -42,7 +42,8 @@ export default {
     data : function(){
         return{
             email : '',
-            subscribe : ''
+            subscribe : '',
+            isLogin : false
         }
     },
     components: {
@@ -65,7 +66,7 @@ export default {
     },
     methods:{
         updateEmail(param){
-          console.log(param);
+          // console.log(param);
           this.subscribe = param;
         },
         setSubscribe(){
@@ -90,7 +91,7 @@ ul{
 }
 .mail_list{
   overflow:auto;
-  height:30em; 
+  min-height:27em; 
 }
 .container {
   padding: 20px;
@@ -98,7 +99,7 @@ ul{
 .footer{
   width:100%;
   bottom:0;
-  position: absolute;
+  /* position: absolute; */
   background-color: #f1f1f1;
   overflow: hidden;
 }
