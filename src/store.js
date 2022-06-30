@@ -40,9 +40,10 @@ const getUser = async function(param){
     let user = await axios.post(`${process.env.VUE_APP_URL}/api/user/getUserByMail`,{
         email : param.data
     });
+    // console.log(user.data);
     user = user.data;
-
-    if(user.data.email != null){
+    
+    if(Object.prototype.hasOwnProperty.call(user, 'email')){
         const res = user.data;
         return res;        
     }else{
