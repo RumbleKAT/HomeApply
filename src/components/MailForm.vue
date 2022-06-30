@@ -17,11 +17,18 @@
         <GoogleAuth @updateEmail="updateEmail" />
         <template v-if="this.subscribe != ''">
           <div class="sub_container">
-            <button @click="setSubscribe">Subscribe</button>          
+            <input type="checkbox" v-model="checked"/>
+            (필수)
+            <a href="https://ionian-fright-fbe.notion.site/5615c3b5749a42d2914d482bbebe452b">개인정보 수집 및 이용</a>
+            에 동의합니다.
+          </div>
+          <div class="sub_container">
+            <button @click="setSubscribe">Subscribe</button>   
           </div>
         </template>
         <div class="sub_container">
-          <p>ⓒ 2022. Rumblekat all rights reserved.</p>
+          <p>Contact. rumblekat0318@gmail.com 
+            <br/>ⓒ 2022. Rumblekat all rights reserved.</p>
         </div>
       </div>
     </div>
@@ -70,6 +77,11 @@ export default {
           this.subscribe = param;
         },
         setSubscribe(){
+            if(!this.checked){
+              alert('약관에 동의하지 않을시 알람을 받을 수 없습니다.');
+              return;
+            }
+            
             if(!validateEmail(this.subscribe)){
                 alert(`유효하지 않은 메일 주소입니다.`);                
                 return;
@@ -92,6 +104,7 @@ ul{
 .mail_list{
   overflow:auto;
   min-height:27em; 
+  max-height:40em;
 }
 .container {
   padding: 20px;
@@ -126,7 +139,7 @@ input[type=text]{
   padding: 1em 1.5em;
   font-size: 16px; 
   border-radius: 8px;
-  margin-top : 1em;
+  /* margin-top : 1em; */
 }
 
 .container button:hover {
@@ -139,6 +152,11 @@ input[type=text]{
   }
   .sub_container button{
     height : 3em;
+    
+  }
+  .sub_container a{
+    text-decoration: none;
+    color: #222;
   }
 
 </style>

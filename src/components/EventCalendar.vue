@@ -169,4 +169,20 @@ export default {
 .calendarWrapper{
   padding : 1em;
 }
+/*
+  ##Device = 태블릿, 아이패드(세로),
+*/
+@media (min-width: 768px) and (max-width: 1024px) {
+  .calendarWrapper > div{
+    height : 60em;   
+  }
+
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .calendarWrapper > div{
+    height : 45em;   
+  }
+}
+
 </style>

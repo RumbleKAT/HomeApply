@@ -1,197 +1,200 @@
 <template>
     <div class="modal">
     <div class="modal__background"></div>
-    <div class="modal__content">
-        <h1>{{selected.HOUSE_NM}}</h1>
-        <table style="margin-bottom: 1em">
-        <th colspan = "7" style="background-color: #42b983; color:#fff">기본정보</th>
-        <template v-if="selected.HOUSE_SECD === '01'">
-        <tr class="item">
-            <td>주택구분</td>
-            <td>분양/임대</td>
-            <td>건설업체</td>
-            <td>청약접수시작일</td>
-            <td>청약접수종료일</td>
-            <td>당첨자발표일</td>
-            <td>공급지역</td>
-        </tr>
-        <tr>
-            <td>{{selected.HOUSE_DTL_SECD_NM}}</td>
-            <td>{{selected.RENT_SECD_NM}}</td>
-            <td>{{selected.CNSTRCT_ENTRPS_NM}}</td>
-            <td>{{selected.RCEPT_BGNDE}}</td>
-            <td>{{selected.RCEPT_ENDDE}}</td>
-            <td>{{selected.PRZWNER_PRESNATN_DE}}</td>
-            <td>{{selected.SUBSCRPT_AREA_CODE_NM}}</td>  
-        </tr>
-        </template>
-        <template v-if="selected.HOUSE_SECD === '02' || selected.HOUSE_SECD === '03'">
-        <tr class="item">
-            <td>주택구분</td>
-            <td>우편번호</td>
-            <td>공급규모</td>
-            <td>청약접수시작일</td>
-            <td>청약접수종료일</td>
-            <td>당첨자발표일</td>
-            <td>홈페이지 주소</td>
-        </tr>
-        <tr>
-            <td>{{selected.HOUSE_DTL_SECD_NM}}</td>
-            <td>{{selected.HSSPLY_ZIP}}</td>
-            <td>{{selected.HSSPLY_ADRES}}</td>
-            <td>{{selected.SUBSCRPT_RCEPT_BGNDE}}</td>
-            <td>{{selected.SUBSCRPT_RCEPT_ENDDE}}</td>
-            <td>{{selected.PRZWNER_PRESNATN_DE}}</td>
-            <td>{{selected.HMPG_ADRES}}</td>  
-        </tr>
-        </template>
-        <template v-if="selected.HOUSE_SECD === '04' || selected.HOUSE_SECD === '05' || selected.HOUSE_SECD === '06'">
-        <tr class="item">
-            <td>주택구분</td>
-            <td>홈페이지</td>
-            <td>건설업체</td>
-            <td>청약접수시작일</td>
-            <td>청약접수종료일</td>
-            <td>당첨자발표일</td>
-            <td>공급지역</td>
-        </tr>
-        <tr>
-            <td>{{selected.HOUSE_SECD_NM}}</td>
-            <td>{{selected.HMPG_ADRES}}</td>
-            <td>{{selected.BSNS_MBY_NM}}</td>
-            <td>{{selected.SUBSCRPT_RCEPT_BGNDE}}</td>
-            <td>{{selected.SUBSCRPT_RCEPT_BGNDE}}</td>
-            <td>{{selected.PRZWNER_PRESNATN_DE}}</td>
-            <td>{{selected.HSSPLY_ADRES}}</td>  
-        </tr>
-        </template>
-          </table>
-        <!-- <div class="modal-scroll"> -->
-        <table>
-          <th colspan = "13" style="background-color: #42b983; color:#fff">세부정보</th>
+    <div class="modal_container">
+        <div class="modal__content">
+          <h1>{{selected.HOUSE_NM}}</h1>
+          <table style="margin-bottom: 1em">
+          <th colspan = "7" style="background-color: #42b983; color:#fff">기본정보</th>
           <template v-if="selected.HOUSE_SECD === '01'">
-          <tr class="item" style="background-color: #efefef;">
-            <td colspan="4">분양정보</td>
-            <td>일반공급</td>
-            <td colspan="8">특별공급</td>
-          </tr>
           <tr class="item">
-            <td>모델번호</td>
-            <td>주택형</td>
-            <td>주택공급면적</td>
-            <td>공급금액(분양최고금액) (단위:만원)	</td>
-            <td>공급세대수</td>
-            <td>공급세대수</td>
-            <td>다자녀가구</td>
-            <td>신혼부부</td>
-            <td>생애최초</td>
-            <td>노부모부양</td>
-            <td>기관추천</td>
-            <td>기타</td>
-            <td>이전기관</td>          </tr>
-          <tr v-for="item in selectedItemDetail" :key="item.MODEL_NO">
-            <td> {{ item.MODEL_NO }} </td>
-            <td> {{ item.HOUSE_TY }} </td>
-            <td> {{ item.SUPLY_AR }} </td>
-            <td> {{ item.LTTOT_TOP_AMOUNT }} </td>
-            <td> {{ item.SUPLY_HSHLDCO }} </td>
-            <td> {{ item.SPSPLY_HSHLDCO }} </td>
-            <td> {{ item.MNYCH_HSHLDCO }} </td>
-            <td> {{ item.NWWDS_HSHLDCO }} </td>
-            <td> {{ item.LFE_FRST_HSHLDCO }} </td>
-            <td> {{ item.OLD_PARNTS_SUPORT_HSHLDCO }} </td>
-            <td> {{ item.INSTT_RECOMEND_HSHLDCO }} </td>
-            <td> {{ item.ETC_HSHLDCO }} </td>
-            <td> {{ item.TRANSR_INSTT_ENFSN_HSHLDCO }} </td>
+              <td>주택구분</td>
+              <td>분양/임대</td>
+              <td>건설업체</td>
+              <td>청약접수시작일</td>
+              <td>청약접수종료일</td>
+              <td>당첨자발표일</td>
+              <td>공급지역</td>
+          </tr>
+          <tr>
+              <td>{{selected.HOUSE_DTL_SECD_NM}}</td>
+              <td>{{selected.RENT_SECD_NM}}</td>
+              <td>{{selected.CNSTRCT_ENTRPS_NM}}</td>
+              <td>{{selected.RCEPT_BGNDE}}</td>
+              <td>{{selected.RCEPT_ENDDE}}</td>
+              <td>{{selected.PRZWNER_PRESNATN_DE}}</td>
+              <td>{{selected.SUBSCRPT_AREA_CODE_NM}}</td>  
           </tr>
           </template>
-
           <template v-if="selected.HOUSE_SECD === '02' || selected.HOUSE_SECD === '03'">
           <tr class="item">
-            <td>주택관리번호</td>
-            <td>공고번호</td>
-            <td>모델번호</td>
-            <td>모델타입</td>
-            <td>전용면적</td>
-            <td>일반공급세대수</td>
-            <td>청약신청금</td>
-            <td>공급금액(분양최고금액) (단위:만원)</td>
+              <td>주택구분</td>
+              <td>우편번호</td>
+              <td>공급규모</td>
+              <td>청약접수시작일</td>
+              <td>청약접수종료일</td>
+              <td>당첨자발표일</td>
+              <td>홈페이지 주소</td>
           </tr>
-          <tr v-for="item in selectedItemDetail" :key="item.MODEL_NO">
-            <td> {{ item.HOUSE_MANAGE_NO }} </td>
-            <td> {{ item.PBLANC_NO }} </td>
-            <td> {{ item.MODEL_NO }} </td>
-            <td> {{ item.TP }} </td>
-            <td> {{ item.SUPLY_AR }} </td>
-            <td> {{ item.SUPLY_HSHLDCO }} </td>
-            <td> {{ item.SUBSCRPT_REQST_AMOUNT }} </td>
-            <td> {{ item.SUPLY_AMOUNT }} </td>
+          <tr>
+              <td>{{selected.HOUSE_DTL_SECD_NM}}</td>
+              <td>{{selected.HSSPLY_ZIP}}</td>
+              <td>{{selected.HSSPLY_ADRES}}</td>
+              <td>{{selected.SUBSCRPT_RCEPT_BGNDE}}</td>
+              <td>{{selected.SUBSCRPT_RCEPT_ENDDE}}</td>
+              <td>{{selected.PRZWNER_PRESNATN_DE}}</td>
+              <td>{{selected.HMPG_ADRES}}</td>  
           </tr>
           </template>
           <template v-if="selected.HOUSE_SECD === '04' || selected.HOUSE_SECD === '05' || selected.HOUSE_SECD === '06'">
           <tr class="item">
-            <td>주택관리번호</td>
-            <td>공고번호</td>
-            <td>모델번호</td>
-            <td>모델타입</td>
-            <td>일반공급세대수</td>
-            <td>공급금액(분양최고금액) (단위:만원)</td>
+              <td>주택구분</td>
+              <td>홈페이지</td>
+              <td>건설업체</td>
+              <td>청약접수시작일</td>
+              <td>청약접수종료일</td>
+              <td>당첨자발표일</td>
+              <td>공급지역</td>
           </tr>
-          <tr v-for="item in selectedItemDetail" :key="item.MODEL_NO">
-            <td> {{ item.HOUSE_MANAGE_NO }} </td>
-            <td> {{ item.PBLANC_NO }} </td>
-            <td> {{ item.MODEL_NO }} </td>
-            <td> {{ item.HOUSE_TY }} </td>
-            <td> {{ item.SUPLY_HSHLDCO }} </td>
-            <td> {{ item.LTTOT_TOP_AMOUNT }} </td>
+          <tr>
+              <td>{{selected.HOUSE_SECD_NM}}</td>
+              <td>{{selected.HMPG_ADRES}}</td>
+              <td>{{selected.BSNS_MBY_NM}}</td>
+              <td>{{selected.SUBSCRPT_RCEPT_BGNDE}}</td>
+              <td>{{selected.SUBSCRPT_RCEPT_BGNDE}}</td>
+              <td>{{selected.PRZWNER_PRESNATN_DE}}</td>
+              <td>{{selected.HSSPLY_ADRES}}</td>  
           </tr>
           </template>
-        </table>
-        <!-- </div> -->
-      
-        <template v-if="isPassed">
+            </table>
           <!-- <div class="modal-scroll"> -->
-          <table style="margin-top: 1em;">
-            <th colspan = "5" style="background-color: #42b983; color:#fff">경쟁률 정보</th>
-              <tr class="item">
-                <!-- <td>모델번호</td> -->
-                <td>주택형</td>
-                <td>공급세대수</td>
-                <template v-if="selected.HOUSE_SECD === '01'">
-                  <td>거주지역</td>
-                </template>
-                <td>접수건수</td>
-                <td>경쟁률</td>
-                <!-- <td>최저당첨가점</td>
-                <td>최고당첨가점</td>
-                <td>평균당첨가점</td> -->
-              </tr>
-             <tr v-for="item in selectedRate" :key="item.HOUSE_MANAGE_NO">
-             <template v-if="item.REQ_CNT != 0">
-              <!-- <td> {{ item.MODEL_NO }} </td> -->
+          <table>
+            <th colspan = "13" style="background-color: #42b983; color:#fff">세부정보</th>
+            <template v-if="selected.HOUSE_SECD === '01'">
+            <tr class="item" style="background-color: #efefef;">
+              <td colspan="4">분양정보</td>
+              <td>일반공급</td>
+              <td colspan="8">특별공급</td>
+            </tr>
+            <tr class="item">
+              <td>모델번호</td>
+              <td>주택형</td>
+              <td>주택공급면적</td>
+              <td>공급금액(분양최고금액) (단위:만원)	</td>
+              <td>공급세대수</td>
+              <td>공급세대수</td>
+              <td>다자녀가구</td>
+              <td>신혼부부</td>
+              <td>생애최초</td>
+              <td>노부모부양</td>
+              <td>기관추천</td>
+              <td>기타</td>
+              <td>이전기관</td>          </tr>
+            <tr v-for="item in selectedItemDetail" :key="item.MODEL_NO">
+              <td> {{ item.MODEL_NO }} </td>
+              <td> {{ item.HOUSE_TY }} </td>
+              <td> {{ item.SUPLY_AR }} </td>
+              <td> {{ item.LTTOT_TOP_AMOUNT }} </td>
+              <td> {{ item.SUPLY_HSHLDCO }} </td>
+              <td> {{ item.SPSPLY_HSHLDCO }} </td>
+              <td> {{ item.MNYCH_HSHLDCO }} </td>
+              <td> {{ item.NWWDS_HSHLDCO }} </td>
+              <td> {{ item.LFE_FRST_HSHLDCO }} </td>
+              <td> {{ item.OLD_PARNTS_SUPORT_HSHLDCO }} </td>
+              <td> {{ item.INSTT_RECOMEND_HSHLDCO }} </td>
+              <td> {{ item.ETC_HSHLDCO }} </td>
+              <td> {{ item.TRANSR_INSTT_ENFSN_HSHLDCO }} </td>
+            </tr>
+            </template>
+
+            <template v-if="selected.HOUSE_SECD === '02' || selected.HOUSE_SECD === '03'">
+            <tr class="item">
+              <td>주택관리번호</td>
+              <td>공고번호</td>
+              <td>모델번호</td>
+              <td>모델타입</td>
+              <td>전용면적</td>
+              <td>일반공급세대수</td>
+              <td>청약신청금</td>
+              <td>공급금액(분양최고금액) (단위:만원)</td>
+            </tr>
+            <tr v-for="item in selectedItemDetail" :key="item.MODEL_NO">
+              <td> {{ item.HOUSE_MANAGE_NO }} </td>
+              <td> {{ item.PBLANC_NO }} </td>
+              <td> {{ item.MODEL_NO }} </td>
+              <td> {{ item.TP }} </td>
+              <td> {{ item.SUPLY_AR }} </td>
+              <td> {{ item.SUPLY_HSHLDCO }} </td>
+              <td> {{ item.SUBSCRPT_REQST_AMOUNT }} </td>
+              <td> {{ item.SUPLY_AMOUNT }} </td>
+            </tr>
+            </template>
+            <template v-if="selected.HOUSE_SECD === '04' || selected.HOUSE_SECD === '05' || selected.HOUSE_SECD === '06'">
+            <tr class="item">
+              <td>주택관리번호</td>
+              <td>공고번호</td>
+              <td>모델번호</td>
+              <td>모델타입</td>
+              <td>일반공급세대수</td>
+              <td>공급금액(분양최고금액) (단위:만원)</td>
+            </tr>
+            <tr v-for="item in selectedItemDetail" :key="item.MODEL_NO">
+              <td> {{ item.HOUSE_MANAGE_NO }} </td>
+              <td> {{ item.PBLANC_NO }} </td>
+              <td> {{ item.MODEL_NO }} </td>
               <td> {{ item.HOUSE_TY }} </td>
               <td> {{ item.SUPLY_HSHLDCO }} </td>
-              <template v-if="selected.HOUSE_SECD === '01'">
-                <td> {{ item.RESIDE_SENM }} </td>
-              </template>
-              <td> {{ item.REQ_CNT }} </td>
-              <td> {{ item.CMPET_RATE === '-' ? (item.REQ_CNT / item.SUPLY_HSHLDCO).toFixed(2) : item.CMPET_RATE }} </td>
-              <!-- <td> {{ item.LWET_SCORE }} </td>
-              <td> {{ item.TOP_SCORE }} </td>
-              <td> {{ item.AVRG_SCORE }} </td>   -->
-             </template>
-             </tr>
-          </table>  
+              <td> {{ item.LTTOT_TOP_AMOUNT }} </td>
+            </tr>
+            </template>
+          </table>
           <!-- </div> -->
-        </template>
-
-        <div class="modal-footer">
-          <template v-if="isPassed === false">
-            <button @click="addFavorite" style="background-color: #42b983; color:#fff">알람추가</button>
+        
+          <template v-if="isPassed">
+            <!-- <div class="modal-scroll"> -->
+            <table style="margin-top: 1em;">
+              <th colspan = "5" style="background-color: #42b983; color:#fff">경쟁률 정보</th>
+                <tr class="item">
+                  <!-- <td>모델번호</td> -->
+                  <td>주택형</td>
+                  <td>공급세대수</td>
+                  <template v-if="selected.HOUSE_SECD === '01'">
+                    <td>거주지역</td>
+                  </template>
+                  <td>접수건수</td>
+                  <td>경쟁률</td>
+                  <!-- <td>최저당첨가점</td>
+                  <td>최고당첨가점</td>
+                  <td>평균당첨가점</td> -->
+                </tr>
+              <tr v-for="item in selectedRate" :key="item.HOUSE_MANAGE_NO">
+              <template v-if="item.REQ_CNT != 0">
+                <!-- <td> {{ item.MODEL_NO }} </td> -->
+                <td> {{ item.HOUSE_TY }} </td>
+                <td> {{ item.SUPLY_HSHLDCO }} </td>
+                <template v-if="selected.HOUSE_SECD === '01'">
+                  <td> {{ item.RESIDE_SENM }} </td>
+                </template>
+                <td> {{ item.REQ_CNT }} </td>
+                <td> {{ item.CMPET_RATE === '-' ? (item.REQ_CNT / item.SUPLY_HSHLDCO).toFixed(2) : item.CMPET_RATE }} </td>
+                <!-- <td> {{ item.LWET_SCORE }} </td>
+                <td> {{ item.TOP_SCORE }} </td>
+                <td> {{ item.AVRG_SCORE }} </td>   -->
+              </template>
+              </tr>
+            </table>  
+            <!-- </div> -->
           </template>
-          <button @click.self="$emit('close-modal')">닫기</button>
-        </div>
+
+          <div class="modal-footer">
+            <template v-if="isPassed === false">
+              <button @click="addFavorite" style="background-color: #42b983; color:#fff">알람추가</button>
+            </template>
+            <button @click.self="$emit('close-modal')">닫기</button>
+          </div>
+      </div>
     </div>
+   
     </div>
 </template>
 
@@ -333,6 +336,18 @@ table{
 
 .modal-scroll table{
   min-height : 20em;
+}
+
+/*
+  ##Device = 태블릿, 아이패드(세로),
+*/
+@media (min-width: 768px) and (max-width: 1024px) {
+
+  
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+
 }
 
 </style>

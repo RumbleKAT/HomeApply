@@ -44,7 +44,7 @@ export default {
   </template>
   <template v-else>
   <div class="sub_container">
-    <button @click="logout" style="background-color:#F9A40E">Google 로그아웃</button>
+    <button @click="logout" style="background-color:#F9A40E;" >Google 로그아웃</button>
   </div>
   </template>
 </template>
