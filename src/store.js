@@ -41,10 +41,12 @@ const getUser = async function(param){
         email : param.data
     });
     // console.log(user.data);
-    user = user.data;
+    user = user.data.data;
+    // console.log(user);
     
     if(Object.prototype.hasOwnProperty.call(user, 'email')){
-        const res = user.data;
+        const res = user.id;
+        // console.log(res);
         return res;        
     }else{
         user = await createUser(param);
@@ -67,8 +69,9 @@ const setHomeData = async function(userId,param){
         id : userId
     });
     const { res } = homeList.data.data;
-
     let applyList = [];
+    applyList = rowMapper(param,userId);
+    // console.log(applyList);   
 
     if(res.length === 0){
         //새로 추가한다.
@@ -246,18 +249,15 @@ const store = new Vuex.Store({
         async setSubscribe({commit},data){
             // console.log(data);
             commit('setLoadingbar');            
-            const ans = await getUser(data);
-
-            if(ans!== undefined){
+            const userid = await getUser(data);
+            console.log(userid);
+            if(userid!== undefined){
                 const arr = [];
-                if(this.state.favorite.length === 1){
-                    arr.push(this.state.favorite);
-                }else if(this.state.favorite.length >= 1){
-                    this.state.favorite.forEach(element => {
-                        arr.push(element);
-                    });
-                }
-                setHomeData(ans.id, arr);
+                this.state.favorite.forEach(element=>{
+                    arr.push(element);
+                });
+                console.log(arr);
+                setHomeData(userid, arr);
             }      
             commit('setLoadingbar');            
             commit('setSubscribe',data);            

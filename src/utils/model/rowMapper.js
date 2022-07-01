@@ -1,6 +1,9 @@
 exports.rowMapper = function(param,userId){
     let applyList = [];
+    // console.log(param);
+    
     param.map((p)=>{
+        // console.log(p);
         const { 
             HOUSE_MANAGE_NO,
             PBLANC_NO,
@@ -9,8 +12,7 @@ exports.rowMapper = function(param,userId){
             CNSTRCT_ENTRPS_NM,
             RCEPT_BGNDE,
             RCEPT_ENDDE,
-            PRZWNER_PRESNATN_DE,
-            // home_info_id
+            PRZWNER_PRESNATN_DE 
         } = p;
         applyList.push({
             houseManageNo : HOUSE_MANAGE_NO,
@@ -24,6 +26,7 @@ exports.rowMapper = function(param,userId){
             home_info_id : userId
         });
     });
+    // console.log(applyList);
     return applyList;
 }
 exports.getCurrentDate = function(){
