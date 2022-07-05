@@ -44,14 +44,14 @@ const getUser = async function(param){
     user = user.data.data;
     // console.log(user);
     
-    if(Object.prototype.hasOwnProperty.call(user, 'email')){
+    if(user != undefined && Object.prototype.hasOwnProperty.call(user, 'email')){
         const res = user.id;
         // console.log(res);
         return res;        
     }else{
         user = await createUser(param);
         console.log("create user!");
-        // console.log(user);
+        console.log(user);
         if(user.data){
             user = await axios.post(`${process.env.VUE_APP_URL}/api/user/getUserByMail`,{
                 email : param.data
@@ -249,14 +249,16 @@ const store = new Vuex.Store({
         async setSubscribe({commit},data){
             // console.log(data);
             commit('setLoadingbar');            
-            const userid = await getUser(data);
-            console.log(userid);
+            let userid = await getUser(data);
+            userid = userid.data.data.id;
+            // console.log(userid);
             if(userid!== undefined){
                 const arr = [];
                 this.state.favorite.forEach(element=>{
                     arr.push(element);
                 });
-                console.log(arr);
+                // console.log(arr);
+    
                 setHomeData(userid, arr);
             }      
             commit('setLoadingbar');            
