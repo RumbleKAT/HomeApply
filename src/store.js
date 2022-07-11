@@ -40,6 +40,8 @@ const getUser = async function(param){
     let user = await axios.post(`${process.env.VUE_APP_URL}/api/user/getUserByMail`,{
         email : param.data
     });
+    // debugger;
+    console.log(user);
     // console.log(user.data);
     user = user.data.data;
     // console.log(user);
@@ -51,7 +53,7 @@ const getUser = async function(param){
     }else{
         user = await createUser(param);
         console.log("create user!");
-        console.log(user);
+        // console.log(user);
         if(user.data){
             user = await axios.post(`${process.env.VUE_APP_URL}/api/user/getUserByMail`,{
                 email : param.data
@@ -250,8 +252,11 @@ const store = new Vuex.Store({
             // console.log(data);
             commit('setLoadingbar');            
             let userid = await getUser(data);
-            userid = userid.data.data.id;
             // console.log(userid);
+
+            if(typeof(userid) !== 'number'){
+                userid = userid.data.data.id;    
+            }
             if(userid!== undefined){
                 const arr = [];
                 this.state.favorite.forEach(element=>{
