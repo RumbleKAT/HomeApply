@@ -122,7 +122,8 @@ const store = new Vuex.Store({
         subscribe: subscribe,
         loadingbar : false,
         isError : false,
-        area : '전체'
+        area : '전체',
+        isAlarm : false
     },
     getters: {
         increaseCount(state) {
@@ -151,6 +152,9 @@ const store = new Vuex.Store({
         },
         getArea(state){
             return state.area;
+        },
+        getAlarm(state){
+            return state.isAlarm;
         }
     },
     mutations : {

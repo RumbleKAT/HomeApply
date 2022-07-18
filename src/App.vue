@@ -4,9 +4,11 @@
       <div class="navbar">
         <router-link to="/">청약달력</router-link>
       </div>
-      <div class="navbar">
-        <router-link to="/mail">메일알람신청</router-link>
-      </div>
+      <template v-if="isAlarm">
+        <div class="navbar">
+          <router-link to="/mail">메일알람신청</router-link>
+        </div>
+      </template>
     </div>
     <router-view />
 </div>
@@ -18,11 +20,15 @@ export default {
   components: {
     
   },
+  computed: {
+    isAlarm() { return this.$store.state.isAlarm }
+  },
   data() {
     return {
       date: new Date(),
     };
   },
+  
 }
 </script>
 

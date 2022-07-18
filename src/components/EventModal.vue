@@ -187,8 +187,10 @@
           </template>
 
           <div class="modal-footer">
-            <template v-if="isPassed === false">
-              <button @click="addFavorite" style="background-color: #42b983; color:#fff">알람추가</button>
+            <template v-if="isAlarm">
+              <template v-if="isPassed === false">
+                <button @click="addFavorite" style="background-color: #42b983; color:#fff">알람추가</button>
+              </template>
             </template>
             <button @click.self="$emit('close-modal')">닫기</button>
           </div>
@@ -222,7 +224,8 @@ export default {
       category() { return this.$store.state.getCategory },
       selectedItemDetail(){
         return this.selectedDetail;
-      }
+      },
+      isAlarm() { return this.$store.state.isAlarm }
     },
     methods:{
       addFavorite(){
