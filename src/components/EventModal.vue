@@ -153,8 +153,13 @@
           <template v-if="isPassed">
             <!-- <div class="modal-scroll"> -->
             <table style="margin-top: 1em;">
-              <th colspan = "5" style="background-color: #42b983; color:#fff">경쟁률 정보</th>
-                <tr class="item">
+                <template v-if="selected.HOUSE_SECD === '01'">
+                  <th colspan = "9" style="background-color: #42b983; color:#fff">경쟁률 정보</th>
+                </template>
+                <template v-else>
+                  <th colspan = "5" style="background-color: #42b983; color:#fff">경쟁률 정보</th>
+                </template>
+               <tr class="item">
                   <!-- <td>모델번호</td> -->
                   <td>주택형</td>
                   <td>공급세대수</td>
@@ -163,9 +168,10 @@
                   </template>
                   <td>접수건수</td>
                   <td>경쟁률</td>
-                  <!-- <td>최저당첨가점</td>
-                  <td>최고당첨가점</td>
-                  <td>평균당첨가점</td> -->
+                  <td>순위</td>
+                  <td>최저</td>
+                  <td>최고</td>
+                  <td>평균</td>
                 </tr>
               <tr v-for="item in selectedRate" :key="item.HOUSE_MANAGE_NO">
               <template v-if="item.REQ_CNT != 0">
@@ -173,13 +179,29 @@
                 <td> {{ item.HOUSE_TY }} </td>
                 <td> {{ item.SUPLY_HSHLDCO }} </td>
                 <template v-if="selected.HOUSE_SECD === '01'">
-                  <td> {{ item.RESIDE_SENM }} </td>
+                  <template v-if="item.RESIDE_SECD === '01'">
+                    <td> 해당지역 </td>
+                  </template>
+                  <template v-else-if="item.RESIDE_SECD === '02'">
+                    <td> 기타지역 </td>
+                  </template>
+                   <template v-else>
+                    <td> 기타경기 </td>
+                  </template>
                 </template>
-                <td> {{ item.REQ_CNT }} </td>
-                <td> {{ item.CMPET_RATE === '-' ? (item.REQ_CNT / item.SUPLY_HSHLDCO).toFixed(2) : item.CMPET_RATE }} </td>
-                <!-- <td> {{ item.LWET_SCORE }} </td>
-                <td> {{ item.TOP_SCORE }} </td>
-                <td> {{ item.AVRG_SCORE }} </td>   -->
+                <td> {{ item.REQ_CNT }} </td><!-- (item.REQ_CNT / item.SUPLY_HSHLDCO).toFixed(2) -->
+                <td> {{ item.CMPET_RATE === '-' ? '' : item.CMPET_RATE }} </td>
+                <td> {{ item.SUBSCRPT_RANK_CODE }}</td>
+                <template v-if="selected.HOUSE_SECD === '01'">
+                <template v-if="item.LWET_SCORE || item.TOP_SCORE || item.AVRG_SCORE">
+                    <td rowspan="1"> {{ item.LWET_SCORE > 0 ? item.LWET_SCORE : '' }} </td>
+                    <td rowspan="1"> {{ item.TOP_SCORE > 0 ? item.TOP_SCORE : '' }} </td>
+                    <td rowspan="1"> {{ item.AVRG_SCORE > 0 ? item.AVRG_SCORE : '' }} </td> 
+                </template>
+                <!-- <td rowspan="1"> {{ item.LWET_SCORE > 0 ? item.LWET_SCORE : 0 }} </td>
+                  <td rowspan="1"> {{ item.TOP_SCORE > 0 ? item.TOP_SCORE : 0 }} </td>
+                  <td rowspan="1"> {{ item.AVRG_SCORE > 0 ? item.AVRG_SCORE : 0 }} </td>  -->
+                </template>
               </template>
               </tr>
             </table>  
