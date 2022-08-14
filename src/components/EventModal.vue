@@ -260,7 +260,9 @@ export default {
       },
       addDetail(){
         const url = `${process.env.VUE_APP_URL}/api/home/getInfoDetail?category=${this.$store.state.category}&houseManageNo=${this.selected.HOUSE_MANAGE_NO}&pblancNo=${this.selected.PBLANC_NO}`;     
-        this.fetchData(url).then(data => this.selectedDetail = data);
+        this.fetchData(url).then(data => this.selectedDetail = data).catch(err=>
+          console.error(err)
+        );
       },
       getRate(){
         const url = `${process.env.VUE_APP_URL}/api/home/getRateInfo?houseManageNo=${this.selected.HOUSE_MANAGE_NO}&houseSeCd=${this.selected.HOUSE_SECD}`; 

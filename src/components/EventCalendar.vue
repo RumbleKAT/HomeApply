@@ -4,11 +4,15 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import eventModal from './EventModal.vue';
+import weeklyInfo from './WeekyInfo.vue';
 import { mapGetters } from 'vuex'
 import {getColor,toStringByFormatting,toStringByFormattingTomorrow} from '../utils/Color';
+import Filter from '@/components/Filter.vue';
 
 export default {
   components: {
+    Filter,
+    weeklyInfo,
     eventModal,
     FullCalendar
   },
@@ -154,6 +158,8 @@ export default {
 
 <template>
   <div>
+    <weeklyInfo/>
+    <Filter/>
     <div class="calendarWrapper">
       <FullCalendar ref="fullCalendar" v-if="isCalendarViewed" :options="calendarOptions"/>
     </div>
