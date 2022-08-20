@@ -6,15 +6,17 @@ import interactionPlugin from '@fullcalendar/interaction'
 import eventModal from './EventModal.vue';
 import { mapGetters } from 'vuex'
 import {getColor,toStringByFormatting,toStringByFormattingTomorrow} from '../utils/Color';
+import Filter from '@/components/Filter.vue';
 
 export default {
   components: {
+    Filter,
     eventModal,
     FullCalendar
   },
   mounted(){
     // console.log("mounted!");
-    this.$store.dispatch('getData')
+    // this.$store.dispatch('getData')
   },
   data() {
     return {
@@ -154,6 +156,7 @@ export default {
 
 <template>
   <div>
+    <Filter/>
     <div class="calendarWrapper">
       <FullCalendar ref="fullCalendar" v-if="isCalendarViewed" :options="calendarOptions"/>
     </div>

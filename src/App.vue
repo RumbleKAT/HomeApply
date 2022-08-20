@@ -2,7 +2,10 @@
 <div>
     <div id="nav">
       <div class="navbar">
-        <router-link to="/">청약달력</router-link>
+        <router-link to="/">금주의 청약발표</router-link>
+      </div>
+      <div class="navbar">
+        <router-link to="/calendar">청약달력</router-link>
       </div>
       <template v-if="isAlarm">
         <div class="navbar">
@@ -27,8 +30,7 @@ export default {
     return {
       date: new Date(),
     };
-  },
-  
+  }
 }
 </script>
 
