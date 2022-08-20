@@ -17,6 +17,9 @@ export default {
     },
     computed: {
       loadingbar() { return this.$store.state.loadingbar }
+    },
+    mounted(){
+      this.$store.dispatch('getData');
     }
 }
 </script>
