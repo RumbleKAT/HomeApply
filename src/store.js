@@ -1,5 +1,6 @@
 import Vuex from 'vuex';
 import axios from 'axios';
+import {getDateString} from "@/components/EventCalendar";
 const { rowMapper, getCurrentDate } = require('./utils/model/rowMapper');
 
 const localStorage = window.localStorage;
@@ -227,6 +228,12 @@ const store = new Vuex.Store({
                         return;
                     }
                 }
+                data.map((param)=>{
+                    param.RCEPT_BGNDE = getDateString(param.RCEPT_BGNDE)
+                    param.RCEPT_ENDDE = getDateString(param.RCEPT_ENDDE)
+                    param.SUBSCRPT_RCEPT_BGNDE = getDateString(param.SUBSCRPT_RCEPT_BGNDE)
+                    param.SUBSCRPT_RCEPT_ENDDE = getDateString(param.SUBSCRPT_RCEPT_ENDDE)
+                })
                 commit({
                     type : 'updateState',
                     response : data

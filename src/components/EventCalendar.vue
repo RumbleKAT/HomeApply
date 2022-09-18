@@ -8,6 +8,14 @@ import { mapGetters } from 'vuex'
 import {getColor,toStringByFormatting,toStringByFormattingTomorrow} from '../utils/Color';
 import Filter from '@/components/Filter.vue';
 
+export const getDateString = (param) =>{
+  const datum = new Date(param);
+  const year = datum.getFullYear();
+  const month = datum.getMonth() + 1;
+  const date = datum.getDate();
+  return `${year}-${month >= 10 ? month : '0' + month}-${date >= 10 ? date : '0' + date}`;
+}
+
 export default {
   components: {
     Filter,
@@ -88,6 +96,7 @@ export default {
       this.isModalViewed = false
       this.isCalendarViewed = true;
     },
+
     createEvents(data){
       this.initializeEvent();
       // console.log(data);
@@ -98,7 +107,7 @@ export default {
                 if(this.$store.state.category === 'APT'){
                   aList.push({
                     "title" : element.HOUSE_NM,
-                    "start" : element.RCEPT_BGNDE,
+                    "start" : getDateString(element.RCEPT_BGNDE),
                     "end" : toStringByFormattingTomorrow(new Date(element.RCEPT_ENDDE)),
                     extendedProps: {
                       ...element
@@ -108,8 +117,8 @@ export default {
                 }else if(this.$store.state.category === 'NonApt'){
                   aList.push({
                     "title" : element.HOUSE_NM,
-                    "start" : element.SUBSCRPT_RCEPT_BGNDE,
-                    "end" : element.SUBSCRPT_RCEPT_ENDDE,
+                    "start" : getDateString(element.SUBSCRPT_RCEPT_BGNDE),
+                    "end" : getDateString(element.SUBSCRPT_RCEPT_ENDDE),
                     extendedProps: {
                       ...element
                     },
@@ -118,8 +127,8 @@ export default {
                 }else{
                   aList.push({
                     "title" : element.HOUSE_NM,
-                    "start" : element.SUBSCRPT_RCEPT_BGNDE,
-                    "end" : element.SUBSCRPT_RCEPT_BGNDE,
+                    "start" : getDateString(element.SUBSCRPT_RCEPT_BGNDE),
+                    "end" : getDateString(element.SUBSCRPT_RCEPT_ENDDE),
                     extendedProps: {
                       ...element
                     },

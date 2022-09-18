@@ -67,7 +67,6 @@ export default {
           new Date(param.PRZWNER_PRESNATN_DE) <= new Date(weekInfo.lastWeekDate)
       ).sort((a,b)=> new Date(b.PRZWNER_PRESNATN_DE) - new Date(a.PRZWNER_PRESNATN_DE));
 
-      console.log(this.itemList);
     },
   }
 };
@@ -96,6 +95,18 @@ export default {
 }
 .attribution a { 
     color: hsl(228, 45%, 44%); 
+}
+
+.tiptext {
+  color:#069;
+  cursor:pointer;
+}
+.description {
+  display:none;
+  position:absolute;
+  border:1px solid #000;
+  width:400px;
+  height:400px;
 }
 
 .box {
