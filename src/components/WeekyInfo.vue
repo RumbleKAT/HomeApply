@@ -26,6 +26,9 @@ export default {
       msg : "홈페이지로 이동합니다."
     };
   },
+  mounted(){
+    console.log("mounted!");
+  },
   methods: {
     getFirstAndLastDayOfTheWeek() {
       // The starting time is the same current
