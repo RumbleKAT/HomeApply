@@ -174,7 +174,6 @@
                   <td>평균</td>
                 </tr>
               <tr v-for="item in selectedRate" :key="item.HOUSE_MANAGE_NO">
-              <template v-if="item.REQ_CNT != 0">
                 <!-- <td> {{ item.MODEL_NO }} </td> -->
                 <td> {{ item.HOUSE_TY }} </td>
                 <td> {{ item.SUPLY_HSHLDCO }} </td>
@@ -193,19 +192,14 @@
                 <td> {{ item.CMPET_RATE === '-' ? '' : item.CMPET_RATE }} </td>
                 <td> {{ item.SUBSCRPT_RANK_CODE }}</td>
                 <template v-if="selected.HOUSE_SECD === '01'">
-                <template v-if="item.LWET_SCORE || item.TOP_SCORE || item.AVRG_SCORE">
-                    <td rowspan="1"> {{ item.LWET_SCORE > 0 ? item.LWET_SCORE : '' }} </td>
-                    <td rowspan="1"> {{ item.TOP_SCORE > 0 ? item.TOP_SCORE : '' }} </td>
-                    <td rowspan="1"> {{ item.AVRG_SCORE > 0 ? item.AVRG_SCORE : '' }} </td> 
+                  <template v-if="item.LWET_SCORE || item.TOP_SCORE || item.AVRG_SCORE">
+                      <td rowspan="1"> {{ item.LWET_SCORE > 0 ? item.LWET_SCORE : '' }} </td>
+                      <td rowspan="1"> {{ item.TOP_SCORE > 0 ? item.TOP_SCORE : '' }} </td>
+                      <td rowspan="1"> {{ item.AVRG_SCORE > 0 ? item.AVRG_SCORE : '' }} </td>
+                  </template>
                 </template>
-                <!-- <td rowspan="1"> {{ item.LWET_SCORE > 0 ? item.LWET_SCORE : 0 }} </td>
-                  <td rowspan="1"> {{ item.TOP_SCORE > 0 ? item.TOP_SCORE : 0 }} </td>
-                  <td rowspan="1"> {{ item.AVRG_SCORE > 0 ? item.AVRG_SCORE : 0 }} </td>  -->
-                </template>
-              </template>
               </tr>
             </table>  
-            <!-- </div> -->
           </template>
 
           <div class="modal-footer">
