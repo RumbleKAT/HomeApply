@@ -255,10 +255,17 @@ const store = new Vuex.Store({
                     param.SUBSCRPT_RCEPT_ENDDE = getDateString(param.SUBSCRPT_RCEPT_ENDDE)
                     return param;
                 });
-                // console.log(result);
+                // let temp = this.state.response;
+                const rawObject = Object.assign([], this.state.response);
+
+                const remap = [ ...result , ...rawObject ].sort((a,b)=>a._id-b._id);
+                const ids = new Set();
+                [...remap].map(e=>ids.add(e._id));
+                const resultMap = [...ids].map((_id)=> remap.filter(param=>param._id === _id)[0]);
+                // console.log(resultMap);       
                 commit({
                     type : 'updateState',
-                    response : [ ...result , ...this.state.response ]
+                    response : resultMap
                 });
             }catch(e){
                 console.error(e);
