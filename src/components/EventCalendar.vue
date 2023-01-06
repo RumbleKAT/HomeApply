@@ -7,6 +7,7 @@ import eventModal from './EventModal.vue';
 import { mapGetters } from 'vuex'
 import {getColor,toStringByFormatting,toStringByFormattingTomorrow} from '../utils/Color';
 import Filter from '@/components/Filter.vue';
+import moment from 'moment'
 
 export const getDateString = (param) =>{
   const datum = new Date(param);
@@ -40,6 +41,7 @@ export default {
         dateClick : this.handleDateClick,
         events : [],
         eventClick : this.handleEventClick,
+        initialDate : this.today,
         customButtons: { 
         prev: { // this overrides the prev button
           text: "PREV", 
@@ -47,14 +49,24 @@ export default {
             let calendarApi = this.$refs.fullCalendar.getApi();
             calendarApi.prev();
             //전월 첫날 기준
+            const s_date = moment(this.today).subtract(1,"M").format("YYYY-MM-DD");
+            const e_date = this.today;
+            // console.log(s_date + " " + e_date);
+            // fetch api
+            this.$store.dispatch('getPastData',{
+              s_date, e_date
+            });
+            this.today = s_date;
           }
         },
         next: { // this overrides the next button
-          text: "PREV",
+          text: "NEXT",
           click: () => {
              let calendarApi = this.$refs.fullCalendar.getApi();
              calendarApi.next();
              //차월 첫날 기준
+            const e_date = moment(this.today).add(1,"M").format("YYYY-MM-DD");
+            this.today = e_date;
           }
         }
       }
@@ -63,6 +75,7 @@ export default {
       isModalViewed: false,
       isCalendarViewed : true,
       isPassedEvent : false,
+      today: this.getInitalDate()                
     }
   },
   methods : {
@@ -93,8 +106,11 @@ export default {
       this.isCalendarViewed = false;
     },
     closeModal() {
+      // this.today = this.getInitalDate();                
       this.isModalViewed = false
       this.isCalendarViewed = true;
+      console.log(this.today);
+      this.calendarOptions.initialDate = this.today;
     },
 
     createEvents(data){
@@ -137,8 +153,7 @@ export default {
                 }
                 
               });
-        // console.log(aList);       
-      this.addNewEvent(aList);  
+        this.addNewEvent(aList);  
       }
     }
   },
@@ -150,13 +165,10 @@ export default {
   ),
   watch : {
     aptList(){
-      const data = this.$store.state.response;
-      // console.log(data);
-      this.createEvents(data);
+      this.createEvents(this.$store.state.response);
     },
     areaList(){
-      const area = this.$store.state.area;
-      const aptLists = this.$store.state.response.filter((param)=>param.SUBSCRPT_AREA_CODE_NM === area);
+      const aptLists = this.$store.state.response.filter((param)=>param.SUBSCRPT_AREA_CODE_NM === this.$store.state.area);
       this.createEvents(aptLists);
     }
   }

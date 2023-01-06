@@ -242,6 +242,28 @@ const store = new Vuex.Store({
                 console.error('Front End Part' ,err);
             })
         },
+        async getPastData({commit},data){
+            commit('setLoadingbar');            
+            try{
+                const res = await axios.get(`${process.env.VUE_APP_URL}/api/home/getInfo?category=${this.state.category}&s_date=${data.s_date}&e_date=${data.e_date}`);
+                commit('setLoadingbar');
+                // console.log(res);
+                const result = res.data.data.map((param)=>{
+                    param.RCEPT_BGNDE = getDateString(param.RCEPT_BGNDE)
+                    param.RCEPT_ENDDE = getDateString(param.RCEPT_ENDDE)
+                    param.SUBSCRPT_RCEPT_BGNDE = getDateString(param.SUBSCRPT_RCEPT_BGNDE)
+                    param.SUBSCRPT_RCEPT_ENDDE = getDateString(param.SUBSCRPT_RCEPT_ENDDE)
+                    return param;
+                });
+                // console.log(result);
+                commit({
+                    type : 'updateState',
+                    response : [ ...result , ...this.state.response ]
+                });
+            }catch(e){
+                console.error(e);
+            }
+        },
         updateCategory({commit,dispatch},data){
             commit('initialState');
             commit('updateCategory',data);

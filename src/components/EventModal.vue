@@ -150,7 +150,7 @@
           </table>
           <!-- </div> -->
         
-          <template v-if="isPassed">
+          <template v-if="isPassed && selectedRate.length > 0" >
             <!-- <div class="modal-scroll"> -->
             <table style="margin-top: 1em;">
                 <template v-if="selected.HOUSE_SECD === '01'">
