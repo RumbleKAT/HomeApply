@@ -6,7 +6,14 @@
             <div class="box box-down cyan">
               <h2 @click="goHomePage(item.HMPG_ADRES)">{{ item.HOUSE_NM }}</h2>
               <p>{{item.HSSPLY_ADRES}}</p>
-              <p style="font-size: small;">청약신청기간 : {{ item.RCEPT_BGNDE }} ~ {{item.RCEPT_ENDDE}}</p>
+              <p style="font-size: small;">
+                <template v-if="item.HOUSE_SECD === '01'">
+                  청약신청기간 : {{ item.RCEPT_BGNDE }} ~ {{item.RCEPT_ENDDE}}
+                </template>
+                <template v-else>
+                  청약신청기간 : {{ item.SUBSCRPT_RCEPT_BGNDE }} ~ {{item.SUBSCRPT_RCEPT_ENDDE}}
+                </template>
+              </p>
               <p style="font-weight: bold;">발표일 : {{ item.PRZWNER_PRESNATN_DE }}</p>
             </div>
           </li>
