@@ -177,7 +177,9 @@ export default {
 
 <template>
   <div>
-    <Filter/>
+    <template v-if="!isModalViewed">
+      <Filter/>
+    </template>
     <div class="calendarWrapper">
       <FullCalendar ref="fullCalendar" v-if="isCalendarViewed" :options="calendarOptions"/>
     </div>

@@ -67,7 +67,6 @@
           </tr>
           </template>
             </table>
-          <!-- <div class="modal-scroll"> -->
           <table>
             <th colspan = "13" style="background-color: #42b983; color:#fff">세부정보</th>
             <template v-if="selected.HOUSE_SECD === '01'">
@@ -148,8 +147,7 @@
             </tr>
             </template>
           </table>
-          <!-- </div> -->
-        
+
           <template v-if="isPassed && selectedRate.length > 0" >
             <!-- <div class="modal-scroll"> -->
             <table style="margin-top: 1em;">
@@ -199,7 +197,7 @@
                   </template>
                 </template>
               </tr>
-            </table>  
+            </table>
           </template>
 
           <div class="modal-footer">
@@ -212,12 +210,13 @@
           </div>
       </div>
     </div>
-   
+
     </div>
 </template>
 
 <script>
 import axios from 'axios';
+import {mapActions} from "vuex";
 
 export default {
     name : 'eventModal',
@@ -230,10 +229,11 @@ export default {
         selectedRate : ''
       }
     },
-    mounted(){
-      // console.log(this.selectedItem);
-      this.addDetail()
-      this.getRate();
+    async mounted(){
+      await this.toggleLoadingbar();
+      await this.addDetail();
+      await this.getRate();
+      await this.toggleLoadingbar();
     },
     computed: {
       favorites() { return this.$store.state.getFavorite },
@@ -244,6 +244,7 @@ export default {
       isAlarm() { return this.$store.state.isAlarm }
     },
     methods:{
+      ...mapActions(['toggleLoadingbar']),
       addFavorite(){
           this.$store.dispatch('updateFavorite', {
             data: this.selectedItem
@@ -252,15 +253,17 @@ export default {
           alert(this.selectedItem.HOUSE_NM + "가 알람 리스트에 저장되었습니다.");
           this.$emit('close-modal');
       },
-      addDetail(){
+      async addDetail(){
         const url = `${process.env.VUE_APP_URL}/api/home/getInfoDetail?category=${this.$store.state.category}&houseManageNo=${this.selected.HOUSE_MANAGE_NO}&pblancNo=${this.selected.PBLANC_NO}`;     
-        this.fetchData(url).then(data => this.selectedDetail = data).catch(err=>
+        await this.fetchData(url).then(data => {
+          this.selectedDetail = data
+        }).catch(err=>
           console.error(err)
         );
       },
-      getRate(){
+      async getRate(){
         const url = `${process.env.VUE_APP_URL}/api/home/getRateInfo?houseManageNo=${this.selected.HOUSE_MANAGE_NO}&houseSeCd=${this.selected.HOUSE_SECD}`; 
-        this.fetchData(url).then(data => {
+        await this.fetchData(url).then(data => {
           return this.selectedRate = data
         });
         // console.log(this.selectedRate);
@@ -286,7 +289,6 @@ export default {
 .modal__background {
   width: 100%;
   height: 100%;
-  position: absolute;
 }
 
 .modal__content {
@@ -312,17 +314,12 @@ button{
   font-weight: 400;
   text-align: center;
   text-decoration: none;
-  
   border: none;
   border-radius: 4px;
-  
   display: inline-block;
   width: auto;
-  
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  
   cursor: pointer;
-  
   transition: 0.5s;
 }
 
@@ -347,14 +344,6 @@ table{
 	text-align: center;
 }
 
-.modal-scroll{
-  width:100%; 
-  height:12em; 
-  margin-top: 1em; 
-  overflow:auto;
-  border-bottom: 1px solid #444444;
-}
-
 .modal-scroll table{
   min-height : 20em;
 }
@@ -364,11 +353,16 @@ table{
 */
 @media (min-width: 768px) and (max-width: 1024px) {
 
-  
+
 }
 
 @media (min-width: 320px) and (max-width: 480px) {
-
+  .modal__content{
+    max-width: 80%;
+  }
+  .modal__content table{
+    max-width: 100%;
+  }
 }
 
 </style>

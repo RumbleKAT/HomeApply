@@ -3,8 +3,8 @@
     <!-- <div class="div-scroll"> -->
       <ul class="list">
           <li class="row1-container" v-for="item in itemList" :key="item.MODEL_NO">
-            <div class="box box-down cyan">
-              <h2 @click="goHomePage(item.HMPG_ADRES)">{{ item.HOUSE_NM }}</h2>
+            <div :class="item.itemStyle">
+              <h3 @click="goHomePage(item.HMPG_ADRES)">{{ item.HOUSE_NM }}</h3>
               <p>{{item.HSSPLY_ADRES}}</p>
               <p style="font-size: small;">
                 <template v-if="item.HOUSE_SECD === '01'">
@@ -23,18 +23,16 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-
 export default {
   name: "weeklyInfo",
   data() {
     return {
       itemList: [],
-      msg : "홈페이지로 이동합니다."
+      msg : "홈페이지로 이동합니다.",
     };
   },
   mounted(){
-    console.log("mounted!");
+    this.renderList();
   },
   methods: {
     getFirstAndLastDayOfTheWeek() {
@@ -60,24 +58,25 @@ export default {
     },
     alertPage(param){
       console.log(`${param} 사이트로 이동합니다.`);
-    }
-  },
-  computed: mapGetters({
-    aptList: "getResponse",
-  }),
-  watch: {
-    aptList() {
-      const data = this.$store.state.response;
-      const weekInfo = this.getFirstAndLastDayOfTheWeek();
-      console.log(weekInfo);
-      this.itemList = data.filter(
-        (param) =>
-          new Date(weekInfo.firstWeekDate) <=
-            new Date(param.PRZWNER_PRESNATN_DE) &&
-          new Date(param.PRZWNER_PRESNATN_DE) <= new Date(weekInfo.lastWeekDate)
-      ).sort((a,b)=> new Date(b.PRZWNER_PRESNATN_DE) - new Date(a.PRZWNER_PRESNATN_DE));
-
     },
+    renderList(){
+      const data = this.$store.getters.getResponse;
+      const weekInfo = this.getFirstAndLastDayOfTheWeek();
+      // console.log(weekInfo);
+      this.itemList = data.filter(
+          (param) =>
+              new Date(weekInfo.firstWeekDate) <=
+              new Date(param.PRZWNER_PRESNATN_DE) &&
+              new Date(param.PRZWNER_PRESNATN_DE) <= new Date(weekInfo.lastWeekDate)
+      ).sort((a,b)=> new Date(b.PRZWNER_PRESNATN_DE) - new Date(a.PRZWNER_PRESNATN_DE));
+      this.itemList.map(item=>{
+        item.itemStyle = this.getRandomColor();
+      });
+    },
+    getRandomColor(){
+      const colorIndex = Math.floor(Math.random()*4);
+      return 'box box-down ' + ['cyan','red','blue','orange'].at(colorIndex);
+    }
   }
 };
 </script>
@@ -95,48 +94,38 @@ export default {
     --weight2: 400;
     --weight3: 600;
 }
+.list{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin-left: -10px; /* Adjust this value to half of the desired gap between list items */
+  margin-right: -10px; /* Adjust this value to half of the desired gap between list items */
+}
 
 .list li{
-  box-shadow : none;
+  flex: 0 0 calc(33.333% - 20px); /* Adjust this value to control the list item width and gap between list items */
+  box-sizing: border-box;
+  margin: 10px; /* Adjust this value to half of the desired gap between list items */
+  overflow: hidden;
 }
 
-.attribution { 
-    font-size: 11px; text-align: center; 
+@media (max-width: 767px) {
+  .list li {
+    flex: 0 0 calc(50% - 20px); /* Adjust this value to control the list item width and gap between list items on smaller screens */
+  }
 }
+
 .attribution a { 
     color: hsl(228, 45%, 44%); 
-}
-
-.tiptext {
-  color:#069;
-  cursor:pointer;
-}
-.description {
-  display:none;
-  position:absolute;
-  border:1px solid #000;
-  width:400px;
-  height:400px;
 }
 
 .box {
     border-radius: 5px;
     box-shadow: 0px 30px 40px -20px var(--grayishBlue);
-    padding: 30px;
+    padding: 3em;
     margin: 20px;  
-}
-
-@media (max-width: 450px) {
-    .box {
-        height: 200px;
-    }
-}
-
-@media (max-width: 950px) and (min-width: 450px) {
-    .box {
-        text-align: center;
-        height: 180px;
-    }
 }
 
 .cyan {
@@ -158,24 +147,4 @@ h2 {
 }
 
 
-@media (min-width: 950px) {
-    .row1-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    .box-down {
-        position: relative;
-        /* top: 150px; */
-    }
-    .box {
-        width: 30%;
-     
-    }
-    .header p {
-        width: 30%;
-    }
-    
-}
 </style>

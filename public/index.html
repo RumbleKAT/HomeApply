@@ -36,13 +36,22 @@
     body{
       margin : 0
     }
+    #app{
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
     footer{
-        width : 100%;
-        bottom : 0;
-        background-color: #efefef;
-        text-align: center;
         padding-top: 1em;
         padding-bottom: 1em;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 60px; /* Adjust the height of the footer as needed */
+        background-color: #efefef;
+        text-align: center;
+        z-index: 1000; /* Add this line */
     }
   </style>
 </html>

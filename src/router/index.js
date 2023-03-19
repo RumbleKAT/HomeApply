@@ -1,17 +1,13 @@
 import { createWebHistory, createRouter } from "vue-router"; 
 import Main from '../views/Main.vue';
-import Sub from '../views/Sub.vue';
 import Today from '../views/Today.vue';
 
 const routes = [{
     path : '/',
-    component : Today
-},{
-    path : '/mail',
-    component : Sub
-},{
-    path : '/calendar',
     component : Main
+},{
+    path : '/today',
+    component : Today
 }];
 
 const router = createRouter({
