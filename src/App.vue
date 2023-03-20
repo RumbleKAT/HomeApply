@@ -14,6 +14,15 @@
       </template>
     </div>
     <router-view />
+  <template v-if="isModalOpen">
+    <footer style="font-size: 0.8em;">
+      <p>
+        <span>본 저작물은 <strong>한국부동산원</strong> 에서 OpenAPI를 제공받고 있습니다.</span><br/>
+        <span>이메일: reki318@naver.com</span><br/>
+        <span>Copyright 2022. rumblekat All Rights Reserved.</span>
+      </p>
+    </footer>
+  </template>
 </div>
 </template>
 
@@ -24,7 +33,10 @@ export default {
     
   },
   computed: {
-    isAlarm() { return this.$store.state.isAlarm }
+    isAlarm() { return this.$store.state.isAlarm },
+    isModalOpen() {
+      return !this.$store.state.isModalOpen;
+    }
   },
   data() {
     return {
@@ -71,5 +83,4 @@ export default {
 #nav a.router-link-exact-active {
   color: #42b983;
 }
-
 </style>

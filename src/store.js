@@ -124,7 +124,8 @@ const store = new Vuex.Store({
         loadingbar : false,
         isError : false,
         area : '전체',
-        isAlarm : false
+        isAlarm : false,
+        isModalOpen: false,
     },
     getters: {
         increaseCount(state) {
@@ -156,6 +157,9 @@ const store = new Vuex.Store({
         },
         getAlarm(state){
             return state.isAlarm;
+        },
+        getIsModalOpen(state){
+            return state.isModalOpen;
         }
     },
     mutations : {
@@ -211,6 +215,13 @@ const store = new Vuex.Store({
         },
         setIsError : function(state,payload){
             state.isError = payload.isError;
+        },
+        setModal: function(state){
+            if(state.isModalOpen){
+                state.isModalOpen = false;
+            }else{
+                state.isModalOpen = true;
+            }
         }
     },
     actions : {
@@ -312,6 +323,9 @@ const store = new Vuex.Store({
         setIsError({commit},data){
             console.log(data);//error 건은 MQ로 보낸다.
             commit('setIsError',data);
+        },
+        setModal({commit}){
+            commit('setModal');
         }
     }
 });

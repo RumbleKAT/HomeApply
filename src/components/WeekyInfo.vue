@@ -117,6 +117,13 @@ export default {
   }
 }
 
+@media (max-width: 420px) {
+  .list li {
+    flex: 0 0 calc(80% - 20px); /* Adjust this value to control the list item width and gap between list items on smaller screens */
+  }
+}
+
+
 .attribution a { 
     color: hsl(228, 45%, 44%); 
 }

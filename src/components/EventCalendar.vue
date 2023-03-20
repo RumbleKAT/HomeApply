@@ -4,7 +4,7 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import eventModal from './EventModal.vue';
-import { mapGetters } from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 import {getColor,toStringByFormatting,toStringByFormattingTomorrow} from '../utils/Color';
 import Filter from '@/components/Filter.vue';
 import moment from 'moment'
@@ -79,7 +79,8 @@ export default {
     }
   },
   methods : {
-      getInitalDate : function(){
+    ...mapActions(['setModal']),
+    getInitalDate : function(){
         return toStringByFormatting(new Date())
       },
       handleDateClick : function(arg){
@@ -104,6 +105,7 @@ export default {
     openModal() {
       this.isModalViewed = true
       this.isCalendarViewed = false;
+      this.setModal();
     },
     closeModal() {
       // this.today = this.getInitalDate();                
@@ -111,6 +113,7 @@ export default {
       this.isCalendarViewed = true;
       console.log(this.today);
       this.calendarOptions.initialDate = this.today;
+      this.setModal();
     },
 
     createEvents(data){
@@ -161,7 +164,7 @@ export default {
     {
       aptList : 'getResponse', // getCounter 는 Vuex 의 getters 에 선언된 속성 이름,
       areaList : 'getArea'
-    }
+    },
   ),
   watch : {
     aptList(){
