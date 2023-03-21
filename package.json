@@ -42,6 +42,7 @@
     "v-calendar": "^3.0.0-alpha.8",
     "vue": "^3.2.13",
     "vue-cli": "^2.9.6",
+    "vue-meta": "^3.0.0-alpha.2",
     "vue-router": "^4.0.12",
     "vue3-google-login": "^2.0.10",
     "vuex": "^4.0.2",
