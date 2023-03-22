@@ -2,6 +2,8 @@ name: Fetch Data and Save as JSON
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0' # Run the workflow weekly at 00:00
 
 jobs:
   fetch_and_save_data:
