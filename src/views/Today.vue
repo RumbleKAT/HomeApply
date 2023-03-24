@@ -29,9 +29,11 @@ export default {
         return this.getResponse.length === 0
       }
     },
-    mounted(){
+    async mounted(){
       //get the nonApt remain Apt infos
-      if(this.$store.getters.getResponse.length === 0) this.$store.dispatch('getData');
+      if(this.$store.getters.getResponse.length === 0) {
+        await this.$store.dispatch('getData');
+      }
     }
 }
 </script>

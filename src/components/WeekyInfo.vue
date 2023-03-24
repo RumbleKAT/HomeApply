@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import {mapActions} from "vuex";
+
 export default {
   name: "weeklyInfo",
   data() {
@@ -31,10 +33,16 @@ export default {
       msg : "홈페이지로 이동합니다.",
     };
   },
-  mounted(){
-    this.renderList();
+  async mounted(){
+    if(this.$route.query.iframe){
+      await this.toggleLoadingbar();
+      await this.$store.dispatch('getData');
+      await this.toggleLoadingbar();
+    }
+    await this.renderList();
   },
   methods: {
+    ...mapActions(['toggleLoadingbar']),
     getFirstAndLastDayOfTheWeek() {
       // The starting time is the same current
       let a = new Date();
@@ -59,7 +67,7 @@ export default {
     alertPage(param){
       console.log(`${param} 사이트로 이동합니다.`);
     },
-    renderList(){
+    async renderList(){
       const data = this.$store.getters.getResponse;
       const weekInfo = this.getFirstAndLastDayOfTheWeek();
       // console.log(weekInfo);

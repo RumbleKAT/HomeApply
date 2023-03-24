@@ -1,5 +1,6 @@
 <template>
 <div>
+  <template v-if="isIframe">
     <div id="nav">
       <div class="navbar">
         <router-link to="/">청약달력</router-link>
@@ -13,8 +14,9 @@
         </div>
       </template>
     </div>
-    <router-view />
-  <template v-if="isModalOpen">
+  </template>
+  <router-view />
+  <template v-if="isModalOpen && isIframe">
     <footer style="font-size: 0.8em;">
       <p>
         <span>본 저작물은 <strong>한국부동산원</strong> 에서 OpenAPI를 제공받고 있습니다.</span><br/>
@@ -36,6 +38,9 @@ export default {
     isAlarm() { return this.$store.state.isAlarm },
     isModalOpen() {
       return !this.$store.state.isModalOpen;
+    },
+    isIframe(){
+      return !this.$route.query.iframe;
     }
   },
   data() {

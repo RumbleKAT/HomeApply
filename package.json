@@ -11,7 +11,7 @@
     "dev_sub": "nodemon ./src/backend/server.js",
     "batch": "node ./src/utils/Cron.js",
     "mailserver": "node ./src/backend/mailserver.js",
-    "predeploy": "vue-cli-service build --mode prod & cp CNAME ./build",
+    "predeploy": "vue-cli-service build --mode prod",
     "deploy": "gh-pages -d dist",
     "clean": "gh-pages-clean",
     "test": "jest --silent=false --forceExit --watchAll=false"
