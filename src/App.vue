@@ -3,10 +3,10 @@
   <template v-if="isIframe">
     <div id="nav">
       <div class="navbar">
-        <router-link to="/">청약달력</router-link>
+        <router-link to="/HomeApply/">청약달력</router-link>
       </div>
       <div class="navbar">
-        <router-link to="/today">금주의 청약발표</router-link>
+        <router-link to="/HomeApply/today">금주의 청약발표</router-link>
       </div>
       <template v-if="isAlarm">
         <div class="navbar">

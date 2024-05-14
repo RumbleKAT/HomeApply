@@ -3,10 +3,10 @@ import Main from '../views/Main.vue';
 import Today from '../views/Today.vue';
 
 const routes = [{
-    path : '/',
+    path : '/HomeApply/',
     component : Main
 },{
-    path : '/today',
+    path : '/HomeApply/today',
     component : Today
 }];
 
